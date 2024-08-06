@@ -1,0 +1,46 @@
+﻿using MiaTicket.Data.Enum;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MiaTicket.Data.Entity
+{
+    public class Order
+    {
+        public string Id { get; set; }
+        public string EventName { get; set; }
+        public decimal IsPrice { get; set; }
+        public bool IsOffline { get; set; }
+        public string AddressName { get; set; }
+        public string AddressNo { get; set; }
+        public string AddressWard { get; set; }
+        public string AddressDistinct { get; set; }
+        public string AddressProvince { get; set; }
+        public string BackgroundUrl { get; set; }
+        public string LogoUrl { get; set; }
+        public string CategoryName { get; set; }
+        public string OrganizerName { get; set; }
+        public string OrganizerInformation { get; set; }
+        public string OrganizerLogoUrl { get; set; }
+        public DateTime DateStart { get; set; }
+        public DateTime DateEnd { get; set; }
+        public double Discount { get; set; }
+        public string ReceiverName { get; set; }
+        public string ReceiverEmail { get; set; }
+        public string ReceiverPhoneNumber { get; set; }
+        public string CreatedAt { get; set; }
+        public string QrCode { get; set; }
+        public string QrUrl { get; set; }
+        public Event Event { get; set; }
+        public string EventId { get; set; }
+        public User User { get; set; }
+        public string UserId { get; set; }
+        public PaymentType PaymentType { get; set; }
+        public string PaymentTypeId { get; set; }
+        public PaymentStatus PaymentStatus { get; set; }
+        public string PaymentStatusId { get; set; }
+        public List<OrderTicket> OrderTickets { get; set; }
+    }
+}

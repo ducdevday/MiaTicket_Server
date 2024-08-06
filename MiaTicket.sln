@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiaTicket", "MiaTicket\MiaTicket.csproj", "{B348FB37-EB1D-4518-93C7-E94E0D91DA14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiaTicket", "MiaTicket\MiaTicket.csproj", "{B348FB37-EB1D-4518-93C7-E94E0D91DA14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiaTicket.Data", "MiaTicket.Data\MiaTicket.Data.csproj", "{0740CDF2-46A0-4B9A-9247-8A56CEDBE931}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiaTicket.Data", "MiaTicket.Data\MiaTicket.Data.csproj", "{0740CDF2-46A0-4B9A-9247-8A56CEDBE931}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiaTicket.DataAccess", "MiaTicket.DataAccess\MiaTicket.DataAccess.csproj", "{16B34DBE-B1D8-473F-B9F4-36680DA9E482}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiaTicket.DataAccess", "MiaTicket.DataAccess\MiaTicket.DataAccess.csproj", "{16B34DBE-B1D8-473F-B9F4-36680DA9E482}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiaTicket.BussinessLogic", "MiaTicket.BussinessLogic\MiaTicket.BussinessLogic.csproj", "{8C6EBB25-09EB-4FFF-BF33-8BF50FA9EE96}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiaTicket.BussinessLogic", "MiaTicket.BussinessLogic\MiaTicket.BussinessLogic.csproj", "{8C6EBB25-09EB-4FFF-BF33-8BF50FA9EE96}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiaTicket.WebAPI", "MiaTicket.WebAPI\MiaTicket.WebAPI.csproj", "{1A813E12-E3B2-4955-A85D-B379919A8E4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiaTicket.WebAPI", "MiaTicket.WebAPI\MiaTicket.WebAPI.csproj", "{1A813E12-E3B2-4955-A85D-B379919A8E4A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

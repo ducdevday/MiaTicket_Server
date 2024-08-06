@@ -1,0 +1,12 @@
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.BussinessLogic\bin\Debug\net8.0\MiaTicket.BussinessLogic.deps.json
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.BussinessLogic\bin\Debug\net8.0\MiaTicket.BussinessLogic.dll
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.BussinessLogic\bin\Debug\net8.0\MiaTicket.BussinessLogic.pdb
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.BussinessLogic\obj\Debug\net8.0\MiaTicket.BussinessLogic.GeneratedMSBuildEditorConfig.editorconfig
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.BussinessLogic\obj\Debug\net8.0\MiaTicket.BussinessLogic.AssemblyInfoInputs.cache
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.BussinessLogic\obj\Debug\net8.0\MiaTicket.BussinessLogic.AssemblyInfo.cs
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.BussinessLogic\obj\Debug\net8.0\MiaTicket.BussinessLogic.csproj.CoreCompileInputs.cache
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.BussinessLogic\obj\Debug\net8.0\MiaTicket.BussinessLogic.sourcelink.json
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.BussinessLogic\obj\Debug\net8.0\MiaTicket.BussinessLogic.dll
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.BussinessLogic\obj\Debug\net8.0\refint\MiaTicket.BussinessLogic.dll
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.BussinessLogic\obj\Debug\net8.0\MiaTicket.BussinessLogic.pdb
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.BussinessLogic\obj\Debug\net8.0\ref\MiaTicket.BussinessLogic.dll

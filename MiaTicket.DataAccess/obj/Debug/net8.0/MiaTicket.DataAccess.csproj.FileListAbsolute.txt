@@ -1,0 +1,12 @@
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataAccess\bin\Debug\net8.0\MiaTicket.DataAccess.deps.json
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataAccess\bin\Debug\net8.0\MiaTicket.DataAccess.dll
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataAccess\bin\Debug\net8.0\MiaTicket.DataAccess.pdb
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataAccess\obj\Debug\net8.0\MiaTicket.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataAccess\obj\Debug\net8.0\MiaTicket.DataAccess.AssemblyInfoInputs.cache
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataAccess\obj\Debug\net8.0\MiaTicket.DataAccess.AssemblyInfo.cs
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataAccess\obj\Debug\net8.0\MiaTicket.DataAccess.csproj.CoreCompileInputs.cache
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataAccess\obj\Debug\net8.0\MiaTicket.DataAccess.sourcelink.json
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataAccess\obj\Debug\net8.0\MiaTicket.DataAccess.dll
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataAccess\obj\Debug\net8.0\refint\MiaTicket.DataAccess.dll
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataAccess\obj\Debug\net8.0\MiaTicket.DataAccess.pdb
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataAccess\obj\Debug\net8.0\ref\MiaTicket.DataAccess.dll

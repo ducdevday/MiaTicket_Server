@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "K4hwlkvB7DXxl5EDEPaE6xika70CTb3GSEkT3EYwEUk=",
+  "Source": "MiaTicket.WebAPI",
+  "BasePath": "_content/MiaTicket.WebAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
