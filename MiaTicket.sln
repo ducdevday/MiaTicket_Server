@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiaTicket.BussinessLogic", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiaTicket.WebAPI", "MiaTicket.WebAPI\MiaTicket.WebAPI.csproj", "{1A813E12-E3B2-4955-A85D-B379919A8E4A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiaTicket.Setting", "MiaTicket.Setting\MiaTicket.Setting.csproj", "{2E58FB35-365E-43E9-899C-2F145563619F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{1A813E12-E3B2-4955-A85D-B379919A8E4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A813E12-E3B2-4955-A85D-B379919A8E4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A813E12-E3B2-4955-A85D-B379919A8E4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E58FB35-365E-43E9-899C-2F145563619F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E58FB35-365E-43E9-899C-2F145563619F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E58FB35-365E-43E9-899C-2F145563619F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E58FB35-365E-43E9-899C-2F145563619F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

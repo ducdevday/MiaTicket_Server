@@ -22,17 +22,19 @@ namespace MiaTicket.Data.Configuration
             builder.Property(x => x.CategoryName).HasMaxLength(255).IsRequired().IsUnicode();
             builder.Property(x => x.OrganizerName).IsRequired().HasMaxLength(255).IsUnicode();
             builder.Property(x => x.OrganizerInformation).IsRequired().HasMaxLength(255).IsUnicode();
-            builder.Property(x => x.OrganizerLogoUrl).IsRequired().HasMaxLength(255); 
+            builder.Property(x => x.OrganizerLogoUrl).IsRequired().HasMaxLength(255);
             builder.Property(x => x.DateStart).IsRequired();
             builder.Property(x => x.DateEnd).IsRequired();
             builder.Property(x => x.Discount);
-            builder.Property(x => x.CreatedAt).IsRequired();
+            builder.Property(x => x.CreatedAt).HasDefaultValueSql("GETDATE()") // Set default value to current date
+            .ValueGeneratedOnAdd() // automatically set on entity creation
+            .HasAnnotation("Timestamp", "CreatedDate");
             builder.Property(x => x.QrCode).IsRequired();
             builder.Property(x => x.QrUrl);
             builder.Property(x => x.PaymentType).IsRequired();
             builder.Property(x => x.PaymentStatus).IsRequired();
             builder.HasOne(x => x.Event).WithOne(x => x.Order).HasForeignKey<Order>(x => x.EventId);
-            builder.HasOne(x => x.User).WithOne(x => x.Order).HasForeignKey<Order>(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(x => x.User).WithOne(x => x.Order).HasForeignKey<Order>(x => x.UserId).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

@@ -1502,6 +1502,16 @@
             "rid": "win"
           }
         }
+      },
+      "MiaTicket.Setting/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/MiaTicket.Setting.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/MiaTicket.Setting.dll": {}
+        }
       }
     }
   },
@@ -4096,10 +4106,16 @@
         "system.windows.extensions.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "MiaTicket.Setting/1.0.0": {
+      "type": "project",
+      "path": "../MiaTicket.Setting/MiaTicket.Setting.csproj",
+      "msbuildProject": "../MiaTicket.Setting/MiaTicket.Setting.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
+      "MiaTicket.Setting >= 1.0.0",
       "Microsoft.EntityFrameworkCore >= 8.0.7",
       "Microsoft.EntityFrameworkCore.Design >= 8.0.7",
       "Microsoft.EntityFrameworkCore.SqlServer >= 8.0.7",
@@ -4133,7 +4149,11 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.Setting\\MiaTicket.Setting.csproj": {
+              "projectPath": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.Setting\\MiaTicket.Setting.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

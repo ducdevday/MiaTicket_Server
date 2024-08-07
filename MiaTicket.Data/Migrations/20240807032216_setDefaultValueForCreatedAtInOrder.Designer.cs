@@ -4,6 +4,7 @@ using MiaTicket.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MiaTicket.Data.Migrations
 {
     [DbContext(typeof(MiaTicketDBContext))]
-    partial class MiaTicketContextModelSnapshot : ModelSnapshot
+    [Migration("20240807032216_setDefaultValueForCreatedAtInOrder")]
+    partial class setDefaultValueForCreatedAtInOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -170,26 +173,31 @@ namespace MiaTicket.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("AddressDistinct")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .IsUnicode(true)
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("AddressName")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .IsUnicode(true)
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("AddressNo")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .IsUnicode(true)
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("AddressProvince")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .IsUnicode(true)
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("AddressWard")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .IsUnicode(true)
                         .HasColumnType("nvarchar(255)");
@@ -218,7 +226,7 @@ namespace MiaTicket.Data.Migrations
                     b.Property<DateTime>("DateStart")
                         .HasColumnType("datetime2");
 
-                    b.Property<double?>("Discount")
+                    b.Property<double>("Discount")
                         .HasColumnType("float");
 
                     b.Property<string>("EventId")
@@ -233,6 +241,9 @@ namespace MiaTicket.Data.Migrations
 
                     b.Property<bool>("IsOffline")
                         .HasColumnType("bit");
+
+                    b.Property<decimal>("IsPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("LogoUrl")
                         .IsRequired()
@@ -259,14 +270,23 @@ namespace MiaTicket.Data.Migrations
                     b.Property<int>("PaymentStatus")
                         .HasColumnType("int");
 
+                    b.Property<string>("PaymentStatusId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("PaymentType")
                         .HasColumnType("int");
+
+                    b.Property<string>("PaymentTypeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("QrCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("QrUrl")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReceiverEmail")
@@ -413,10 +433,11 @@ namespace MiaTicket.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("AvatarUrl")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<DateTime?>("BirthDate")
+                    b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -424,10 +445,11 @@ namespace MiaTicket.Data.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int?>("Gender")
+                    b.Property<int>("Gender")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .IsUnicode(true)
                         .HasColumnType("nvarchar(255)");
@@ -437,6 +459,7 @@ namespace MiaTicket.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -444,6 +467,10 @@ namespace MiaTicket.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasDefaultValue(0);
+
+                    b.Property<string>("UserStatusId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -652,7 +679,8 @@ namespace MiaTicket.Data.Migrations
 
             modelBuilder.Entity("MiaTicket.Data.Entity.Category", b =>
                 {
-                    b.Navigation("Event");
+                    b.Navigation("Event")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MiaTicket.Data.Entity.Event", b =>
@@ -681,7 +709,8 @@ namespace MiaTicket.Data.Migrations
                 {
                     b.Navigation("Events");
 
-                    b.Navigation("Order");
+                    b.Navigation("Order")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MiaTicket.Data.Entity.Voucher", b =>

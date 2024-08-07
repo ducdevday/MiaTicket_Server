@@ -1,11 +1,13 @@
 ﻿using MiaTicket.Data.Configuration;
 using MiaTicket.Data.Entity;
+using MiaTicket.Setting;
 using Microsoft.EntityFrameworkCore;
 
 namespace MiaTicket.Data
 {
     public class MiaTicketDBContext : DbContext
     {
+        private EnviromentSetting _setting = EnviromentSetting.GetInstance();
         public MiaTicketDBContext() : base()
         {
             
@@ -28,7 +30,7 @@ namespace MiaTicket.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=LAPTOP-VEKQUME7\\SQLEXPRESS;Initial Catalog=MiaTicketDB;Integrated Security=True;Trust Server Certificate=True");
+            optionsBuilder.UseSqlServer(_setting.GetConnectionString());
         }
 
         public DbSet<Banner> Banner { get; set; }

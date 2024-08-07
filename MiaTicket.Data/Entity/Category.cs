@@ -10,6 +10,6 @@ namespace MiaTicket.Data.Entity
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        public Event Event { get; set; }
+        public Event? Event { get; set; }
     }
 }
