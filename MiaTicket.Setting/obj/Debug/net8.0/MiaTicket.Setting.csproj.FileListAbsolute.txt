@@ -1,0 +1,12 @@
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.Setting\bin\Debug\net8.0\MiaTicket.Setting.deps.json
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.Setting\bin\Debug\net8.0\MiaTicket.Setting.dll
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.Setting\bin\Debug\net8.0\MiaTicket.Setting.pdb
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.Setting\obj\Debug\net8.0\MiaTicket.Setting.GeneratedMSBuildEditorConfig.editorconfig
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.Setting\obj\Debug\net8.0\MiaTicket.Setting.AssemblyInfoInputs.cache
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.Setting\obj\Debug\net8.0\MiaTicket.Setting.AssemblyInfo.cs
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.Setting\obj\Debug\net8.0\MiaTicket.Setting.csproj.CoreCompileInputs.cache
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.Setting\obj\Debug\net8.0\MiaTicket.Setting.sourcelink.json
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.Setting\obj\Debug\net8.0\MiaTicket.Setting.dll
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.Setting\obj\Debug\net8.0\refint\MiaTicket.Setting.dll
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.Setting\obj\Debug\net8.0\MiaTicket.Setting.pdb
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.Setting\obj\Debug\net8.0\ref\MiaTicket.Setting.dll

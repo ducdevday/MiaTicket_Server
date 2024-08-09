@@ -18,10 +18,10 @@ namespace MiaTicket.Data.Configuration
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Name).HasMaxLength(255).IsUnicode();
             builder.Property(x => x.AvatarUrl).HasMaxLength(255);
-            builder.Property(x => x.BirthDate);
+            builder.Property(x => x.BirthDate).IsRequired();
             builder.Property(x => x.Email).IsRequired().HasMaxLength(255);
-            builder.Property(x => x.Gender);
-            builder.Property(x => x.PhoneNumber).HasMaxLength(20);
+            builder.Property(x => x.Gender).IsRequired();
+            builder.Property(x => x.PhoneNumber).IsRequired().HasMaxLength(20);
             builder.Property(x => x.UserStatus).HasDefaultValue(UserStatus.Active);
         }
     }
