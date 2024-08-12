@@ -15,6 +15,7 @@ namespace MiaTicket.Data.Configuration
         {
             builder.ToTable("ShowTime");
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.Property(x => x.DateStart);
             builder.Property(x => x.DateEnd);
             builder.HasOne(x => x.Event).WithMany(x => x.ShowTimes).HasForeignKey(x => x.EventId);

@@ -10,6 +10,7 @@ namespace MiaTicket.Data.Configuration
         {
             builder.ToTable("Order");
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.Property(x => x.EventName).HasMaxLength(255).IsRequired().IsUnicode();
             builder.Property(x => x.IsOffline).IsRequired();
             builder.Property(x => x.AddressName).HasMaxLength(255).IsUnicode();

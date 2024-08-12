@@ -10,6 +10,7 @@ namespace MiaTicket.Data.Configuration
         {
             builder.ToTable("Banner");
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.Property(x => x.VideoUrl).IsRequired().HasMaxLength(255);
             builder.HasOne(x => x.Event).WithOne(x => x.Banner).HasForeignKey<Banner>(x => x.EventId);
         }

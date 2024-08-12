@@ -2,7 +2,7 @@
 {
     public class Event
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public bool IsOffline { get; set; }
         public string? AddressName { get; set; }
@@ -26,9 +26,9 @@
         public List<ShowTime> ShowTimes { get; set; }
 
         public Category Category { get; set; }
-        public string CategoryId { get; set; }
+        public int CategoryId { get; set; }
         public User User { get; set; }  
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
         public Order Order { get; set; }
     }
 }

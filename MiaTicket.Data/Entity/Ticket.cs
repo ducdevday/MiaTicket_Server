@@ -8,7 +8,7 @@ namespace MiaTicket.Data.Entity
 {
     public class Ticket
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public double Price { get; set; }
         public int Quantity { get; set; }
@@ -20,7 +20,7 @@ namespace MiaTicket.Data.Entity
         public string? Description { get; set; }
         public string? ImageUrl { get; set; }
         public ShowTime ShowTime { get; set; }
-        public string ShowTimeId { get; set; }
+        public int ShowTimeId { get; set; }
 
     }
 }

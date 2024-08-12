@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MiaTicket.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class initialDatabase : Migration
+    public partial class updateEntityIdType : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,7 +15,8 @@ namespace MiaTicket.Data.Migrations
                 name: "Category",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
                 },
                 constraints: table =>
@@ -27,16 +28,15 @@ namespace MiaTicket.Data.Migrations
                 name: "User",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    AvatarUrl = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    AvatarUrl = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Gender = table.Column<int>(type: "int", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    UserStatus = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    UserStatusId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    UserStatus = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
                 },
                 constraints: table =>
                 {
@@ -47,7 +47,8 @@ namespace MiaTicket.Data.Migrations
                 name: "Event",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     IsOffline = table.Column<bool>(type: "bit", nullable: false),
                     AddressName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
@@ -64,8 +65,8 @@ namespace MiaTicket.Data.Migrations
                     PaymentNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     PaymentBankName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     PaymentBankBranch = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    CategoryId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -88,9 +89,10 @@ namespace MiaTicket.Data.Migrations
                 name: "Banner",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     VideoUrl = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    EventId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    EventId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -107,15 +109,15 @@ namespace MiaTicket.Data.Migrations
                 name: "Order",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     EventName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    IsPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     IsOffline = table.Column<bool>(type: "bit", nullable: false),
-                    AddressName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    AddressNo = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    AddressWard = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    AddressDistinct = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    AddressProvince = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    AddressName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    AddressNo = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    AddressWard = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    AddressDistinct = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    AddressProvince = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     BackgroundUrl = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     LogoUrl = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     CategoryName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
@@ -124,19 +126,17 @@ namespace MiaTicket.Data.Migrations
                     OrganizerLogoUrl = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     DateStart = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Discount = table.Column<double>(type: "float", nullable: false),
+                    Discount = table.Column<double>(type: "float", nullable: true),
                     ReceiverName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ReceiverEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ReceiverPhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValueSql: "GETDATE()"),
                     QrCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    QrUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EventId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    QrUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EventId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PaymentType = table.Column<int>(type: "int", nullable: false),
-                    PaymentTypeId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PaymentStatus = table.Column<int>(type: "int", nullable: false),
-                    PaymentStatusId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    PaymentStatus = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -151,18 +151,18 @@ namespace MiaTicket.Data.Migrations
                         name: "FK_Order_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "ShowTime",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     DateStart = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EventId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    EventId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -179,7 +179,8 @@ namespace MiaTicket.Data.Migrations
                 name: "Voucher",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Code = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -188,7 +189,7 @@ namespace MiaTicket.Data.Migrations
                     MinQuanityPerOrder = table.Column<int>(type: "int", nullable: true),
                     MaxQuanityPerOrder = table.Column<int>(type: "int", nullable: true),
                     IsPercentage = table.Column<bool>(type: "bit", nullable: false),
-                    EventId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    EventId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -205,13 +206,13 @@ namespace MiaTicket.Data.Migrations
                 name: "OrderTicket",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Price = table.Column<double>(type: "float", maxLength: 50, nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    OrderId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    OrderTicketStatus = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    OrderTicketStatisId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    OrderTicketStatus = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
                 },
                 constraints: table =>
                 {
@@ -228,7 +229,8 @@ namespace MiaTicket.Data.Migrations
                 name: "Ticket",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
@@ -239,7 +241,7 @@ namespace MiaTicket.Data.Migrations
                     DateStart = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ImageUrl = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    ShowTimeId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    ShowTimeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -256,9 +258,10 @@ namespace MiaTicket.Data.Migrations
                 name: "VoucherFixedAmount",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Value = table.Column<double>(type: "float", nullable: false),
-                    VoucherId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    VoucherId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -275,9 +278,10 @@ namespace MiaTicket.Data.Migrations
                 name: "VoucherPercentage",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Value = table.Column<int>(type: "int", nullable: false),
-                    VoucherId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    VoucherId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -333,6 +337,12 @@ namespace MiaTicket.Data.Migrations
                 name: "IX_Ticket_ShowTimeId",
                 table: "Ticket",
                 column: "ShowTimeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_Email",
+                table: "User",
+                column: "Email",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Voucher_EventId",

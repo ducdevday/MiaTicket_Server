@@ -15,6 +15,7 @@ namespace MiaTicket.Data.Configuration
         {
             builder.ToTable("Ticket");
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.Property(x => x.Name).IsRequired().HasMaxLength(50).IsUnicode();
             builder.Property(x => x.Price).IsRequired();
             builder.Property(x => x.Quantity).IsRequired();

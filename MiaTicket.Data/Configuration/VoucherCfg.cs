@@ -15,6 +15,7 @@ namespace MiaTicket.Data.Configuration
         {
             builder.ToTable("Voucher");
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.Property(x => x.Name).IsRequired().HasMaxLength(50).IsUnicode();
             builder.Property(x => x.Code).IsRequired().HasMaxLength(20);
             builder.Property(x => x.StartDate).IsRequired();

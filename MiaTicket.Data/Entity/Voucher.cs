@@ -8,7 +8,7 @@ namespace MiaTicket.Data.Entity
 {
     public class Voucher
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Code { get; set; }
         public DateTime StartDate { get; set; }
@@ -20,6 +20,6 @@ namespace MiaTicket.Data.Entity
         public VoucherPercentage? VoucherPercentage { get; set; }
         public VoucherFixedAmount? VoucherFixedAmount { get; set; }
         public Event Event { get; set; }
-        public string EventId { get; set; }
+        public int EventId { get; set; }
     }
 }

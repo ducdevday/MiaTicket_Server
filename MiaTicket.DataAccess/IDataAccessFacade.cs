@@ -24,7 +24,7 @@ namespace MiaTicket.DataAccess
 
     public class DataAccessFacade : IDataAccessFacade
     {
-        private readonly MiaTicketDBContext _context = new MiaTicketDBContext();
+        public readonly MiaTicketDBContext _context = new MiaTicketDBContext();
 
         public DataAccessFacade()
         {
@@ -35,6 +35,10 @@ namespace MiaTicket.DataAccess
         //{
         //    _context = context;
         //}
+
+        public async Task SaveChangesAsync() {
+            await _context.SaveChangesAsync();
+        }
 
         private BannerData _bannerData;
         public IBannerData BannerData {

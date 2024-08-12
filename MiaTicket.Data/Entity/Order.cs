@@ -9,7 +9,7 @@ namespace MiaTicket.Data.Entity
 {
     public class Order
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string EventName { get; set; }
         public bool IsOffline { get; set; }
         public string? AddressName { get; set; }
@@ -33,9 +33,9 @@ namespace MiaTicket.Data.Entity
         public string QrCode { get; set; }
         public string? QrUrl { get; set; }
         public Event Event { get; set; }
-        public string EventId { get; set; }
+        public int EventId { get; set; }
         public User User { get; set; }
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
         public PaymentType PaymentType { get; set; }
         public PaymentStatus PaymentStatus { get; set; }
         public List<OrderTicket> OrderTickets { get; set; }

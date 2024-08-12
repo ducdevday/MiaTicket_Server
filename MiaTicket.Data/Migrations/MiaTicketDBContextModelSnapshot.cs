@@ -4,7 +4,6 @@ using MiaTicket.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -12,11 +11,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MiaTicket.Data.Migrations
 {
     [DbContext(typeof(MiaTicketDBContext))]
-    [Migration("20240807160037_updateEntity")]
-    partial class updateEntity
+    partial class MiaTicketDBContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,12 +24,14 @@ namespace MiaTicket.Data.Migrations
 
             modelBuilder.Entity("MiaTicket.Data.Entity.Banner", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<string>("EventId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
 
                     b.Property<string>("VideoUrl")
                         .IsRequired()
@@ -49,8 +48,11 @@ namespace MiaTicket.Data.Migrations
 
             modelBuilder.Entity("MiaTicket.Data.Entity.Category", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -65,8 +67,11 @@ namespace MiaTicket.Data.Migrations
 
             modelBuilder.Entity("MiaTicket.Data.Entity.Event", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AddressDistinct")
                         .HasMaxLength(255)
@@ -96,9 +101,8 @@ namespace MiaTicket.Data.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<string>("CategoryId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsOffline")
                         .HasColumnType("bit");
@@ -153,9 +157,8 @@ namespace MiaTicket.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -169,8 +172,11 @@ namespace MiaTicket.Data.Migrations
 
             modelBuilder.Entity("MiaTicket.Data.Entity.Order", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AddressDistinct")
                         .HasMaxLength(255)
@@ -224,9 +230,8 @@ namespace MiaTicket.Data.Migrations
                     b.Property<double?>("Discount")
                         .HasColumnType("float");
 
-                    b.Property<string>("EventId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
 
                     b.Property<string>("EventName")
                         .IsRequired()
@@ -284,9 +289,8 @@ namespace MiaTicket.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -301,8 +305,11 @@ namespace MiaTicket.Data.Migrations
 
             modelBuilder.Entity("MiaTicket.Data.Entity.OrderTicket", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -310,13 +317,8 @@ namespace MiaTicket.Data.Migrations
                         .IsUnicode(true)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("OrderId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("OrderTicketStatisId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
 
                     b.Property<int>("OrderTicketStatus")
                         .ValueGeneratedOnAdd()
@@ -335,13 +337,16 @@ namespace MiaTicket.Data.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderTicket");
+                    b.ToTable("OrderTicket", (string)null);
                 });
 
             modelBuilder.Entity("MiaTicket.Data.Entity.ShowTime", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("DateEnd")
                         .HasColumnType("datetime2");
@@ -349,9 +354,8 @@ namespace MiaTicket.Data.Migrations
                     b.Property<DateTime>("DateStart")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("EventId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -362,8 +366,11 @@ namespace MiaTicket.Data.Migrations
 
             modelBuilder.Entity("MiaTicket.Data.Entity.Ticket", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("DateStart")
                         .HasColumnType("datetime2");
@@ -399,9 +406,8 @@ namespace MiaTicket.Data.Migrations
                     b.Property<DateTime>("SaleStart")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ShowTimeId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ShowTimeId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -412,14 +418,15 @@ namespace MiaTicket.Data.Migrations
 
             modelBuilder.Entity("MiaTicket.Data.Entity.User", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AvatarUrl")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<DateTime?>("BirthDate")
+                    b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -427,19 +434,21 @@ namespace MiaTicket.Data.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int?>("Gender")
+                    b.Property<int>("Gender")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .IsUnicode(true)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<string>("Password")
+                    b.Property<byte[]>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -450,13 +459,19 @@ namespace MiaTicket.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.ToTable("User", (string)null);
                 });
 
             modelBuilder.Entity("MiaTicket.Data.Entity.Voucher", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -466,9 +481,8 @@ namespace MiaTicket.Data.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("EventId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsPercentage")
                         .HasColumnType("bit");
@@ -500,15 +514,17 @@ namespace MiaTicket.Data.Migrations
 
             modelBuilder.Entity("MiaTicket.Data.Entity.VoucherFixedAmount", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<double>("Value")
                         .HasColumnType("float");
 
-                    b.Property<string>("VoucherId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("VoucherId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -520,15 +536,17 @@ namespace MiaTicket.Data.Migrations
 
             modelBuilder.Entity("MiaTicket.Data.Entity.VoucherPercentage", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Value")
                         .HasColumnType("int");
 
-                    b.Property<string>("VoucherId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("VoucherId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
