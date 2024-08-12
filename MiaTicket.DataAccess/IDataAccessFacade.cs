@@ -20,6 +20,7 @@ namespace MiaTicket.DataAccess
         public IVoucherData VoucherData { get; }
         public IVoucherFixedAmountData VoucherFixedAmountData { get; }
         public IVoucherPercentage VoucherPercentage {  get; }
+        public Task Commit();
     }
 
     public class DataAccessFacade : IDataAccessFacade
@@ -35,10 +36,6 @@ namespace MiaTicket.DataAccess
         //{
         //    _context = context;
         //}
-
-        public async Task SaveChangesAsync() {
-            await _context.SaveChangesAsync();
-        }
 
         private BannerData _bannerData;
         public IBannerData BannerData {
@@ -122,6 +119,11 @@ namespace MiaTicket.DataAccess
                 _voucherPercentage ??= new VoucherPercentage(_context);
                 return _voucherPercentage;
             }   
+        }
+
+        public Task Commit(){
+            _context.SaveChanges();
+            return Task.CompletedTask;
         }
     }
 }

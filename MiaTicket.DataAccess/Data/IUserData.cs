@@ -1,7 +1,10 @@
 ﻿using MiaTicket.Data;
+using MiaTicket.Data.Entity;
+using MiaTicket.Data.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,9 +12,9 @@ namespace MiaTicket.DataAccess.Data
 {
     public interface IUserData
     {
-        public Task<bool> IsAccountExist(string email);
-        public Task<bool> CreateAccount(string name, string email, string password, string phoneNumber, DateTime birthDate, int gender);
-        public Task<bool> LoginAccount(string email, string password);
+        public Task<bool> IsEmailExist(string email);
+        public Task<bool> IsGenderValid(int Gender);
+        public Task<User> CreateAccount(string name, string email, string password, string phoneNumber, DateTime birthDate, int gender);
     }
 
     public class UserData : IUserData
@@ -23,19 +26,45 @@ namespace MiaTicket.DataAccess.Data
             _context = context;
         }
 
-        public async Task<bool> IsAccountExist(string email)
+        public Task<bool> IsEmailExist(string email)
         {
-            throw new NotImplementedException();
+            bool isEmailExist = _context.User.Any(x => x.Email == email);
+            return Task.FromResult(isEmailExist);
         }
 
-        public async Task<bool> CreateAccount(String name, string email, string password, string phoneNumber, DateTime birthDate, int gender)
+        public Task<bool> IsGenderValid(int gender)
         {
-            throw new NotImplementedException();
+            bool isGenderValid = Enum.IsDefined(typeof(Gender), gender);
+            return Task.FromResult(isGenderValid);
         }
 
-        public async Task<bool> LoginAccount(string email, string password)
+        public Task<User> CreateAccount(string name, string email, string password, string phoneNumber, DateTime birthDate, int gender)
         {
-            throw new NotImplementedException();
+            var addedEntity =
+            _context.User.Add(new User()
+            {
+                Id = Guid.NewGuid(),
+                Name = name,
+                AvatarUrl = string.Empty,
+                Email = email,
+                Password = ComputeSha256Hash(password),
+                PhoneNumber = phoneNumber,
+                BirthDate = birthDate,
+                Gender = (Gender)gender
+            });
+            return Task.FromResult(addedEntity.Entity);
         }
+
+        static byte[] ComputeSha256Hash(string rawData)
+        {
+            // Create a SHA256
+            using (SHA256 sha256Hash = SHA256.Create())
+            {
+                // ComputeHash - returns byte array
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+                return bytes;
+            }
+        }
+
     }
 }

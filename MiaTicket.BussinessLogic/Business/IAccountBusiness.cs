@@ -1,10 +1,12 @@
 ﻿using MiaTicket.BussinessLogic.Request;
 using MiaTicket.BussinessLogic.Response;
+using MiaTicket.BussinessLogic.Validation;
 using MiaTicket.DataAccess;
 using MiaTicket.DataAccess.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,8 +14,7 @@ namespace MiaTicket.BussinessLogic.Business
 {
     public interface IAccountBusiness
     {
-        Task<RegisterResponse> Register(RegisterRequest request);
-        Task<LoginResponse> Login(LoginRequest request);
+        Task<CreateAccountResponse> CreateAccount(CreateAccountRequest request);
 
     }
 
@@ -27,34 +28,26 @@ namespace MiaTicket.BussinessLogic.Business
             _context = context;
         }
 
-        public async Task<RegisterResponse> Register(RegisterRequest request)
+        public async Task<CreateAccountResponse> CreateAccount(CreateAccountRequest request)
         {
-            //TODO: Valid input Data
-            if (await _context.UserData.IsAccountExist(request.Email))
-            {
-                return new RegisterResponse() { StatusCode = 409, Message = "Account has already exist", Data = false };
-
+            var validation = new CreateAccountValidation(request);
+            validation.Validate();
+            if (!validation.IsValid) {
+                return new CreateAccountResponse(HttpStatusCode.BadRequest, validation.Message, string.Empty);
             }
-            await _context.UserData.CreateAccount(request.Name, request.Email, request.Password, request.PhoneNumber,request.BirthDate,request.Gender);
-            return new RegisterResponse()
+            bool isGenderValid = await _context.UserData.IsGenderValid(request.Gender);
+            if (!isGenderValid)
             {
-                StatusCode = 200,
-                Message = "Success",
-                Data = true
-            };
-        }
-
-        public async Task<LoginResponse> Login(LoginRequest request)
-        {
-            
-            if (await _context.UserData.IsAccountExist(request.Email))
-            {
-                return new LoginResponse() { StatusCode = 409, Message = "Account not already exist", Data = false };
+                return new CreateAccountResponse(HttpStatusCode.BadRequest, "Invalid request", string.Empty);
             }
-            var result = await _context.UserData.LoginAccount(request.Email, request.Password);
-            if (result) return new LoginResponse() { StatusCode = 200, Message = "Success", Data = true };
-            return new LoginResponse() { StatusCode = 200, Message = "Failure", Data = false };
+            bool isEmailExist = await _context.UserData.IsEmailExist(request.Email);
+            if (isEmailExist) {
+                return new CreateAccountResponse(HttpStatusCode.Conflict, "Email has already existed", string.Empty);
+            }
+            var addedEntity = await _context.UserData.CreateAccount(request.Name, request.Email, request.Password,request.PhoneNumber,request.BirthDate,request.Gender);
 
+            await _context.Commit();
+            return new CreateAccountResponse(HttpStatusCode.OK, string.Empty, addedEntity.Id.ToString());
         }
     }
 }

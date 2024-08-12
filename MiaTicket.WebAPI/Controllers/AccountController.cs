@@ -17,23 +17,11 @@ namespace MiaTicket.WebAPI.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> Register([FromBody] RegisterRequest request) {
-            var result = await _context.Register(request);
-            HttpContext.Response.StatusCode = result.StatusCode;
+        public async Task<IActionResult> CreateAccount([FromBody] CreateAccountRequest request) {
+            var result = await _context.CreateAccount(request);
+            HttpContext.Response.StatusCode = (int) result.StatusCode;
             return new JsonResult(result);
         }
-
-        [HttpPost("[action]")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request) { 
-            var result = await _context.Login(request);
-            HttpContext.Response.StatusCode = result.StatusCode;
-            return new JsonResult(result);
-        }
-        
-        //[HttpPut]
-        //public async Task<IActionResult> DeActive() {
-
-        //}
     }
 }
 
