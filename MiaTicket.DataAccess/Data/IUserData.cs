@@ -14,7 +14,8 @@ namespace MiaTicket.DataAccess.Data
     {
         public Task<bool> IsEmailExist(string email);
         public Task<bool> IsGenderValid(int Gender);
-        public Task<User> CreateAccount(string name, string email, string password, string phoneNumber, DateTime birthDate, int gender);
+        public Task<User> CreateAccount(string name, string email, byte[] password, string phoneNumber, DateTime birthDate, int gender);
+        public Task<User?> GetAccount(string email);
     }
 
     public class UserData : IUserData
@@ -38,7 +39,7 @@ namespace MiaTicket.DataAccess.Data
             return Task.FromResult(isGenderValid);
         }
 
-        public Task<User> CreateAccount(string name, string email, string password, string phoneNumber, DateTime birthDate, int gender)
+        public Task<User> CreateAccount(string name, string email, byte[] password, string phoneNumber, DateTime birthDate, int gender)
         {
             var addedEntity =
             _context.User.Add(new User()
@@ -47,24 +48,19 @@ namespace MiaTicket.DataAccess.Data
                 Name = name,
                 AvatarUrl = string.Empty,
                 Email = email,
-                Password = ComputeSha256Hash(password),
+                Password = password,
                 PhoneNumber = phoneNumber,
                 BirthDate = birthDate,
-                Gender = (Gender)gender
+                Gender = (Gender)gender,
+                Role = UserRole.User
             });
             return Task.FromResult(addedEntity.Entity);
         }
 
-        static byte[] ComputeSha256Hash(string rawData)
+        public Task<User?> GetAccount(string email)
         {
-            // Create a SHA256
-            using (SHA256 sha256Hash = SHA256.Create())
-            {
-                // ComputeHash - returns byte array
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
-                return bytes;
-            }
+            var entity = _context.User.Where(x => x.Email == email).FirstOrDefault();
+            return Task.FromResult(entity);
         }
-
     }
 }

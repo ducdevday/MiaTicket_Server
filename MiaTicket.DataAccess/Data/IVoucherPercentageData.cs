@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace MiaTicket.DataAccess.Data
 {
-    public interface IVoucherPercentage
+    public interface IVoucherPercentageData
     {
 
     }
 
-    public class VoucherPercentage: IVoucherPercentage {
+    public class VoucherPercentage: IVoucherPercentageData {
         private readonly MiaTicketDBContext _context;
 
         public VoucherPercentage(MiaTicketDBContext context)

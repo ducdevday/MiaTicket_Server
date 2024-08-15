@@ -17,8 +17,10 @@ namespace MiaTicket.Data.Entity
         public Gender Gender { get; set; }
         public byte[] Password { get; set; }
         public string PhoneNumber { get; set; }
-        public Order? Order { get; set; }
         public UserStatus UserStatus { get; set; }
+        public UserRole Role { get; set; }
+        public Order? Order { get; set; }
         public List<Event>? Events { get; set; }
+        public List<RefreshToken>? RefreshTokens { get; set; }
     }
 }

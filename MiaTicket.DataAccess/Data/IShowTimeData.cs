@@ -11,7 +11,8 @@ namespace MiaTicket.DataAccess.Data
     {
     }
 
-    public class ShowTimeData : IShowTimeData    {
+    public class ShowTimeData : IShowTimeData
+    {
         private readonly MiaTicketDBContext _context;
 
         public ShowTimeData(MiaTicketDBContext context)

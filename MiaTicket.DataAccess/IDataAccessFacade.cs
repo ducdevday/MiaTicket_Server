@@ -19,7 +19,8 @@ namespace MiaTicket.DataAccess
         public IUserData UserData { get; }
         public IVoucherData VoucherData { get; }
         public IVoucherFixedAmountData VoucherFixedAmountData { get; }
-        public IVoucherPercentage VoucherPercentage {  get; }
+        public IVoucherPercentageData VoucherPercentage {  get; }
+        public IRefreshTokenData RefreshTokenData { get; }
         public Task Commit();
     }
 
@@ -95,7 +96,7 @@ namespace MiaTicket.DataAccess
             }
         }
 
-        public VoucherData _voucherData;
+        private VoucherData _voucherData;
         public IVoucherData VoucherData
         {
             get {
@@ -104,7 +105,7 @@ namespace MiaTicket.DataAccess
             }
         }
 
-        public VoucherFixedAmountData _voucherFixedAmountData;
+        private VoucherFixedAmountData _voucherFixedAmountData;
         
         public IVoucherFixedAmountData VoucherFixedAmountData {
             get { 
@@ -113,12 +114,20 @@ namespace MiaTicket.DataAccess
             }        
         }
 
-        public VoucherPercentage _voucherPercentage;
-        public IVoucherPercentage VoucherPercentage {
+        private VoucherPercentage _voucherPercentage;
+        public IVoucherPercentageData VoucherPercentage {
             get {
                 _voucherPercentage ??= new VoucherPercentage(_context);
                 return _voucherPercentage;
             }   
+        }
+
+        private RefreshTokenData _refreshTokenData;
+        public IRefreshTokenData RefreshTokenData {
+            get {
+                _refreshTokenData ??= new RefreshTokenData(_context);
+                return _refreshTokenData;
+            }
         }
 
         public Task Commit(){

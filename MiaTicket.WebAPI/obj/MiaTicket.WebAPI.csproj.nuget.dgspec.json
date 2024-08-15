@@ -31,6 +31,9 @@
             "projectReferences": {
               "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.DataAccess\\MiaTicket.DataAccess.csproj": {
                 "projectPath": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.DataAccess\\MiaTicket.DataAccess.csproj"
+              },
+              "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.Setting\\MiaTicket.Setting.csproj": {
+                "projectPath": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.Setting\\MiaTicket.Setting.csproj"
               }
             }
           }
@@ -49,6 +52,12 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.3, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -328,6 +337,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.7, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.4.0, )"

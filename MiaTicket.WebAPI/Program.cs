@@ -1,17 +1,67 @@
 using MiaTicket.BussinessLogic.Business;
 using MiaTicket.DataAccess;
+using MiaTicket.Setting;
+using MiaTicket.WebAPI.Middleware;
+using MiaTicket.WebAPI.Policy;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-
+var setting = EnviromentSetting.GetInstance();
 // Add services to the container.
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(x =>
+{
+    x.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme.",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer"
+    });
+
+    x.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                new string[] { }
+            }
+        });
+});
 
 builder.Services.AddTransient<IDataAccessFacade, DataAccessFacade>();
 builder.Services.AddTransient<IAccountBusiness, AccountBusiness>();
+builder.Services.AddTransient<ITokenBusiness, TokenBusiness>();
+builder.Services.AddSingleton<IAuthorizationHandler, UserAuthorizeHandler>();
+builder.Services.AddSingleton(setting);
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(opt =>
+    {
+        opt.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = setting.GetIssuer(),
+            ValidAudience = setting.GetAudience(),
+            IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(setting.GetSecret())),
+            ClockSkew = TimeSpan.Zero
+        };
+        opt.MapInboundClaims = false;
+    });
 
 var app = builder.Build();
 
@@ -24,7 +74,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapControllers();
 

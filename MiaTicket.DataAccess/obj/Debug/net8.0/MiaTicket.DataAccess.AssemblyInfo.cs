@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MiaTicket.DataAccess")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bc90093f10db13bbd9846c8f34cb8d85d7689969")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dfa6f97eda006cc0748edc78a46e5154485b9e35")]
 [assembly: System.Reflection.AssemblyProductAttribute("MiaTicket.DataAccess")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MiaTicket.DataAccess")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

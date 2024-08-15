@@ -77,3 +77,5 @@ E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\MiaTicket.B
 E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\MiaTicket.Data.pdb
 E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\MiaTicket.DataAccess.pdb
 E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\MiaTicket.Setting.pdb
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\BCrypt.Net-Next.dll
