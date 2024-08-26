@@ -24,10 +24,8 @@ namespace MiaTicket.BussinessLogic.Validation
                 || !RegexUtil.isStringLengthValid(_value.Password, 255)
                 )
             {
-                _isValid = false;
                 _message = "Invalid Request";
             }
-            _isValid = true;
             return;
         }
     }

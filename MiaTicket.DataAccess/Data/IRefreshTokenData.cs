@@ -39,10 +39,9 @@ namespace MiaTicket.DataAccess.Data
 
         public Task ClearAllTokenByUserId(Guid userId)
         {
-            var tokens = _context.RefreshToken.Where(x => x.UserId == userId);
-            if (tokens.Any()) {
-                _context.RefreshToken.RemoveRange(tokens);
-            }
+            var tokens = _context.RefreshToken.Where(x => x.UserId == userId).ToList();
+            _context.RefreshToken.RemoveRange(tokens);
+
             return Task.CompletedTask;
         }
 

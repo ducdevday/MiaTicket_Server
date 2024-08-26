@@ -1,6 +1,8 @@
 ﻿using MiaTicket.BussinessLogic.Business;
 using MiaTicket.BussinessLogic.Request;
 using MiaTicket.Data.Entity;
+using MiaTicket.Data.Enum;
+using MiaTicket.WebAPI.Constant;
 using MiaTicket.WebAPI.Policy;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -8,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MiaTicket.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/account")]
     [ApiController]
     public class AccountController : ControllerBase
     {
@@ -21,48 +23,104 @@ namespace MiaTicket.WebAPI.Controllers
             _tokenBusiness = tokenBusiness;
         }
 
-        [HttpPost("[action]")]
+        [HttpPost()]
         public async Task<IActionResult> CreateAccount([FromBody] CreateAccountRequest request) {
             var result = await _context.CreateAccount(request);
-            HttpContext.Response.StatusCode = (int) result.StatusCode;
-            return new JsonResult(result);
-        }
-
-        [HttpPost("[action]")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request) {
-            var result = await _context.Login(request);
-            HttpContext.Response.StatusCode = (int) result.StatusCode;
-            return new JsonResult(result);
-        }
-
-        [HttpPost("[action]")]
-        [UserAuthorize(RequireRoles = ["User", "PowerUser", "Admin"])]
-        public async Task<IActionResult> Logout([FromBody] LogoutRequest request) { 
-            var result = await _context.Logout(request);
-            HttpContext.Response.StatusCode = (int) result.StatusCode;
-            return new JsonResult(result);
-        }
-
-        [HttpPost("[action]")]
-        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest request) {
-            var result = await _context.RefreshToken(request);
             HttpContext.Response.StatusCode = (int)result.StatusCode;
             return new JsonResult(result);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAccessToken()
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request) {
+            var result = await _context.Login(request);
+            HttpContext.Response.StatusCode = (int)result.StatusCode;
+            if (result.Data != null)
+                HttpContext.Response.Cookies.Append("refreshToken", result.Data.RefreshToken, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    Path = "/",
+                    SameSite = SameSiteMode.None,
+                    MaxAge = TimeSpan.FromDays(AppConstant.REFRESH_TOKEN_EXPIRE_IN_DAYS)
+                });
+
+            var formattedResult = new
+            {
+                StatusCode = result.StatusCode,
+                Message = result.Message,
+                Data = new
+                {
+                    AccessToken = result.Data.AccessToken,
+                    User = new
+                    {
+                        Id = result.Data.User.Id,
+                        Name = result.Data.User.Name,
+                        AvatarUrl = result.Data.User.AvatarUrl,
+                        BirthDate = result.Data.User.BirthDate,
+                        Email = result.Data.User.Email,
+                        Gender = result.Data.User.Gender,
+                        PhoneNumber = result.Data.User.PhoneNumber,
+                    }
+                }
+            };
+
+            return new JsonResult(formattedResult);
+        }
+
+        [HttpPatch("activate")]
+        public async Task<IActionResult> ActivateAccount([FromBody] ActivateAccountRequest request)
         {
-            var result = await _tokenBusiness.GenerateToken();
-            HttpContext.Response.StatusCode = 200;
+            var result = await _context.ActivateAccount(request);
+            HttpContext.Response.StatusCode = (int) result.StatusCode;
             return new JsonResult(result);
         }
 
-        [HttpGet("example")]
-        [UserAuthorize(RequireRoles = ["User", "PowerUser", "Admin"])]
-        public async Task<IActionResult> Example()
+        [HttpPost("logout")]
+        [UserAuthorize(RequireRoles = [Role.User, Role.Admin])]
+        public async Task<IActionResult> Logout([FromBody] LogoutRequest request) {
+            var result = await _context.Logout(request);
+            HttpContext.Response.StatusCode = (int)result.StatusCode;
+            HttpContext.Response.Cookies.Append("refreshToken", "", new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                Path = "/",
+                SameSite = SameSiteMode.None,
+                MaxAge = TimeSpan.Zero
+            });
+            return new JsonResult(result);
+        }
+
+        [HttpPatch("change-password")]
+        [UserAuthorize(RequireRoles = [Role.User, Role.Admin])]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
         {
-            return Ok();
+            var result = await _context.ChangePassword(request);
+            HttpContext.Response.StatusCode = (int)result.StatusCode;
+            return new JsonResult(result);
+        }
+        [HttpPatch("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
+        {
+            var result = await _context.ResetPassword(request);
+            HttpContext.Response.StatusCode = (int)result.StatusCode;
+            return new JsonResult(result);
+        }
+
+        [HttpPut("{id}")]
+        [UserAuthorize(RequireRoles = [Role.User, Role.Admin])]
+        public async Task<IActionResult> UpdateAccount([FromRoute] Guid id,[FromForm] UpdateAccountRequest request)
+        {
+            var result = await _context.UpdateAccount(id,request);
+            HttpContext.Response.StatusCode = (int)result.StatusCode;
+            return new JsonResult(result);
+        }
+
+        [HttpGet("avatar")]
+        [UserAuthorize(RequireRoles = [Role.User, Role.Admin])]
+        public async Task<IActionResult> GetAvatar()
+        {
+            return new JsonResult("https://salt.tkbcdn.com/ts/ds/83/2b/0f/becd6c6b87118396026bdc447ac52457.jpg");
         }
     }
 }

@@ -4,11 +4,12 @@ using MiaTicket.BussinessLogic.Response;
 using MiaTicket.BussinessLogic.Validation;
 using MiaTicket.Data.Enum;
 using MiaTicket.DataAccess;
-using MiaTicket.Setting;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
+using MiaTicket.Email;
+using MiaTicket.Email.Model;
+using MiaTicket.Email.Template;
+using MiaTicket.WebAPI.Constant;
 using System.Net;
-using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace MiaTicket.BussinessLogic.Business
@@ -18,17 +19,26 @@ namespace MiaTicket.BussinessLogic.Business
         public Task<CreateAccountResponse> CreateAccount(CreateAccountRequest request);
         public Task<LoginResponse> Login(LoginRequest request);
         public Task<LogoutResponse> Logout(LogoutRequest request);
-        public Task<RefreshTokenResponse> RefreshToken(RefreshTokenRequest request);
+        public Task<ChangePasswordResponse> ChangePassword(ChangePasswordRequest request);
+        public Task<ResetPasswordResponse> ResetPassword(ResetPasswordRequest request);
+        public Task<UpdateAccountResponse> UpdateAccount(Guid id, UpdateAccountRequest request);
+        public Task<ActivateAccountResponse> ActivateAccount(ActivateAccountRequest request);
     }
 
     public class AccountBusiness : IAccountBusiness
     {
-
+        private readonly EmailService _emailService = EmailService.GetInstance();
         private readonly IDataAccessFacade _context;
+        private readonly ITokenBusiness _tokenBusiness;
+        private readonly IVerifyCodeBusiness _verifyCodeBusiness;
+        private readonly ICloudinaryBusiness _cloudinaryBusiness;
 
-        public AccountBusiness(IDataAccessFacade context)
+        public AccountBusiness(IDataAccessFacade context, ITokenBusiness tokenBusiness, IVerifyCodeBusiness verifyCodeBusiness, ICloudinaryBusiness cloudinaryBusiness)
         {
             _context = context;
+            _tokenBusiness = tokenBusiness;
+            _verifyCodeBusiness = verifyCodeBusiness;
+            _cloudinaryBusiness = cloudinaryBusiness;
         }
 
         public async Task<CreateAccountResponse> CreateAccount(CreateAccountRequest request)
@@ -37,21 +47,31 @@ namespace MiaTicket.BussinessLogic.Business
             validation.Validate();
             if (!validation.IsValid)
             {
-                return new CreateAccountResponse(HttpStatusCode.BadRequest, validation.Message, string.Empty);
+                return new CreateAccountResponse(HttpStatusCode.BadRequest, validation.Message, false);
             }
             bool isGenderValid = await _context.UserData.IsGenderValid(request.Gender);
             if (!isGenderValid)
             {
-                return new CreateAccountResponse(HttpStatusCode.BadRequest, "Invalid request", string.Empty);
+                return new CreateAccountResponse(HttpStatusCode.BadRequest, "Invalid request", false);
             }
             bool isEmailExist = await _context.UserData.IsEmailExist(request.Email);
             if (isEmailExist)
             {
-                return new CreateAccountResponse(HttpStatusCode.Conflict, "Email has already existed", string.Empty);
+                return new CreateAccountResponse(HttpStatusCode.Conflict, "Email has already existed", false);
             }
-            var addedEntity = await _context.UserData.CreateAccount(request.Name, request.Email, HashPassword(request.Password), request.PhoneNumber, request.BirthDate, request.Gender);
+            var addedUser = await _context.UserData.CreateAccount(request.Name, request.Email, HashPassword(request.Password), request.PhoneNumber, request.BirthDate, request.Gender);
+            var addedVerifyCode = await _context.VerifyCodeData.CreateVerifyCode(addedUser.Id, _verifyCodeBusiness.GenerateRandomString(AppConstant.VERIFY_CODE_LENGHT), DateTime.Now.AddMinutes(AppConstant.VERIFY_CODE_EXPIRE_IN_MINUTES), VerifyType.Register);
             await _context.Commit();
-            return new CreateAccountResponse(HttpStatusCode.OK, "Register Successfully", addedEntity.Id.ToString());
+            string activelink = $"{AppConstant.EMAIL_VERIFY_FINISH_PATH}?email={request.Email}&code={addedVerifyCode}";
+            await _emailService.Push(new ActivateEmail()
+            {
+                Sender = "MiaTicket@email.com",
+                Receiver = addedUser.Email,
+                Body = ActivateEmailTemplate.GetEmailVerifyTemplate().Replace("{BRAND}", "MiaTicket").Replace("{EXPIRE_IN}",$"{AppConstant.VERIFY_CODE_EXPIRE_IN_MINUTES}").Replace("{ACTIVATE_URL}", activelink),
+                Subject = "<MiaTicket>Your email address verification"
+            });
+
+            return new CreateAccountResponse(HttpStatusCode.OK, "Register Successfully", true);
         }
 
         public async Task<LoginResponse> Login(LoginRequest request)
@@ -68,7 +88,7 @@ namespace MiaTicket.BussinessLogic.Business
                 return new LoginResponse(HttpStatusCode.Conflict, "Email hasn't existed", null);
             }
 
-            var user = await _context.UserData.GetAccount(request.Email);
+            var user = await _context.UserData.GetAccountByEmail(request.Email);
             if (user == null)
             {
                 return new LoginResponse(HttpStatusCode.Conflict, "Email hasn't existed", null);
@@ -76,10 +96,15 @@ namespace MiaTicket.BussinessLogic.Business
 
             if (!ValidatePassword(request.Password, user.Password))
             {
-                return new LoginResponse(HttpStatusCode.Unauthorized, "Wrong Password", null);
+                return new LoginResponse(HttpStatusCode.Conflict, "Wrong Password", null);
             }
-            string accessToken = await GenerateAccessToken(user.Id.ToString(), user.Email, Enum.GetName(typeof(UserRole), user.Role));
-            var refreshToken = await GenerateRefreshToken(user.Id.ToString(), user.Email, Enum.GetName(typeof(UserRole), user.Role));
+
+            if (user.UserStatus == UserStatus.UnVerified)
+            {
+                return new LoginResponse(HttpStatusCode.Forbidden, "Email Not Verified", null);
+            }
+            string accessToken = await _tokenBusiness.GenerateAccessToken(user.Id.ToString(), user.Email, Enum.GetName(typeof(Role), user.Role));
+            var refreshToken = await _tokenBusiness.GenerateRefreshToken(user.Id.ToString(), user.Email, Enum.GetName(typeof(Role), user.Role));
             await _context.RefreshTokenData.SaveToken(refreshToken, user.Id);
             await _context.Commit();
 
@@ -88,126 +113,131 @@ namespace MiaTicket.BussinessLogic.Business
 
         public async Task<LogoutResponse> Logout(LogoutRequest request)
         {
+            var validation = new LogoutValidation(request);
+            validation.Validate();
+
+            if (!validation.IsValid) return new LogoutResponse(HttpStatusCode.BadRequest, validation.Message, false);
+
+            var account = await _context.UserData.GetAccountById(request.userId);
+
+            if (account == null) return new LogoutResponse(HttpStatusCode.Conflict, "Account does not exist", false);
+            
             await _context.RefreshTokenData.ClearAllTokenByUserId(request.userId);
             await _context.Commit();
             return new LogoutResponse(HttpStatusCode.OK, "Logout Successfully", true);
         }
 
-        public async Task<RefreshTokenResponse> RefreshToken(RefreshTokenRequest request)
+        public async Task<ChangePasswordResponse> ChangePassword(ChangePasswordRequest request)
         {
-            var principal = DecodeToken(request.RefreshToken);
-            var id = principal.FindFirst("id")?.Value;
-            var email = principal.FindFirst("email")?.Value;
-            var role = principal.FindFirst("role")?.Value;
-            if (principal == null || id == null || email == null || role == null)
+            var validation = new ChangePasswordValidation(request);
+            validation.Validate();
+            if (!validation.IsValid)
             {
-                return new RefreshTokenResponse(HttpStatusCode.Unauthorized, "Invalid RefreshToken", null);
-            }
-            var currentRefreshToken = await _context.RefreshTokenData.GetLastTokenByUserId(new Guid(id));
-            if (currentRefreshToken == null || currentRefreshToken.Value != request.RefreshToken || currentRefreshToken.IsDisable)
-            {
-                return new RefreshTokenResponse(HttpStatusCode.Unauthorized, "Invalid RefreshToken", null);
+                return new ChangePasswordResponse(HttpStatusCode.BadRequest, validation.Message, false);
             }
 
-            var accessToken = await GenerateAccessToken(id, email, role);
-            var refreshToken = await GenerateRefreshToken(id, email, role);
-            await _context.RefreshTokenData.DisableAllTokenByUserId(new Guid(id));
-            await _context.RefreshTokenData.SaveToken(refreshToken, new Guid(id));
+            var user = await _context.UserData.GetAccountById(request.UserId);
+            if (user == null)
+            {
+                return new ChangePasswordResponse(HttpStatusCode.Conflict, "Account does not exist", false);
+            }
+
+            if (!ValidatePassword(request.CurrentPassword, user.Password))
+            {
+                return new ChangePasswordResponse(HttpStatusCode.Conflict, "Wrong Password", false);
+            }
+            await _context.UserData.ChangePassword(request.UserId, HashPassword(request.NewPassword));
             await _context.Commit();
-            return new RefreshTokenResponse(HttpStatusCode.OK, "Refresh Token", new RefreshTokenDataResponse(accessToken, refreshToken));
+            return new ChangePasswordResponse(HttpStatusCode.OK, "Change Password SuccessFully", true);
         }
 
-        private async Task<string> GenerateAccessToken(string id, string email, string role)
+
+        public async Task<ResetPasswordResponse> ResetPassword(ResetPasswordRequest request)
         {
-            var _setting = EnviromentSetting.GetInstance();
-            var claims = new[]
+            var validation = new ResetPasswordValidation(request);
+            validation.Validate();
+            if (!validation.IsValid)
             {
-                new Claim("id", id),
-                new Claim("email", email),
-                new Claim("role", role),
-            };
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_setting.GetSecret()));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                issuer: _setting.GetIssuer(),
-                audience: _setting.GetAudience(),
-                claims,
-                expires: DateTime.Now.AddMinutes(1),
-                signingCredentials: creds
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        private async Task<string> GenerateRefreshToken(string id, string email, string role)
-        {
-            var _setting = EnviromentSetting.GetInstance();
-            var claims = new[] {
-                new Claim("id", id),
-                new Claim("email", email),
-                new Claim("role", role),
-            };
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_setting.GetSecret()));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                issuer: _setting.GetIssuer(),
-                audience: _setting.GetAudience(),
-                claims,
-                expires: DateTime.Now.AddMinutes(3),
-                signingCredentials: creds
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        private ClaimsPrincipal DecodeToken(string token)
-        {
-            var _setting = EnviromentSetting.GetInstance();
-
-            var tokenHandler = new JwtSecurityTokenHandler()
-            {
-                MapInboundClaims = false,
-            };
-            var key = Encoding.UTF8.GetBytes(_setting.GetSecret());
-
-            try
-            {
-                var tokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidIssuer = _setting.GetIssuer(),
-                    ValidAudience = _setting.GetAudience(),
-                    ClockSkew = TimeSpan.Zero // Optional: removes the default 5 min clock skew
-
-                };
-
-                var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken validatedToken);
-
-                // Optionally, check if the token is indeed a JWT token
-                if (validatedToken is JwtSecurityToken jwtToken)
-                {
-                    // Here, the token is successfully validated and claims can be accessed
-                    return principal;
-                }
+                return new ResetPasswordResponse(HttpStatusCode.BadRequest, validation.Message, false);
             }
-            catch (Exception ex)
+
+            var user = await _context.UserData.GetAccountByEmail(request.Email);
+            if (user == null)
             {
-                return null;
+                return new ResetPasswordResponse(HttpStatusCode.Conflict, "Account does not exist", false);
             }
-            return null;
+            
+            var isUsedCode = await _context.VerifyCodeData.IsUsedCode(request.Code);
+            if (!isUsedCode) {
+                return new ResetPasswordResponse(HttpStatusCode.Forbidden, "Not Confirm Reset Password In Email", false);
+            }
+            await _context.UserData.ChangePassword(user.Id, HashPassword(request.NewPassword));
+            await _context.Commit();
+            return new ResetPasswordResponse(HttpStatusCode.OK, "Reset Password SuccessFully", true);
+        }
+
+        public async Task<UpdateAccountResponse> UpdateAccount(Guid id, UpdateAccountRequest request)
+        {
+            var validation = new UpdateAccountValidation(request);
+            validation.Validate();
+            if (!validation.IsValid)
+            {
+                return new UpdateAccountResponse(HttpStatusCode.BadRequest, validation.Message, null);
+            }
+
+            bool isGenderValid = await _context.UserData.IsGenderValid(request.Gender);
+            if (!isGenderValid)
+            {
+                return new UpdateAccountResponse(HttpStatusCode.BadRequest, "Invalid request", null);
+            }
+
+            var user = await _context.UserData.GetAccountById(id);
+            if (user == null)
+            {
+                return new UpdateAccountResponse(HttpStatusCode.Conflict, "Account does not exist", null);
+            }
+            string? avatarUrl = null;
+            if (request.AvatarFile != null) {
+                avatarUrl = await _cloudinaryBusiness.UploadFileAsync(request.AvatarFile, FileType.AVATAR_IMAGE);
+            }
+
+            var updatedUser = await _context.UserData.UpdateAccount(id, request.Name, request.PhoneNumber, request.BirthDate, request.Gender, avatarUrl );
+            await _context.Commit();
+            if(updatedUser != null)
+            return new UpdateAccountResponse(HttpStatusCode.OK, "Update Account SuccessFully", new UserModel(updatedUser));
+
+            return new UpdateAccountResponse(HttpStatusCode.Conflict, "Account does not exist", null);
+        }
+
+        public async Task<ActivateAccountResponse> ActivateAccount(ActivateAccountRequest request)
+        {
+            var validation = new ActivateAccountValidation(request);
+            validation.Validate();
+            if (!validation.IsValid)
+            {
+                return new ActivateAccountResponse(HttpStatusCode.BadRequest, validation.Message, false);
+            }
+            var user = await _context.UserData.GetAccountByEmail(request.Email);
+            if (user == null)
+            {
+                return new ActivateAccountResponse(HttpStatusCode.Conflict, "Account does not exist", false);
+            }
+            if (user.UserStatus != UserStatus.UnVerified) { 
+                return new ActivateAccountResponse(HttpStatusCode.Conflict, "Account has already verify", false);
+            }
+            var isValidCode = await _context.VerifyCodeData.IsValidCode(user.Id, request.Code, VerifyType.Register);
+            if (!isValidCode) { 
+                return new ActivateAccountResponse(HttpStatusCode.Conflict, "Code is not valid", false);
+            }
+            await _context.VerifyCodeData.UpdateUseOfCode(request.Code);
+            await _context.UserData.ActivateAccount(request.Email);
+            await _context.Commit();
+            return new ActivateAccountResponse(HttpStatusCode.OK, "Account Verify Success", true);
         }
 
         private byte[] HashPassword(string value)
         {
             string hashedPassword = BCrypt.Net.BCrypt.HashPassword(value);
-
             byte[] hashedBytes = Encoding.UTF8.GetBytes(hashedPassword);
             return hashedBytes;
         }
@@ -218,5 +248,6 @@ namespace MiaTicket.BussinessLogic.Business
             string hashedPassword = Encoding.UTF8.GetString(hashedBytes);
             return BCrypt.Net.BCrypt.Verify(raw, hashedPassword);
         }
+
     }
 }

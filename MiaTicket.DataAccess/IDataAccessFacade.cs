@@ -21,6 +21,7 @@ namespace MiaTicket.DataAccess
         public IVoucherFixedAmountData VoucherFixedAmountData { get; }
         public IVoucherPercentageData VoucherPercentage {  get; }
         public IRefreshTokenData RefreshTokenData { get; }
+        public IVerifyCodeData VerifyCodeData { get; }
         public Task Commit();
     }
 
@@ -127,6 +128,16 @@ namespace MiaTicket.DataAccess
             get {
                 _refreshTokenData ??= new RefreshTokenData(_context);
                 return _refreshTokenData;
+            }
+        }
+
+        private VerifyCodeData _verifyCodeData;
+        public IVerifyCodeData VerifyCodeData
+        {
+            get
+            {
+                _verifyCodeData ??= new  VerifyCodeData(_context);
+                return _verifyCodeData;
             }
         }
 

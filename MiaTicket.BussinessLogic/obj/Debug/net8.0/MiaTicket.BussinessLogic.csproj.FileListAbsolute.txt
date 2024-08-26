@@ -18,3 +18,5 @@ E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.BussinessLogic\bin\Debug\net8.0\Mia
 E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.BussinessLogic\bin\Debug\net8.0\MiaTicket.Setting.pdb
 E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.BussinessLogic\obj\Debug\net8.0\MiaTicket.BussinessLogic.csproj.AssemblyReference.cache
 E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.BussinessLogic\obj\Debug\net8.0\MiaTicke.26564B34.Up2Date
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.BussinessLogic\bin\Debug\net8.0\MiaTicket.Email.dll
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.BussinessLogic\bin\Debug\net8.0\MiaTicket.Email.pdb

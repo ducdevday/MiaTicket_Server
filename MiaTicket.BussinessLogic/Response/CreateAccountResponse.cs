@@ -2,9 +2,9 @@
 
 namespace MiaTicket.BussinessLogic.Response
 {
-    public class CreateAccountResponse : BaseApiResponse<string>
+    public class CreateAccountResponse : BaseApiResponse<bool>
     {
-        public CreateAccountResponse(HttpStatusCode statusCode, string message, string data) : base(statusCode, message, data)
+        public CreateAccountResponse(HttpStatusCode statusCode, string message, bool data) : base(statusCode, message, data)
         {
 
         }

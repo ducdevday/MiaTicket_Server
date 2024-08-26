@@ -23,7 +23,7 @@ namespace MiaTicket.Data.Configuration
             builder.Property(x => x.Email).IsRequired().HasMaxLength(255);
             builder.Property(x => x.Gender).IsRequired();
             builder.Property(x => x.PhoneNumber).IsRequired().HasMaxLength(20);
-            builder.Property(x => x.UserStatus).HasDefaultValue(UserStatus.Active);
+            builder.Property(x => x.UserStatus).HasDefaultValue(UserStatus.UnVerified);
             builder.Property(x => x.UserStatus);
         }
     }

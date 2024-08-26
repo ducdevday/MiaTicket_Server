@@ -2,6 +2,7 @@
 {
     public enum UserStatus
     {
+        UnVerified,
         Active, 
         Block
     }

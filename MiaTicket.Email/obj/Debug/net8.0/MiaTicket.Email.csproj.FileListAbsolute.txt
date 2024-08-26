@@ -1,0 +1,16 @@
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.Email\bin\Debug\net8.0\MiaTicket.Email.deps.json
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.Email\bin\Debug\net8.0\MiaTicket.Email.dll
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.Email\bin\Debug\net8.0\MiaTicket.Email.pdb
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.Email\bin\Debug\net8.0\MiaTicket.Setting.dll
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.Email\bin\Debug\net8.0\MiaTicket.Setting.pdb
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.Email\obj\Debug\net8.0\MiaTicket.Email.csproj.AssemblyReference.cache
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.Email\obj\Debug\net8.0\MiaTicket.Email.GeneratedMSBuildEditorConfig.editorconfig
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.Email\obj\Debug\net8.0\MiaTicket.Email.AssemblyInfoInputs.cache
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.Email\obj\Debug\net8.0\MiaTicket.Email.AssemblyInfo.cs
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.Email\obj\Debug\net8.0\MiaTicket.Email.csproj.CoreCompileInputs.cache
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.Email\obj\Debug\net8.0\MiaTicket.Email.sourcelink.json
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.Email\obj\Debug\net8.0\MiaTicke.4C7BBB2E.Up2Date
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.Email\obj\Debug\net8.0\MiaTicket.Email.dll
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.Email\obj\Debug\net8.0\refint\MiaTicket.Email.dll
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.Email\obj\Debug\net8.0\MiaTicket.Email.pdb
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.Email\obj\Debug\net8.0\ref\MiaTicket.Email.dll

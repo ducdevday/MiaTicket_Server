@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MiaTicket.Data.Enum;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MiaTicket.WebAPI.Policy
 {
@@ -13,7 +14,9 @@ namespace MiaTicket.WebAPI.Policy
             }
             else
             {
-                bool isValidRole = requirement.RequireRoles.Contains(role);
+                
+                Enum.TryParse(role, out Role result);
+                bool isValidRole = requirement.RequireRoles.Contains(result);
                 if (isValidRole) context.Succeed(requirement);
                 else context.Fail();
             }

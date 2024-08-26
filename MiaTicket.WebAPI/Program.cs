@@ -43,8 +43,22 @@ builder.Services.AddSwaggerGen(x =>
 builder.Services.AddTransient<IDataAccessFacade, DataAccessFacade>();
 builder.Services.AddTransient<IAccountBusiness, AccountBusiness>();
 builder.Services.AddTransient<ITokenBusiness, TokenBusiness>();
+builder.Services.AddTransient<ICloudinaryBusiness, CloudinaryBusiness>();
+builder.Services.AddTransient<IVerifyCodeBusiness, VerifyCodeBusiness>();
 builder.Services.AddSingleton<IAuthorizationHandler, UserAuthorizeHandler>();
 builder.Services.AddSingleton(setting);
+
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy("Angular UI", x =>
+    {
+    x.AllowAnyMethod()
+            .AllowAnyHeader()
+            .SetIsOriginAllowed(origin => true) // allow any origin
+            .AllowCredentials();
+    });
+
+});
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(opt =>
@@ -71,6 +85,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("Angular UI");
 
 app.UseHttpsRedirection();
 

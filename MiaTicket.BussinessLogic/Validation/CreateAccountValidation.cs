@@ -27,10 +27,8 @@ namespace MiaTicket.BussinessLogic.Validation
                 || _value.BirthDate > DateTime.UtcNow
                 || !RegexUtil.isPhomeNumberValid(_value.PhoneNumber)
                 ) {
-                _isValid = false;
                 _message = "Invalid Request";
             }
-            _isValid = true;
             return;
         }
     }

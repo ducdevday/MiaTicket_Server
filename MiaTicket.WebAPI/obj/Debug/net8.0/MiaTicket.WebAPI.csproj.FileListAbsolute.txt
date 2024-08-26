@@ -79,3 +79,7 @@ E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\MiaTicket.D
 E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\MiaTicket.Setting.pdb
 E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\BCrypt.Net-Next.dll
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\CloudinaryDotNet.dll
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\Newtonsoft.Json.dll
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\MiaTicket.Email.dll
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\MiaTicket.Email.pdb

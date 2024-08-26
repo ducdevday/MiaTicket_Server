@@ -8,10 +8,13 @@
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="CloudinaryDotNet" Version="1.26.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MiaTicket.DataAccess\MiaTicket.DataAccess.csproj" />
+    <ProjectReference Include="..\MiaTicket.Email\MiaTicket.Email.csproj" />
     <ProjectReference Include="..\MiaTicket.Setting\MiaTicket.Setting.csproj" />
   </ItemGroup>
 

@@ -27,6 +27,8 @@ namespace MiaTicket.Data
             modelBuilder.ApplyConfiguration(new VoucherFixedAmountCfg());
             modelBuilder.ApplyConfiguration(new VoucherPercentageCfg());
             modelBuilder.ApplyConfiguration(new RefreshTokenCfg());
+            modelBuilder.ApplyConfiguration(new VerifyCodeCfg());
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -46,6 +48,6 @@ namespace MiaTicket.Data
         public DbSet<VoucherFixedAmount> VoucherFixedAmount {  get; set; }
         public DbSet<VoucherPercentage> VoucherPercentage { get; set; }
         public DbSet<RefreshToken> RefreshToken { get; set; }
-
+        public DbSet<VerifyCode> VerifyCode { get; set; }
     }
 }
