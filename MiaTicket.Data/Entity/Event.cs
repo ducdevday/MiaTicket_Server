@@ -4,11 +4,12 @@
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Slug { get; set; }
         public bool IsOffline { get; set; }
         public string? AddressName { get; set; }
         public string? AddressNo { get; set; }
         public string? AddressWard { get; set; }
-        public string? AddressDistinct { get; set; }
+        public string? AddressDistrict { get; set; }
         public string? AddressProvince { get; set; }
         public string BackgroundUrl { get; set; }
         public string LogoUrl { get; set; }

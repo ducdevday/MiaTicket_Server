@@ -51,11 +51,12 @@ namespace MiaTicket.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Slug = table.Column<string>(type: "nvarchar(max)", nullable: false, computedColumnSql: "LOWER(CONCAT(REPLACE(Name, ' ', '-'), '-', Id))"),
                     IsOffline = table.Column<bool>(type: "bit", nullable: false),
                     AddressName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     AddressNo = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     AddressWard = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    AddressDistinct = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    AddressDistrict = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     AddressProvince = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BackgroundUrl = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     LogoUrl = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
@@ -205,8 +206,10 @@ namespace MiaTicket.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DateStart = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ShowStartAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ShowEndAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SaleStartAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SaleEndAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EventId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -279,18 +282,18 @@ namespace MiaTicket.Data.Migrations
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    MininumPurchase = table.Column<int>(type: "int", nullable: false),
+                    MinimumPurchase = table.Column<int>(type: "int", nullable: false),
                     MaximumPurchase = table.Column<int>(type: "int", nullable: false),
-                    SaleStart = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    SaleEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateStart = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ImageUrl = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     ShowTimeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Ticket", x => x.Id);
+                    table.CheckConstraint("CK_Ticket_MaximumPurchase_MinValue", "MaximumPurchase >= MinimumPurchase");
+                    table.CheckConstraint("CK_Ticket_MinimumPurchase_MinValue", "MinimumPurchase >= 1");
+                    table.CheckConstraint("CK_Ticket_Price_MinValue", "Price >= 0");
+                    table.CheckConstraint("CK_Ticket_Quantity_MinValue", "Quantity >= 1");
                     table.ForeignKey(
                         name: "FK_Ticket_ShowTime_ShowTimeId",
                         column: x => x.ShowTimeId,

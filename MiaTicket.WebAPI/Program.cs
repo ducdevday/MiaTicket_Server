@@ -1,4 +1,5 @@
 using MiaTicket.BussinessLogic.Business;
+using MiaTicket.BussinessLogic.Mapper;
 using MiaTicket.DataAccess;
 using MiaTicket.Setting;
 using MiaTicket.WebAPI.Middleware;
@@ -45,8 +46,11 @@ builder.Services.AddTransient<IAccountBusiness, AccountBusiness>();
 builder.Services.AddTransient<ITokenBusiness, TokenBusiness>();
 builder.Services.AddTransient<ICloudinaryBusiness, CloudinaryBusiness>();
 builder.Services.AddTransient<IVerifyCodeBusiness, VerifyCodeBusiness>();
+builder.Services.AddTransient<IEventBusiness, EventBusiness>();
+builder.Services.AddTransient<ICategoryBusiness, CategoryBusiness>();
 builder.Services.AddSingleton<IAuthorizationHandler, UserAuthorizeHandler>();
 builder.Services.AddSingleton(setting);
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 builder.Services.AddCors(opt =>
 {

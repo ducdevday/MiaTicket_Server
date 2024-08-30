@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "k26cg8rR8Z8=",
+  "dgSpecHash": "TfU4Pgfrh8o=",
   "success": true,
   "projectFilePath": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.WebAPI\\MiaTicket.WebAPI.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Ming Duc\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\Ming Duc\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\Ming Duc\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
     "C:\\Users\\Ming Duc\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",

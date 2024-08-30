@@ -17,11 +17,12 @@ namespace MiaTicket.Data.Configuration
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.Property(x => x.Name).IsRequired().IsUnicode().HasMaxLength(255);
+            builder.Property(x => x.Slug).HasComputedColumnSql("LOWER(CONCAT(REPLACE(Name, ' ', '-'), '-', Id))");
             builder.Property(x => x.IsOffline).IsRequired();
             builder.Property(x => x.AddressName).HasMaxLength(255).IsUnicode();
             builder.Property(x => x.AddressNo).HasMaxLength(255).IsUnicode();
             builder.Property(x => x.AddressWard).HasMaxLength(255).IsUnicode();
-            builder.Property(x => x.AddressDistinct).HasMaxLength(255).IsUnicode();
+            builder.Property(x => x.AddressDistrict).HasMaxLength(255).IsUnicode();
             builder.Property(x => x.BackgroundUrl).IsRequired().HasMaxLength(255);
             builder.Property(x=> x.LogoUrl).IsRequired().HasMaxLength(255);
             builder.Property(x => x.OrganizerName).IsRequired().HasMaxLength(255).IsUnicode();
@@ -31,7 +32,7 @@ namespace MiaTicket.Data.Configuration
             builder.Property(x => x.PaymentNumber).IsRequired().HasMaxLength(50); ;
             builder.Property(x => x.PaymentBankName).IsRequired().HasMaxLength(50).IsUnicode();
             builder.Property(x => x.PaymentBankBranch).IsRequired().HasMaxLength(50).IsUnicode();
-            builder.HasOne(x => x.Category).WithOne(x => x.Event).HasForeignKey<Event>(x => x.CategoryId);
+            builder.HasOne(x => x.Category).WithMany(x => x.Events).HasForeignKey(x => x.CategoryId);
             builder.HasOne(x => x.User).WithMany(x => x.Events).HasForeignKey(x => x.UserId);
         }
     }

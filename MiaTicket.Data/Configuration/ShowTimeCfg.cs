@@ -16,8 +16,10 @@ namespace MiaTicket.Data.Configuration
             builder.ToTable("ShowTime");
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
-            builder.Property(x => x.DateStart);
-            builder.Property(x => x.DateEnd);
+            builder.Property(x => x.ShowStartAt);
+            builder.Property(x => x.ShowEndAt);
+            builder.Property(x => x.ShowStartAt).IsRequired();
+            builder.Property(x => x.ShowEndAt).IsRequired();
             builder.HasOne(x => x.Event).WithMany(x => x.ShowTimes).HasForeignKey(x => x.EventId);
         }
     }

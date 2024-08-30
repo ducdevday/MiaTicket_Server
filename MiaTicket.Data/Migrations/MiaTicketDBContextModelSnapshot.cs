@@ -73,7 +73,7 @@ namespace MiaTicket.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AddressDistinct")
+                    b.Property<string>("AddressDistrict")
                         .HasMaxLength(255)
                         .IsUnicode(true)
                         .HasColumnType("nvarchar(255)");
@@ -157,13 +157,18 @@ namespace MiaTicket.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("nvarchar(max)")
+                        .HasComputedColumnSql("LOWER(CONCAT(REPLACE(Name, ' ', '-'), '-', Id))");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId")
-                        .IsUnique();
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("UserId");
 
@@ -375,14 +380,20 @@ namespace MiaTicket.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("DateEnd")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateStart")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("EventId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("SaleEndAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("SaleStartAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ShowEndAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ShowStartAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -399,20 +410,15 @@ namespace MiaTicket.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("DateStart")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageUrl")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(50)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("MaximumPurchase")
                         .HasColumnType("int");
 
-                    b.Property<int>("MininumPurchase")
+                    b.Property<int>("MinimumPurchase")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -427,12 +433,6 @@ namespace MiaTicket.Data.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("SaleEnd")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("SaleStart")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("ShowTimeId")
                         .HasColumnType("int");
 
@@ -440,7 +440,16 @@ namespace MiaTicket.Data.Migrations
 
                     b.HasIndex("ShowTimeId");
 
-                    b.ToTable("Ticket", (string)null);
+                    b.ToTable("Ticket", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_Ticket_MaximumPurchase_MinValue", "MaximumPurchase >= MinimumPurchase");
+
+                            t.HasCheckConstraint("CK_Ticket_MinimumPurchase_MinValue", "MinimumPurchase >= 1");
+
+                            t.HasCheckConstraint("CK_Ticket_Price_MinValue", "Price >= 0");
+
+                            t.HasCheckConstraint("CK_Ticket_Quantity_MinValue", "Quantity >= 1");
+                        });
                 });
 
             modelBuilder.Entity("MiaTicket.Data.Entity.User", b =>
@@ -634,8 +643,8 @@ namespace MiaTicket.Data.Migrations
             modelBuilder.Entity("MiaTicket.Data.Entity.Event", b =>
                 {
                     b.HasOne("MiaTicket.Data.Entity.Category", "Category")
-                        .WithOne("Event")
-                        .HasForeignKey("MiaTicket.Data.Entity.Event", "CategoryId")
+                        .WithMany("Events")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -759,7 +768,7 @@ namespace MiaTicket.Data.Migrations
 
             modelBuilder.Entity("MiaTicket.Data.Entity.Category", b =>
                 {
-                    b.Navigation("Event");
+                    b.Navigation("Events");
                 });
 
             modelBuilder.Entity("MiaTicket.Data.Entity.Event", b =>

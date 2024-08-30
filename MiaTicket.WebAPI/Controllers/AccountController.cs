@@ -48,7 +48,7 @@ namespace MiaTicket.WebAPI.Controllers
             {
                 StatusCode = result.StatusCode,
                 Message = result.Message,
-                Data = new
+                Data = result.Data != null ? new
                 {
                     AccessToken = result.Data.AccessToken,
                     User = new
@@ -61,7 +61,7 @@ namespace MiaTicket.WebAPI.Controllers
                         Gender = result.Data.User.Gender,
                         PhoneNumber = result.Data.User.PhoneNumber,
                     }
-                }
+                } : null
             };
 
             return new JsonResult(formattedResult);
@@ -116,12 +116,6 @@ namespace MiaTicket.WebAPI.Controllers
             return new JsonResult(result);
         }
 
-        [HttpGet("avatar")]
-        [UserAuthorize(RequireRoles = [Role.User, Role.Admin])]
-        public async Task<IActionResult> GetAvatar()
-        {
-            return new JsonResult("https://salt.tkbcdn.com/ts/ds/83/2b/0f/becd6c6b87118396026bdc447ac52457.jpg");
-        }
     }
 }
 
