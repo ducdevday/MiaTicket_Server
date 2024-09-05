@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace MiaTicket.BussinessLogic.Model
 {
-    public class CategoryDto
+    public class SearchEventDto : HomeEventDto
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
     }
 }

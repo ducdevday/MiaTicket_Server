@@ -14,6 +14,7 @@ namespace MiaTicket.DataAccess.Data
         Task<Category?> GetCategoryById(int categoryId);
         Task<bool> IsExistCategory(string name);
         Task<bool> IsExistCategory(int Id);
+        Task<bool> IsExistCategory(List<int> idList);
 
         Task<Category> CreateCategory(string name);
         Task<Category> UpdateCategory(Category category);
@@ -55,6 +56,11 @@ namespace MiaTicket.DataAccess.Data
             return Task.FromResult(false);
         }
 
+        public Task<bool> IsExistCategory(List<int> idList)
+        {
+            var isValid = idList.All(id => _context.Category.Any(c => c.Id == id));
+            return Task.FromResult(isValid);
+        }
 
         public Task<Category?> GetCategoryById(int categoryId)
         {
@@ -81,7 +87,6 @@ namespace MiaTicket.DataAccess.Data
             _context.Category.Remove(category);
             return Task.CompletedTask;
         }
-
 
     }
 }

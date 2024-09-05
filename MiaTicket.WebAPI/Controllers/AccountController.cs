@@ -77,7 +77,9 @@ namespace MiaTicket.WebAPI.Controllers
 
         [HttpPost("logout")]
         [UserAuthorize(RequireRoles = [Role.User, Role.Admin])]
-        public async Task<IActionResult> Logout([FromBody] LogoutRequest request) {
+        public async Task<IActionResult> Logout() {
+            _ = Guid.TryParse(User.FindFirst("id")?.Value, out Guid userId);
+            var request = new LogoutRequest(userId);
             var result = await _context.Logout(request);
             HttpContext.Response.StatusCode = (int)result.StatusCode;
             HttpContext.Response.Cookies.Append("refreshToken", "", new CookieOptions

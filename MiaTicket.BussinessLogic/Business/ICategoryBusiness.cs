@@ -16,7 +16,7 @@ namespace MiaTicket.BussinessLogic.Business
     public interface ICategoryBusiness
     {
         Task<CreateCategoryResponse> CreateCategory(CreateCategoryRequest request);
-        Task<GetCategoryListResponse> GetCategoryList();
+        Task<GetCategoriesDiscoveryResponse> GetCategoryList();
         Task<UpdateCategoryResponse> UpdateCategory(int id, UpdateCategoryRequest request);
         Task<DeleteCategoryResponse> DeleteCategory(int id);
     }
@@ -47,16 +47,16 @@ namespace MiaTicket.BussinessLogic.Business
             return new CreateCategoryResponse(HttpStatusCode.OK, "Create Category Successfully", true);
         }
 
-        public async Task<GetCategoryListResponse> GetCategoryList()
+        public async Task<GetCategoriesDiscoveryResponse> GetCategoryList()
         {
             var categories = await _context.CategoryData.GetCategoryList();
             if (categories == null)
             {
-                return new GetCategoryListResponse(HttpStatusCode.Conflict, "Get Category List Failed", null);
+                return new GetCategoriesDiscoveryResponse(HttpStatusCode.Conflict, "Get Category List Failed", null);
             }
-            var cateList = categories.Select(x => _mapper.Map<CategoryDto>(x)).ToList();
+            var cateList = categories.Select(x => _mapper.Map<CategoryDiscoveryDto>(x)).ToList();
             await _context.Commit();
-            return new GetCategoryListResponse(HttpStatusCode.OK, "Get Category List Success", cateList);
+            return new GetCategoriesDiscoveryResponse(HttpStatusCode.OK, "Get Category List Success", cateList);
         }
 
         public async Task<UpdateCategoryResponse> UpdateCategory(int id, UpdateCategoryRequest request)

@@ -20,7 +20,7 @@
         public string PaymentNumber { get; set; }
         public string PaymentBankName { get; set; }
         public string PaymentBankBranch { get; set; }
-
+        public string CreatedAt { get; set; }
         public List<Voucher>? Vouchers { get; set; }
 
         public Banner? Banner { get; set; }

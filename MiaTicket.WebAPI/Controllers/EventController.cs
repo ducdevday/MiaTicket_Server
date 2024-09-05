@@ -1,8 +1,12 @@
 ﻿using MiaTicket.BussinessLogic.Business;
 using MiaTicket.BussinessLogic.Request;
+using MiaTicket.Data.Enum;
+using MiaTicket.WebAPI.Policy;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace MiaTicket.WebAPI.Controllers
 {
@@ -35,10 +39,53 @@ namespace MiaTicket.WebAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateEvent([FromRoute] int id, [FromForm] UpdateEventRequest request)
         {
-            var result = await _context.UpdateEvent(id ,request);
+            var result = await _context.UpdateEvent(id, request);
             HttpContext.Response.StatusCode = (int)result.StatusCode;
             return new JsonResult(result);
         }
-
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteEvent([FromRoute] int id)
+        {
+            var result = await _context.DeleteEvent(id);
+            HttpContext.Response.StatusCode = (int)result.StatusCode;
+            return new JsonResult(result);
+        }
+        [HttpGet("my-events")]
+        [UserAuthorize(RequireRoles = [Role.User])]
+        public async Task<IActionResult> GetMyEvents([FromQuery] GetMyEventsRequest request)
+        {
+            _ = Guid.TryParse(User.FindFirst("id")?.Value, out Guid userId);
+            var result = await _context.GetMyEvents(userId, request);
+            HttpContext.Response.StatusCode = (int)result.StatusCode;
+            return new JsonResult(result);
+        }
+        [HttpGet("latest-events")]
+        public async Task<IActionResult> GetLastestEvents([FromQuery] GetLatestEventsRequest request)
+        {
+            var result = await _context.GetLatestEvents(request);
+            HttpContext.Response.StatusCode = (int)result.StatusCode;
+            return new JsonResult(result);
+        }
+        [HttpGet("trending-events")]
+        public async Task<IActionResult> GetTrendingEvents([FromQuery] GetTrendingEventsRequest request)
+        {
+            var result = await _context.GetTrendingEvents(request);
+            HttpContext.Response.StatusCode = (int)result.StatusCode;
+            return new JsonResult(result);
+        }
+        [HttpGet("by-category")]
+        public async Task<IActionResult> GetEventsByCategory([FromQuery] GetEventsByCategoryRequest request)
+        {
+            var result = await _context.GetEventsByCategory(request);
+            HttpContext.Response.StatusCode = (int)result.StatusCode;
+            return new JsonResult(result);
+        }
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchEvent([FromQuery] SearchEventRequest request)
+        {
+            var result = await _context.SearchEvent(request);
+            HttpContext.Response.StatusCode = (int)result.StatusCode;
+            return new JsonResult(result);
+        }
     }
 }

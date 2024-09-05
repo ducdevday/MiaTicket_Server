@@ -23,8 +23,8 @@ namespace MiaTicket.WebAPI.Controllers
             return new JsonResult(result);
         }
 
-        [HttpGet()]
-        public async Task<IActionResult> GetListCategory() {
+        [HttpGet("discovery")]
+        public async Task<IActionResult> GetCategoriesDiscovery() {
             var result = await _context.GetCategoryList();
             HttpContext.Response.StatusCode= (int)result.StatusCode;
             return new JsonResult(result);

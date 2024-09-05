@@ -48,6 +48,7 @@ builder.Services.AddTransient<ICloudinaryBusiness, CloudinaryBusiness>();
 builder.Services.AddTransient<IVerifyCodeBusiness, VerifyCodeBusiness>();
 builder.Services.AddTransient<IEventBusiness, EventBusiness>();
 builder.Services.AddTransient<ICategoryBusiness, CategoryBusiness>();
+builder.Services.AddTransient<IBannerBusiness, BannerBusiness>();
 builder.Services.AddSingleton<IAuthorizationHandler, UserAuthorizeHandler>();
 builder.Services.AddSingleton(setting);
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));

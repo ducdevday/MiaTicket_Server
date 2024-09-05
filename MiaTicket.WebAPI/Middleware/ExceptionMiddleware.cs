@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Text.Json;
 using static System.Net.Mime.MediaTypeNames;
@@ -44,7 +45,11 @@ namespace MiaTicket.WebAPI.Middleware
                         break;
                 }
 
-                var result = JsonSerializer.Serialize(new { message = ex?.Message });
+                var result = JsonSerializer.Serialize(new
+                {
+                    message = ex?.Message,
+                    statusCode = response.StatusCode
+                });
                 await response.WriteAsync(result);
             }
         }

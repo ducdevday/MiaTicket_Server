@@ -104,6 +104,12 @@ namespace MiaTicket.Data.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<string>("CreatedAt")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
                     b.Property<bool>("IsOffline")
                         .HasColumnType("bit");
 
@@ -223,8 +229,7 @@ namespace MiaTicket.Data.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
-                        .HasDefaultValueSql("GETDATE()")
-                        .HasAnnotation("Timestamp", "CreatedDate");
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<DateTime>("DateEnd")
                         .HasColumnType("datetime2");
@@ -645,13 +650,13 @@ namespace MiaTicket.Data.Migrations
                     b.HasOne("MiaTicket.Data.Entity.Category", "Category")
                         .WithMany("Events")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("MiaTicket.Data.Entity.User", "User")
                         .WithMany("Events")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Category");

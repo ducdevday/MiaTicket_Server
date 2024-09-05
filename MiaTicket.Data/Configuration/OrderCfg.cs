@@ -27,9 +27,7 @@ namespace MiaTicket.Data.Configuration
             builder.Property(x => x.DateStart).IsRequired();
             builder.Property(x => x.DateEnd).IsRequired();
             builder.Property(x => x.Discount);
-            builder.Property(x => x.CreatedAt).HasDefaultValueSql("GETDATE()") // Set default value to current date
-            .ValueGeneratedOnAdd() // automatically set on entity creation
-            .HasAnnotation("Timestamp", "CreatedDate");
+            builder.Property(x => x.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
             builder.Property(x => x.QrCode).IsRequired();
             builder.Property(x => x.QrUrl);
             builder.Property(x => x.PaymentType).IsRequired();

@@ -1,5 +1,4 @@
 ﻿using MiaTicket.BussinessLogic.Model;
-using MiaTicket.Data.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +8,10 @@ using System.Threading.Tasks;
 
 namespace MiaTicket.BussinessLogic.Response
 {
-    public class GetCategoryListResponse : BaseApiResponse<List<CategoryDto>?>
+    public class GetEventsByCategoryResponse : BaseApiResponse<List<ByCateEventDto>>
     {
-        public GetCategoryListResponse(HttpStatusCode statusCode, string message, List<CategoryDto>? data) : base(statusCode, message, data)
+        public GetEventsByCategoryResponse(HttpStatusCode statusCode, string message, List<ByCateEventDto> data) : base(statusCode, message, data)
         {
-
         }
     }
 }

@@ -8,6 +8,9 @@ using AutoMapper;
 using MiaTicket.Data.Entity;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Http;
+using MiaTicket.DataAccess.Model;
+using MiaTicket.BussinessLogic.Util;
+using MiaTicket.Data.Enum;
 namespace MiaTicket.BussinessLogic.Business
 {
 
@@ -15,8 +18,13 @@ namespace MiaTicket.BussinessLogic.Business
     {
         Task<CreateEventResponse> CreateEvent(CreateEventRequest request);
         Task<UpdateEventResponse> UpdateEvent(int id, UpdateEventRequest request);
-
+        Task<DeleteEventResponse> DeleteEvent(int id);
         Task<GetEventResponse> GetEventById(int id);
+        Task<GetMyEventsResponse> GetMyEvents(Guid userId, GetMyEventsRequest request);
+        Task<GetLatestEventsResponse> GetLatestEvents(GetLatestEventsRequest request);
+        Task<GetTrendingEventsResponse> GetTrendingEvents(GetTrendingEventsRequest request);
+        Task<GetEventsByCategoryResponse> GetEventsByCategory(GetEventsByCategoryRequest request);
+        Task<SearchEventResponse> SearchEvent(SearchEventRequest request);
     }
 
     public class EventBusiness : IEventBusiness
@@ -34,10 +42,9 @@ namespace MiaTicket.BussinessLogic.Business
 
         public async Task<CreateEventResponse> CreateEvent(CreateEventRequest request)
         {
-
-            //var validation = new CreateEventValidation(request);
-            //validation.Validate();
-            //if (!validation.IsValid) return new CreateEventResponse(HttpStatusCode.BadRequest, validation.Message, false);
+            var validation = new CreateEventValidation(request);
+            validation.Validate();
+            if (!validation.IsValid) return new CreateEventResponse(HttpStatusCode.BadRequest, validation.Message, false);
 
             var userId = await _context.UserData.GetAccountById(request.UserId);
             if (userId == null) return new CreateEventResponse(HttpStatusCode.Conflict, "Account Not Found", false);
@@ -67,9 +74,9 @@ namespace MiaTicket.BussinessLogic.Business
 
         public async Task<UpdateEventResponse> UpdateEvent(int id, UpdateEventRequest request)
         {
-            //var validation = new UpdateEventValidation(request);
-            //validation.Validate();
-            //if(!validation.IsValid) return new UpdateEventResponse(HttpStatusCode.BadRequest, validation.Message, false);
+            var validation = new UpdateEventValidation(request);
+            validation.Validate();
+            if (!validation.IsValid) return new UpdateEventResponse(HttpStatusCode.BadRequest, validation.Message, false);
             var userId = await _context.UserData.GetAccountById(request.UserId);
             if (userId == null) return new UpdateEventResponse(HttpStatusCode.Conflict, "Account Not Found", false);
 
@@ -111,6 +118,88 @@ namespace MiaTicket.BussinessLogic.Business
             return new GetEventResponse(HttpStatusCode.OK, "Get Event Successfully", evtDataResponse);
         }
 
+        public async Task<DeleteEventResponse> DeleteEvent(int id)
+        {
+            var evt = await _context.EventData.GetEventById(id);
+            if (evt == null)
+            {
+                return new DeleteEventResponse(HttpStatusCode.BadRequest, "Event Not Found", false);
+            }
+            await _context.EventData.DeleteEvent(evt);
+            await _context.Commit();
+            return new DeleteEventResponse(HttpStatusCode.OK, "Delete Event Successfully", true);
+        }
 
+        public async Task<GetMyEventsResponse> GetMyEvents(Guid userId, GetMyEventsRequest request)
+        {
+            var validation = new GetMyEventsValidation(request);
+            validation.Validate();
+            if (!validation.IsValid) return new GetMyEventsResponse(HttpStatusCode.BadRequest, validation.Message, null);
+            var uId = await _context.UserData.GetAccountById(userId);
+            if (uId == null) return new GetMyEventsResponse(HttpStatusCode.Conflict, "Account Not Found", null);
+
+            var result = await _context.EventData.GetEvents(userId, request.Keyword, request.Page, request.Size);
+            await _context.Commit();
+            var dataResponse = _mapper.Map<GetMyEventsDataResponse>(result);
+            return new GetMyEventsResponse(HttpStatusCode.OK, "Get Events Success", dataResponse);
+        }
+
+        public async Task<GetLatestEventsResponse> GetLatestEvents(GetLatestEventsRequest request)
+        {
+            var validation = new GetLatestEventsValidation(request);
+            validation.Validate();
+            if (!validation.IsValid) return new GetLatestEventsResponse(HttpStatusCode.BadRequest, validation.Message, []);
+
+            var evts = await _context.EventData.GetLatestEvent(request.Count) ?? [];
+            await _context.Commit();
+            var dataResponse = _mapper.Map<List<LatestEventDto>>(evts);
+            return new GetLatestEventsResponse(HttpStatusCode.OK, "Get Lastest Event Successful", dataResponse);
+        }
+
+        public async Task<GetTrendingEventsResponse> GetTrendingEvents(GetTrendingEventsRequest request)
+        {
+            var validation = new GetTrendingEventsValidation(request);
+            validation.Validate();
+            if (!validation.IsValid) return new GetTrendingEventsResponse(HttpStatusCode.BadRequest, validation.Message, []);
+
+            var evts = await _context.OrderData.GetTrendingEvent(request.Count) ?? [];
+            await _context.Commit();
+            var dataResponse = _mapper.Map<List<TrendingEventDto>>(evts);
+            return new GetTrendingEventsResponse(HttpStatusCode.OK, "Get Trending Event Successful", dataResponse);
+        }
+
+        public async Task<GetEventsByCategoryResponse> GetEventsByCategory(GetEventsByCategoryRequest request)
+        {
+            var validation = new GetEventsByCategoryValidation(request);
+            validation.Validate();
+            if (!validation.IsValid) return new GetEventsByCategoryResponse(HttpStatusCode.BadRequest, validation.Message, []);
+
+            bool isCateExist = await _context.CategoryData.IsExistCategory(request.CategoryId);
+            if (!isCateExist) return new GetEventsByCategoryResponse(HttpStatusCode.Conflict, "Category Not Exist", []);
+
+            var evts = await _context.EventData.GetEventsByCategory(request.CategoryId, request.Count);
+            await _context.Commit();
+            var dataResponse = _mapper.Map<List<ByCateEventDto>>(evts);
+            return new GetEventsByCategoryResponse(HttpStatusCode.OK, "Get Events By Category Successfull", dataResponse);
+        }
+
+        public async Task<SearchEventResponse> SearchEvent(SearchEventRequest request)
+        {
+            var validation = new SearchEventValidation(request);
+            validation.Validate();
+            if (!validation.IsValid) return new SearchEventResponse(HttpStatusCode.BadRequest, validation.Message, new SearchEventDataResponse(request.Page, request.Size));
+
+            bool isCateExist = await _context.CategoryData.IsExistCategory(FormaterUtil.SearchEventCategories(request.Categories));
+            if (!isCateExist) return new SearchEventResponse(HttpStatusCode.Conflict, "Category Not Exist", new SearchEventDataResponse(request.Page, request.Size));
+
+            bool isSortTypeValid = await _context.EventData.IsEventSortTypeValid(request.SortBy);
+            if (!isCateExist) return new SearchEventResponse(HttpStatusCode.Conflict, "Sort Type Not Exist", new SearchEventDataResponse(request.Page, request.Size));
+
+            var result = await _context.EventData.SearchEvent(request.Keyword, request.Page, request.Size, request.Location, FormaterUtil.SearchEventCategories(request.Categories), FormaterUtil.SearchEventPriceRanges(request.PriceRanges), (EventSortType)request.SortBy);
+            await _context.Commit();
+
+            var dataResponse = _mapper.Map<SearchEventDataResponse>(result);
+            return new SearchEventResponse(HttpStatusCode.BadRequest, "Search Event Success", dataResponse);
+        }
     }
 }

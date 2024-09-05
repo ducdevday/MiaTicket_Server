@@ -1,4 +1,5 @@
 ﻿using MiaTicket.Data;
+using MiaTicket.Data.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace MiaTicket.DataAccess.Data
 {
     public interface IOrderData
     {
-
+        Task<List<Event>> GetTrendingEvent(int count);
     }
 
     public class OrderData : IOrderData
@@ -19,6 +20,16 @@ namespace MiaTicket.DataAccess.Data
         public OrderData(MiaTicketDBContext context)
         {
             _context = context;
+        }
+
+        public Task<List<Event>> GetTrendingEvent(int count)
+        {
+            var evts = _context.Order.GroupBy(o => o.EventId)
+                                        .OrderByDescending(g => g.Count())
+                                        .Select(g => g.First().Event)
+                                        .Take(count)
+                                        .ToList();
+            return Task.FromResult(evts);
         }
     }
 }
