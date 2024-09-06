@@ -108,7 +108,7 @@ namespace MiaTicket.BussinessLogic.Business
             await _context.RefreshTokenData.SaveToken(refreshToken, user.Id);
             await _context.Commit();
 
-            return new LoginResponse(HttpStatusCode.OK, "Login Successfully", new LoginDataResponse(new UserModel(user), accessToken, refreshToken));
+            return new LoginResponse(HttpStatusCode.OK, "Login Successfully", new LoginDataResponse(new UserDto(user), accessToken, refreshToken));
         }
 
         public async Task<LogoutResponse> Logout(LogoutRequest request)
@@ -204,7 +204,7 @@ namespace MiaTicket.BussinessLogic.Business
             var updatedUser = await _context.UserData.UpdateAccount(id, request.Name, request.PhoneNumber, request.BirthDate, request.Gender, avatarUrl );
             await _context.Commit();
             if(updatedUser != null)
-            return new UpdateAccountResponse(HttpStatusCode.OK, "Update Account SuccessFully", new UserModel(updatedUser));
+            return new UpdateAccountResponse(HttpStatusCode.OK, "Update Account SuccessFully", new UserDto(updatedUser));
 
             return new UpdateAccountResponse(HttpStatusCode.Conflict, "Account does not exist", null);
         }

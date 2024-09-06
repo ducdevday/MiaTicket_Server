@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MiaTicket.BussinessLogic.Model
 {
-    public class UserModel
+    public class UserDto
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -18,7 +18,7 @@ namespace MiaTicket.BussinessLogic.Model
         public Gender Gender { get; set; }
         public string PhoneNumber { get; set; }
 
-        public UserModel(User user)
+        public UserDto(User user)
         {
             Id = user.Id;
             Name = user.Name;

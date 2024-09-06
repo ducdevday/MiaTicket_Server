@@ -18,18 +18,21 @@ namespace MiaTicket.WebAPI.Controllers
         public async Task<IActionResult> GetProvinces()
         {
             var result = await _context.GetProvincesAsync();
+            HttpContext.Response.StatusCode = (int)result.StatusCode;
             return new JsonResult(result);
         }
 
         [HttpGet("districts/{provinceId}")]
         public async Task<IActionResult> GetDisTricts([FromRoute] int provinceId) {
             var result = await _context.GetDisTrictsAsync(provinceId);
+            HttpContext.Response.StatusCode = (int)result.StatusCode;
             return new JsonResult(result);
         }
 
         [HttpGet("wards/{districtId}")]
         public async Task<IActionResult> GetWards([FromRoute] int districtId) { 
             var result = await _context.GetWardsAsync(districtId);
+            HttpContext.Response.StatusCode = (int)result.StatusCode;
             return new JsonResult(result);
         }
     }
