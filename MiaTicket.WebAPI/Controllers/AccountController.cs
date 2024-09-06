@@ -24,14 +24,16 @@ namespace MiaTicket.WebAPI.Controllers
         }
 
         [HttpPost()]
-        public async Task<IActionResult> CreateAccount([FromBody] CreateAccountRequest request) {
+        public async Task<IActionResult> CreateAccount([FromBody] CreateAccountRequest request)
+        {
             var result = await _context.CreateAccount(request);
             HttpContext.Response.StatusCode = (int)result.StatusCode;
             return new JsonResult(result);
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request) {
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        {
             var result = await _context.Login(request);
             HttpContext.Response.StatusCode = (int)result.StatusCode;
             if (result.Data != null)
@@ -71,13 +73,14 @@ namespace MiaTicket.WebAPI.Controllers
         public async Task<IActionResult> ActivateAccount([FromBody] ActivateAccountRequest request)
         {
             var result = await _context.ActivateAccount(request);
-            HttpContext.Response.StatusCode = (int) result.StatusCode;
+            HttpContext.Response.StatusCode = (int)result.StatusCode;
             return new JsonResult(result);
         }
 
         [HttpPost("logout")]
         [UserAuthorize(RequireRoles = [Role.User, Role.Admin])]
-        public async Task<IActionResult> Logout() {
+        public async Task<IActionResult> Logout()
+        {
             _ = Guid.TryParse(User.FindFirst("id")?.Value, out Guid userId);
             var request = new LogoutRequest(userId);
             var result = await _context.Logout(request);
@@ -111,9 +114,9 @@ namespace MiaTicket.WebAPI.Controllers
 
         [HttpPut("{id}")]
         [UserAuthorize(RequireRoles = [Role.User, Role.Admin])]
-        public async Task<IActionResult> UpdateAccount([FromRoute] Guid id,[FromForm] UpdateAccountRequest request)
+        public async Task<IActionResult> UpdateAccount([FromRoute] Guid id, [FromForm] UpdateAccountRequest request)
         {
-            var result = await _context.UpdateAccount(id,request);
+            var result = await _context.UpdateAccount(id, request);
             HttpContext.Response.StatusCode = (int)result.StatusCode;
             return new JsonResult(result);
         }

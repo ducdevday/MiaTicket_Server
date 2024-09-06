@@ -49,6 +49,7 @@ builder.Services.AddTransient<IVerifyCodeBusiness, VerifyCodeBusiness>();
 builder.Services.AddTransient<IEventBusiness, EventBusiness>();
 builder.Services.AddTransient<ICategoryBusiness, CategoryBusiness>();
 builder.Services.AddTransient<IBannerBusiness, BannerBusiness>();
+builder.Services.AddTransient<IVnAddressBusiness, VnAddressBusiness>();
 builder.Services.AddSingleton<IAuthorizationHandler, UserAuthorizeHandler>();
 builder.Services.AddSingleton(setting);
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
@@ -81,6 +82,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
         opt.MapInboundClaims = false;
     });
+
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
