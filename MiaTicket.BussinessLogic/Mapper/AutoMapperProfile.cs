@@ -2,7 +2,6 @@
 using MiaTicket.BussinessLogic.Model;
 using MiaTicket.BussinessLogic.Request;
 using MiaTicket.Data.Entity;
-using MiaTicket.DataAccess.Model;
 
 namespace MiaTicket.BussinessLogic.Mapper
 {
@@ -28,14 +27,6 @@ namespace MiaTicket.BussinessLogic.Mapper
                         .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                         .ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.ShowTimes.First().ShowStartAt))
                         .ForMember(dest => dest.VenueName, opt => opt.MapFrom(src => src.AddressName));
-
-            CreateMap<GetEventsResult, GetMyEventsDataResponse>()
-            .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items))
-            .ForMember(dest => dest.Pagination, opt => opt.MapFrom(src => src.Pagination));
-            CreateMap<PaginationResult, PaginationDto>();
-            CreateMap<GetEventsResult, SearchEventDataResponse>()
-            .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items))
-            .ForMember(dest => dest.Pagination, opt => opt.MapFrom(src => src.Pagination));
 
             CreateMap<Event, LatestEventDto>().ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.LogoUrl));
 
@@ -65,7 +56,7 @@ namespace MiaTicket.BussinessLogic.Mapper
 
             //**********************************************CATEGORY MAPPER***********************************************************
             //------------------------------------------------------------------------------------------------------------------------
-
+            //GetMyEventsDataResponse
             CreateMap<Category, CategoryDiscoveryDto>();
         }
     }

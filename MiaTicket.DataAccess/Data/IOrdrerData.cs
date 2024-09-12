@@ -29,6 +29,7 @@ namespace MiaTicket.DataAccess.Data
                                         .Select(g => g.First().Event)
                                         .Take(count)
                                         .ToList();
+
             return Task.FromResult(evts);
         }
     }

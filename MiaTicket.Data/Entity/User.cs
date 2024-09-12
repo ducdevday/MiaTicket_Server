@@ -17,7 +17,7 @@ namespace MiaTicket.Data.Entity
         public Gender Gender { get; set; }
         public byte[] Password { get; set; }
         public string PhoneNumber { get; set; }
-        public UserStatus UserStatus { get; set; }
+        public UserStatus Status { get; set; }
         public List<VerifyCode>? VerifyCodes { get; set; }
         public Role Role { get; set; }
         public Order? Order { get; set; }

@@ -53,7 +53,7 @@ builder.Services.AddTransient<IVnAddressBusiness, VnAddressBusiness>();
 builder.Services.AddSingleton<IAuthorizationHandler, UserAuthorizeHandler>();
 builder.Services.AddSingleton(setting);
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
-
+builder.Services.AddMemoryCache();
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("Angular UI", x =>

@@ -3,9 +3,9 @@ using System.Net;
 
 namespace MiaTicket.BussinessLogic.Response
 {
-    public class SearchEventResponse : BaseApiResponse<SearchEventDataResponse>
+    public class SearchEventResponse : BaseApiResponse<List<SearchEventDto>>
     {
-        public SearchEventResponse(HttpStatusCode statusCode, string message, SearchEventDataResponse data) : base(statusCode, message, data)
+        public SearchEventResponse(HttpStatusCode statusCode, string message, List<SearchEventDto> data) : base(statusCode, message, data)
         {
         }
     }

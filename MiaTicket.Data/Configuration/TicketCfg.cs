@@ -19,6 +19,9 @@ namespace MiaTicket.Data.Configuration
                 t.HasCheckConstraint("CK_Ticket_Quantity_MinValue", "Quantity >= 1");
                 t.HasCheckConstraint("CK_Ticket_MinimumPurchase_MinValue", "MinimumPurchase >= 1");
                 t.HasCheckConstraint("CK_Ticket_MaximumPurchase_MinValue", "MaximumPurchase >= MinimumPurchase");
+                t.HasCheckConstraint("CK_Ticket_MaximumPurchase_MinValue", "MaximumPurchase <= Quantity");
+                t.HasCheckConstraint("CK_Ticket_MaximumPurchase_MinValue", "MinimumPurchase <= Quantity");
+
             });
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).ValueGeneratedOnAdd();

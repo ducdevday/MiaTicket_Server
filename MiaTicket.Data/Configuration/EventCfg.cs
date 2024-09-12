@@ -1,4 +1,5 @@
 ﻿using MiaTicket.Data.Entity;
+using MiaTicket.Data.Enum;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -18,6 +19,7 @@ namespace MiaTicket.Data.Configuration
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.Property(x => x.Name).IsRequired().IsUnicode().HasMaxLength(255);
             builder.Property(x => x.Slug).HasComputedColumnSql("LOWER(CONCAT(REPLACE(Name, ' ', '-'), '-', Id))");
+            builder.Property(x => x.Description).IsRequired().IsUnicode();
             builder.Property(x => x.IsOffline).IsRequired();
             builder.Property(x => x.AddressName).HasMaxLength(255).IsUnicode();
             builder.Property(x => x.AddressNo).HasMaxLength(255).IsUnicode();
@@ -33,6 +35,7 @@ namespace MiaTicket.Data.Configuration
             builder.Property(x => x.PaymentBankName).IsRequired().HasMaxLength(50).IsUnicode();
             builder.Property(x => x.PaymentBankBranch).IsRequired().HasMaxLength(50).IsUnicode();
             builder.Property(x => x.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
+            builder.Property(x => x.Status).HasDefaultValue(EventStatus.Accepted);
             builder.HasOne(x => x.Category).WithMany(x => x.Events).HasForeignKey(x => x.CategoryId).OnDelete(DeleteBehavior.Restrict);
             builder.HasOne(x => x.User).WithMany(x => x.Events).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Restrict);
         }

@@ -13,6 +13,8 @@ namespace MiaTicket.BussinessLogic.Request
     public class CreateEventRequest
     {
         public string Name { get; set; }
+        public string Description { get; set; }
+
         public bool IsOffline { get; set; }
         public string AddressName { get; set; }
         public string AddressNo { get; set; }

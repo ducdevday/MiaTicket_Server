@@ -1986,7 +1986,8 @@
           "MiaTicket.DataAccess": "1.0.0",
           "MiaTicket.Email": "1.0.0",
           "MiaTicket.Setting": "1.0.0",
-          "Microsoft.AspNetCore.Http": "2.2.2"
+          "Microsoft.AspNetCore.Http": "2.2.2",
+          "Microsoft.Extensions.Caching.Memory": "8.0.0"
         },
         "compile": {
           "bin/placeholder/MiaTicket.BussinessLogic.dll": {}
@@ -6213,6 +6214,7 @@
       "AutoMapper >= 13.0.1",
       "MiaTicket.BussinessLogic >= 1.0.0",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 8.0.7",
+      "Microsoft.Extensions.Caching.Memory >= 8.0.0",
       "Swashbuckle.AspNetCore >= 6.4.0"
     ]
   },
@@ -6272,6 +6274,10 @@
           "Microsoft.AspNetCore.Authentication.JwtBearer": {
             "target": "Package",
             "version": "[8.0.7, )"
+          },
+          "Microsoft.Extensions.Caching.Memory": {
+            "target": "Package",
+            "version": "[8.0.0, )"
           },
           "Swashbuckle.AspNetCore": {
             "target": "Package",

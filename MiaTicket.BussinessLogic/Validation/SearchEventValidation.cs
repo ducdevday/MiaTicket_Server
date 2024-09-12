@@ -17,7 +17,7 @@ namespace MiaTicket.BussinessLogic.Validation
 
         public override void Validate()
         {
-            if (_value.Page < 1 || _value.Size < 1 
+            if (_value.PageIndex < 1 || _value.PageSize < 1 
                 || (!string.IsNullOrEmpty(_value.Categories) && !RegexUtil.isSearchEventCategoriesValid(_value.Categories))
                 || (!string.IsNullOrEmpty(_value.PriceRanges) && !RegexUtil.isSearchEventPriceRangesValid(_value.PriceRanges)) 
                 ) {

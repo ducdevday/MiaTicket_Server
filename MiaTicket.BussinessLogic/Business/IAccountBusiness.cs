@@ -99,7 +99,7 @@ namespace MiaTicket.BussinessLogic.Business
                 return new LoginResponse(HttpStatusCode.Conflict, "Wrong Password", null);
             }
 
-            if (user.UserStatus == UserStatus.UnVerified)
+            if (user.Status == UserStatus.UnVerified)
             {
                 return new LoginResponse(HttpStatusCode.Forbidden, "Email Not Verified", null);
             }
@@ -222,7 +222,7 @@ namespace MiaTicket.BussinessLogic.Business
             {
                 return new ActivateAccountResponse(HttpStatusCode.Conflict, "Account does not exist", false);
             }
-            if (user.UserStatus != UserStatus.UnVerified) { 
+            if (user.Status != UserStatus.UnVerified) { 
                 return new ActivateAccountResponse(HttpStatusCode.Conflict, "Account has already verify", false);
             }
             var isValidCode = await _context.VerifyCodeData.IsValidCode(user.Id, request.Code, VerifyType.Register);

@@ -16,7 +16,7 @@ namespace MiaTicket.BussinessLogic.Validation
 
         public override void Validate()
         {
-            if(_value.Page < 1 || _value.Size < 1)
+            if(_value.PageIndex < 1 || _value.PageSize < 1)
             {
                 _message = "Invalid Request";
             }

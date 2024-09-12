@@ -6,11 +6,10 @@ using System.Net;
 using MiaTicket.BussinessLogic.Model;
 using AutoMapper;
 using MiaTicket.Data.Entity;
-using System.Diagnostics;
-using Microsoft.AspNetCore.Http;
-using MiaTicket.DataAccess.Model;
 using MiaTicket.BussinessLogic.Util;
 using MiaTicket.Data.Enum;
+using Microsoft.Extensions.Caching.Memory;
+using MiaTicket.WebAPI.Constant;
 namespace MiaTicket.BussinessLogic.Business
 {
 
@@ -32,12 +31,14 @@ namespace MiaTicket.BussinessLogic.Business
         private readonly IDataAccessFacade _context;
         private readonly ICloudinaryBusiness _cloudinaryBusiness;
         private readonly IMapper _mapper;
+        private readonly IMemoryCache _memoryCache;
 
-        public EventBusiness(IDataAccessFacade context, ICloudinaryBusiness cloudinaryBusiness, IMapper mapper)
+        public EventBusiness(IDataAccessFacade context, ICloudinaryBusiness cloudinaryBusiness, IMapper mapper, IMemoryCache memoryCache)
         {
             _context = context;
             _cloudinaryBusiness = cloudinaryBusiness;
             _mapper = mapper;
+            _memoryCache = memoryCache;
         }
 
         public async Task<CreateEventResponse> CreateEvent(CreateEventRequest request)
@@ -134,14 +135,24 @@ namespace MiaTicket.BussinessLogic.Business
         {
             var validation = new GetMyEventsValidation(request);
             validation.Validate();
-            if (!validation.IsValid) return new GetMyEventsResponse(HttpStatusCode.BadRequest, validation.Message, null);
+            if (!validation.IsValid) return new GetMyEventsResponse(HttpStatusCode.BadRequest, validation.Message, []);
             var uId = await _context.UserData.GetAccountById(userId);
-            if (uId == null) return new GetMyEventsResponse(HttpStatusCode.Conflict, "Account Not Found", null);
+            if (uId == null) return new GetMyEventsResponse(HttpStatusCode.Conflict, "Account Not Found", []);
 
-            var result = await _context.EventData.GetEvents(userId, request.Keyword, request.Page, request.Size);
-            await _context.Commit();
-            var dataResponse = _mapper.Map<GetMyEventsDataResponse>(result);
-            return new GetMyEventsResponse(HttpStatusCode.OK, "Get Events Success", dataResponse);
+            var events = new List<Event>();
+            int currentCount = 0;
+
+            // Suppose Do Cachche Event Count Result
+            //bool isEventCountExisted = _memoryCache.TryGetValue(AppConstant.EVENT_COUNT_KEYWORD, out currentCount);
+            //if (!isEventCountExisted)
+            //{
+            //    events = await _context.EventData.GetEvents(userId, request.Keyword, request.EventStatus, request.Page, request.Size, out currentCount, false);
+            //    _memoryCache.Set(AppConstant.EVENT_COUNT_KEYWORD, currentCount);
+            //}
+            //else events = await _context.EventData.GetEvents(userId, request.Keyword, request.EventStatus, request.Page, request.Size, out _);
+            events = await _context.EventData.GetEvents(userId, request.Keyword, request.EventStatus, request.PageIndex, request.PageSize, out currentCount, false);
+            var data = _mapper.Map<List<MyEventDto>>(events);
+            return new GetMyEventsResponse(HttpStatusCode.OK, "Get Events Success", data, currentCount);
         }
 
         public async Task<GetLatestEventsResponse> GetLatestEvents(GetLatestEventsRequest request)
@@ -178,7 +189,6 @@ namespace MiaTicket.BussinessLogic.Business
             if (!isCateExist) return new GetEventsByCategoryResponse(HttpStatusCode.Conflict, "Category Not Exist", []);
 
             var evts = await _context.EventData.GetEventsByCategory(request.CategoryId, request.Count);
-            await _context.Commit();
             var dataResponse = _mapper.Map<List<ByCateEventDto>>(evts);
             return new GetEventsByCategoryResponse(HttpStatusCode.OK, "Get Events By Category Successfull", dataResponse);
         }
@@ -187,19 +197,18 @@ namespace MiaTicket.BussinessLogic.Business
         {
             var validation = new SearchEventValidation(request);
             validation.Validate();
-            if (!validation.IsValid) return new SearchEventResponse(HttpStatusCode.BadRequest, validation.Message, new SearchEventDataResponse(request.Page, request.Size));
+            if (!validation.IsValid) return new SearchEventResponse(HttpStatusCode.BadRequest, validation.Message, []);
 
             bool isCateExist = await _context.CategoryData.IsExistCategory(FormaterUtil.SearchEventCategories(request.Categories));
-            if (!isCateExist) return new SearchEventResponse(HttpStatusCode.Conflict, "Category Not Exist", new SearchEventDataResponse(request.Page, request.Size));
+            if (!isCateExist) return new SearchEventResponse(HttpStatusCode.Conflict, "Category Not Exist", []);
 
             bool isSortTypeValid = await _context.EventData.IsEventSortTypeValid(request.SortBy);
-            if (!isCateExist) return new SearchEventResponse(HttpStatusCode.Conflict, "Sort Type Not Exist", new SearchEventDataResponse(request.Page, request.Size));
+            if (!isSortTypeValid) return new SearchEventResponse(HttpStatusCode.Conflict, "Sort Type Not Exist", []);
 
-            var result = await _context.EventData.SearchEvent(request.Keyword, request.Page, request.Size, request.Location, FormaterUtil.SearchEventCategories(request.Categories), FormaterUtil.SearchEventPriceRanges(request.PriceRanges), (EventSortType)request.SortBy);
-            await _context.Commit();
+            var result = await _context.EventData.SearchEvent(request.Keyword, request.PageIndex, request.PageSize, request.Location, FormaterUtil.SearchEventCategories(request.Categories), FormaterUtil.SearchEventPriceRanges(request.PriceRanges), (EventSortType)request.SortBy);
 
-            var dataResponse = _mapper.Map<SearchEventDataResponse>(result);
-            return new SearchEventResponse(HttpStatusCode.BadRequest, "Search Event Success", dataResponse);
+            var dataResponse = _mapper.Map<List<SearchEventDto>>(result);
+            return new SearchEventResponse(HttpStatusCode.OK, "Search Event Success", dataResponse);
         }
     }
 }

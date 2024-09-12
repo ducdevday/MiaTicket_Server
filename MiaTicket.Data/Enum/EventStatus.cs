@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace MiaTicket.Data.Enum
 {
-    public enum EventSortType
+    public enum EventStatus
     {
-        Latest,
-        PriceLowToHigh,
-        PriceHighToLow
+        Pending,
+        Accepted,
+        Rejected
     }
 }

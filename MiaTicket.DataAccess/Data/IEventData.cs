@@ -1,13 +1,7 @@
 ﻿using MiaTicket.Data;
 using MiaTicket.Data.Entity;
 using MiaTicket.Data.Enum;
-using MiaTicket.DataAccess.Model;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MiaTicket.DataAccess.Data
 {
@@ -18,11 +12,11 @@ namespace MiaTicket.DataAccess.Data
         Task<bool> IsExistEvent(int id);
         Task<Event> UpdateEvent(Event entity);
         Task DeleteEvent(Event entity);
-        Task<GetEventsResult> GetEvents(Guid userId, string key, int page, int size);
+        Task<List<Event>> GetEvents(Guid userId, string key, int status, int page, int size, out int count, bool hasCounted = true);
         Task<List<Event>> GetLatestEvent(int count);
         Task<List<Event>> GetEventsByCategory(int categoryId, int count);
         Task<bool> IsEventSortTypeValid(int type);
-        Task<GetEventsResult> SearchEvent(string keyword, int page, int size, string location, List<int> categoriesId, List<double> priceRanges, EventSortType sortBy);
+        Task<List<Event>> SearchEvent(string keyword, int page, int size, string location, List<int> categoriesId, List<double> priceRanges, EventSortType sortBy);
     }
 
     public class EventData : IEventData
@@ -54,32 +48,34 @@ namespace MiaTicket.DataAccess.Data
             return Task.FromResult(evt);
         }
 
-        public Task<GetEventsResult> GetEvents(Guid userId, string key, int page, int size)
+        public Task<List<Event>> GetEvents(Guid userId, string key, int status, int page, int size, out int count, bool hasCounted = true)
         {
-            var query = _context.Event.Include(e => e.ShowTimes).Where(x => x.UserId == userId && x.Name.Contains(key));
-            var totalRecords = query.Count();
-            var totalPages = (int)Math.Ceiling((double)totalRecords / size);
-
+            count = 0;
+            var query = _context.Event.Include(e => e.ShowTimes).Where(x => x.UserId == userId && x.Name.Contains(key) && x.Status == (EventStatus)status);
+            if (!hasCounted) count = query.Count();
             var evts = query.Skip((page - 1) * size).Take(size).ToList();
 
-            var result = new GetEventsResult
-            {
-                Items = evts,
-                Pagination = new PaginationResult()
-                {
-                    CurrentPage = page,
-                    CurrentSize = size,
-                    TotalPages = totalPages,
-                    TotalRecords = totalRecords,
-                }
-            };
-            return Task.FromResult(result);
+            return Task.FromResult(evts);
         }
 
         public Task<List<Event>> GetEventsByCategory(int categoryId, int count)
         {
-            var evts = _context.Event.Include(e => e.ShowTimes)
-                    .ThenInclude(st => st.Tickets).Where(x => x.CategoryId == categoryId).Take(count).ToList();
+            var evts = _context.Event
+                .Include(e => e.ShowTimes)
+                .ThenInclude(st => st.Tickets)
+                .Where(x => x.CategoryId == categoryId)
+                .Take(count)
+                .ToList();
+
+            //var evts1 = (from e in _context.Event
+            //             join sts in _context.ShowTime on e.Id equals sts.EventId
+            //             join ts in _context.Ticket on sts.Id equals ts.ShowTimeId
+            //             where e.CategoryId == categoryId
+            //             select e).Skip(0).Take(10).ToList();
+
+            // Linq: Linq to SQL
+            // Linq: Linq to object
+
             return Task.FromResult(evts);
         }
 
@@ -101,7 +97,7 @@ namespace MiaTicket.DataAccess.Data
             return Task.FromResult(evt == null ? false : true);
         }
 
-        public Task<GetEventsResult> SearchEvent(string keyword, int page, int size, string location, List<int> categoriesId, List<double> priceRanges, EventSortType sortBy)
+        public Task<List<Event>> SearchEvent(string keyword, int page, int size, string location, List<int> categoriesId, List<double> priceRanges, EventSortType sortBy)
         {
             var query = _context.Event
                 .Include(e => e.ShowTimes)
@@ -120,7 +116,7 @@ namespace MiaTicket.DataAccess.Data
 
             switch (sortBy)
             {
-                case EventSortType.Lastest:
+                case EventSortType.Latest:
                     query = query.OrderByDescending(e => e.CreatedAt);
                     break;
                 case EventSortType.PriceLowToHigh:
@@ -135,18 +131,7 @@ namespace MiaTicket.DataAccess.Data
             var totalPages = (int)Math.Ceiling((double)totalRecords / size);
             var evts = query.Skip((page - 1) * size).Take(size).ToList();
 
-            var result = new GetEventsResult
-            {
-                Items = evts,
-                Pagination = new PaginationResult()
-                {
-                    CurrentPage = page,
-                    CurrentSize = size,
-                    TotalPages = totalPages,
-                    TotalRecords = totalRecords,
-                }
-            };
-            return Task.FromResult(result);
+            return Task.FromResult(evts);
         }
 
         public Task<Event> UpdateEvent(Event entity)

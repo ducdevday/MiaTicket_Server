@@ -59,14 +59,14 @@ namespace MiaTicket.WebAPI.Controllers
             HttpContext.Response.StatusCode = (int)result.StatusCode;
             return new JsonResult(result);
         }
-        [HttpGet("latest-events")]
+        [HttpGet("latest")]
         public async Task<IActionResult> GetLastestEvents([FromQuery] GetLatestEventsRequest request)
         {
             var result = await _context.GetLatestEvents(request);
             HttpContext.Response.StatusCode = (int)result.StatusCode;
             return new JsonResult(result);
         }
-        [HttpGet("trending-events")]
+        [HttpGet("trending")]
         public async Task<IActionResult> GetTrendingEvents([FromQuery] GetTrendingEventsRequest request)
         {
             var result = await _context.GetTrendingEvents(request);

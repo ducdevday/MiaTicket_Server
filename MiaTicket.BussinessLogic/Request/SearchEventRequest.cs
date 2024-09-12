@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MiaTicket.BussinessLogic.Request
 {
-    public class SearchEventRequest
+    public class SearchEventRequest : BaseApiRequest
     {
         private string _keyword = string.Empty;
         private string _location = string.Empty;
@@ -18,8 +18,6 @@ namespace MiaTicket.BussinessLogic.Request
             get => _keyword;
             set => _keyword = value;
         }
-        public int Page { get; set; }
-        public int Size { get; set; }
         public string Location
         {
             get => _location;

@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MiaTicket.BussinessLogic.Response;
+using System.Net;
 
 namespace MiaTicket.BussinessLogic.Model
 {
-    public class GetMyEventsDataResponse : BasePagedResponse<MyEventDto>
+    public class GetMyEventsDataResponse : BaseApiResponse<MyEventDto>
     {
-        public GetMyEventsDataResponse(int currentPage, int currentSize) : base(currentPage, currentSize)
+        public GetMyEventsDataResponse(HttpStatusCode statusCode, string message, MyEventDto data) : base(statusCode, message, data)
         {
         }
     }

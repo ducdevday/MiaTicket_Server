@@ -108,7 +108,7 @@ namespace MiaTicket.DataAccess.Data
             if (user == null) {
                 return Task.FromResult<User?>(null);
             }
-            user.UserStatus = UserStatus.Active;
+            user.Status = UserStatus.Active;
             var updatedEntity = _context.User.Update(user);
             return Task.FromResult(updatedEntity.Entity);
         }

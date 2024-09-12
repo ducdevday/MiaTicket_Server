@@ -14,7 +14,8 @@
           "MiaTicket.DataAccess": "1.0.0",
           "MiaTicket.Email": "1.0.0",
           "MiaTicket.Setting": "1.0.0",
-          "Microsoft.AspNetCore.Http": "2.2.2"
+          "Microsoft.AspNetCore.Http": "2.2.2",
+          "Microsoft.Extensions.Caching.Memory": "8.0.0"
         },
         "runtime": {
           "MiaTicket.BussinessLogic.dll": {}

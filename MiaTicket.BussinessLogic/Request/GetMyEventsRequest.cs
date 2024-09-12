@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MiaTicket.BussinessLogic.Request
 {
-    public class GetMyEventsRequest
+    public class GetMyEventsRequest : BaseApiRequest
     {
         private string _keyword;
         public string Keyword
@@ -14,7 +14,7 @@ namespace MiaTicket.BussinessLogic.Request
             get => _keyword ?? string.Empty;
             set => _keyword = value;
         }
-        public int Page { get; set; }
-        public int Size { get; set; }
+        public int EventStatus { get; set; }
+
     }
 }
