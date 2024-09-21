@@ -1,4 +1,5 @@
-﻿using MiaTicket.BussinessLogic.Business;
+﻿using Azure.Core;
+using MiaTicket.BussinessLogic.Business;
 using MiaTicket.BussinessLogic.Request;
 using MiaTicket.Data.Entity;
 using MiaTicket.Data.Enum;
@@ -36,8 +37,12 @@ namespace MiaTicket.WebAPI.Controllers
         {
             var result = await _context.Login(request);
             HttpContext.Response.StatusCode = (int)result.StatusCode;
-            if (result.Data != null)
-                HttpContext.Response.Cookies.Append("refreshToken", result.Data.RefreshToken, new CookieOptions
+
+            var refreshToken = HttpContext.Items["refreshToken"]?.ToString();
+
+            if (refreshToken != null)
+            {
+                HttpContext.Response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
                 {
                     HttpOnly = true,
                     Secure = true,
@@ -45,28 +50,9 @@ namespace MiaTicket.WebAPI.Controllers
                     SameSite = SameSiteMode.None,
                     MaxAge = TimeSpan.FromDays(AppConstant.REFRESH_TOKEN_EXPIRE_IN_DAYS)
                 });
+            }
 
-            var formattedResult = new
-            {
-                StatusCode = result.StatusCode,
-                Message = result.Message,
-                Data = result.Data != null ? new
-                {
-                    AccessToken = result.Data.AccessToken,
-                    User = new
-                    {
-                        Id = result.Data.User.Id,
-                        Name = result.Data.User.Name,
-                        AvatarUrl = result.Data.User.AvatarUrl,
-                        BirthDate = result.Data.User.BirthDate,
-                        Email = result.Data.User.Email,
-                        Gender = result.Data.User.Gender,
-                        PhoneNumber = result.Data.User.PhoneNumber,
-                    }
-                } : null
-            };
-
-            return new JsonResult(formattedResult);
+            return new JsonResult(result);
         }
 
         [HttpPatch("activate")]
@@ -117,6 +103,15 @@ namespace MiaTicket.WebAPI.Controllers
         public async Task<IActionResult> UpdateAccount([FromRoute] Guid id, [FromForm] UpdateAccountRequest request)
         {
             var result = await _context.UpdateAccount(id, request);
+            HttpContext.Response.StatusCode = (int)result.StatusCode;
+            return new JsonResult(result);
+        }
+
+        [HttpGet("information")]
+        [UserAuthorize(RequireRoles = [Role.User, Role.Admin])]
+        public async Task<IActionResult> GetAccountInformation() {
+            _ = Guid.TryParse(User.FindFirst("id")?.Value, out Guid userId);
+            var result = await _context.GetAccountInformation(userId);
             HttpContext.Response.StatusCode = (int)result.StatusCode;
             return new JsonResult(result);
         }

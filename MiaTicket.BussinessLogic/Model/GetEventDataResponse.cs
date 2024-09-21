@@ -6,7 +6,6 @@ namespace MiaTicket.BussinessLogic.Model
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public bool IsOffline { get; set; }
         public string AddressName { get; set; }
         public string AddressNo { get; set; }
         public string AddressWard { get; set; }

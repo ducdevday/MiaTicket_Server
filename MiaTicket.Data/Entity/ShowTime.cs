@@ -16,5 +16,7 @@ namespace MiaTicket.Data.Entity
         public Event Event { get; set; }
         public int EventId { get; set; }
         public List<Ticket> Tickets { get; set; }
+        public List<Order>? Orders { get; set; }
+
     }
 }

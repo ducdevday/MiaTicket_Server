@@ -13,9 +13,10 @@ namespace MiaTicket.Data.Entity
         public string Name { get; set; }
         public double Price { get; set; }
         public int Quantity { get; set; }
+        public Ticket Ticket { get; set; }
+        public int TicketId { get; set; }
         public Order Order { get; set; }
         public int OrderId { get; set; }
-        public OrderTicketStatus OrderTicketStatus { get; set; }
 
     }
 }

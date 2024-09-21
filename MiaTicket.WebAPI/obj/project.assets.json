@@ -1986,6 +1986,7 @@
           "MiaTicket.DataAccess": "1.0.0",
           "MiaTicket.Email": "1.0.0",
           "MiaTicket.Setting": "1.0.0",
+          "MiaTicket.VNPay": "1.0.0",
           "Microsoft.AspNetCore.Http": "2.2.2",
           "Microsoft.Extensions.Caching.Memory": "8.0.0"
         },
@@ -2045,6 +2046,20 @@
         },
         "runtime": {
           "bin/placeholder/MiaTicket.Setting.dll": {}
+        }
+      },
+      "MiaTicket.VNPay/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "MiaTicket.Setting": "1.0.0",
+          "Microsoft.AspNetCore.Http": "2.2.2"
+        },
+        "compile": {
+          "bin/placeholder/MiaTicket.VNPay.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/MiaTicket.VNPay.dll": {}
         }
       }
     }
@@ -6207,6 +6222,11 @@
       "type": "project",
       "path": "../MiaTicket.Setting/MiaTicket.Setting.csproj",
       "msbuildProject": "../MiaTicket.Setting/MiaTicket.Setting.csproj"
+    },
+    "MiaTicket.VNPay/1.0.0": {
+      "type": "project",
+      "path": "../MiaTicket.VNPay/MiaTicket.VNPay.csproj",
+      "msbuildProject": "../MiaTicket.VNPay/MiaTicket.VNPay.csproj"
     }
   },
   "projectFileDependencyGroups": {

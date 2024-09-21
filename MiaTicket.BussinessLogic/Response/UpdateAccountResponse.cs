@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace MiaTicket.BussinessLogic.Response
 {
-    public class UpdateAccountResponse : BaseApiResponse<UserDto?>
+    public class UpdateAccountResponse : BaseApiResponse<bool>
     {
-        public UpdateAccountResponse(HttpStatusCode statusCode, string message, UserDto? data) : base(statusCode, message, data)
+        public UpdateAccountResponse(HttpStatusCode statusCode, string message, bool data) : base(statusCode, message, data)
         {
             
         }

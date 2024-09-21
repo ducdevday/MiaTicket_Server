@@ -24,6 +24,8 @@ namespace MiaTicket.BussinessLogic.Business
         Task<GetTrendingEventsResponse> GetTrendingEvents(GetTrendingEventsRequest request);
         Task<GetEventsByCategoryResponse> GetEventsByCategory(GetEventsByCategoryRequest request);
         Task<SearchEventResponse> SearchEvent(SearchEventRequest request);
+        Task<GetEventDetailResponse> GetEventDetail(int id);
+        Task<GetEventBookingResponse> GetEventBooking(int eventId, int showTimeId, List<int>? ticketIds);
     }
 
     public class EventBusiness : IEventBusiness
@@ -115,7 +117,6 @@ namespace MiaTicket.BussinessLogic.Business
                 return new GetEventResponse(HttpStatusCode.BadRequest, "Event Not Found", null);
             }
             var evtDataResponse = _mapper.Map<Event, GetEventDataResponse>(evt);
-            await _context.Commit();
             return new GetEventResponse(HttpStatusCode.OK, "Get Event Successfully", evtDataResponse);
         }
 
@@ -150,6 +151,7 @@ namespace MiaTicket.BussinessLogic.Business
             //    _memoryCache.Set(AppConstant.EVENT_COUNT_KEYWORD, currentCount);
             //}
             //else events = await _context.EventData.GetEvents(userId, request.Keyword, request.EventStatus, request.Page, request.Size, out _);
+
             events = await _context.EventData.GetEvents(userId, request.Keyword, request.EventStatus, request.PageIndex, request.PageSize, out currentCount, false);
             var data = _mapper.Map<List<MyEventDto>>(events);
             return new GetMyEventsResponse(HttpStatusCode.OK, "Get Events Success", data, currentCount);
@@ -162,7 +164,6 @@ namespace MiaTicket.BussinessLogic.Business
             if (!validation.IsValid) return new GetLatestEventsResponse(HttpStatusCode.BadRequest, validation.Message, []);
 
             var evts = await _context.EventData.GetLatestEvent(request.Count) ?? [];
-            await _context.Commit();
             var dataResponse = _mapper.Map<List<LatestEventDto>>(evts);
             return new GetLatestEventsResponse(HttpStatusCode.OK, "Get Lastest Event Successful", dataResponse);
         }
@@ -174,7 +175,6 @@ namespace MiaTicket.BussinessLogic.Business
             if (!validation.IsValid) return new GetTrendingEventsResponse(HttpStatusCode.BadRequest, validation.Message, []);
 
             var evts = await _context.OrderData.GetTrendingEvent(request.Count) ?? [];
-            await _context.Commit();
             var dataResponse = _mapper.Map<List<TrendingEventDto>>(evts);
             return new GetTrendingEventsResponse(HttpStatusCode.OK, "Get Trending Event Successful", dataResponse);
         }
@@ -208,7 +208,33 @@ namespace MiaTicket.BussinessLogic.Business
             var result = await _context.EventData.SearchEvent(request.Keyword, request.PageIndex, request.PageSize, request.Location, FormaterUtil.SearchEventCategories(request.Categories), FormaterUtil.SearchEventPriceRanges(request.PriceRanges), (EventSortType)request.SortBy);
 
             var dataResponse = _mapper.Map<List<SearchEventDto>>(result);
-            return new SearchEventResponse(HttpStatusCode.OK, "Search Event Success", dataResponse);
+            return new SearchEventResponse(HttpStatusCode.OK, "Search Event Succeed", dataResponse);
+        }
+
+        public async Task<GetEventDetailResponse> GetEventDetail(int id)
+        {
+            var evt = await _context.EventData.GetEventById(id);
+            if (evt == null) return new GetEventDetailResponse(HttpStatusCode.BadRequest, "Event Not Exist", null);
+
+            var dataResponse = _mapper.Map<EventDetailDto>(evt);
+            return new GetEventDetailResponse(HttpStatusCode.OK, "Get Event Succeed", dataResponse);
+        }
+
+        public async Task<GetEventBookingResponse> GetEventBooking(int eventId, int showTimeId, List<int>? ticketIds)
+        {
+            Event? evt = null;
+            if (ticketIds == null || ticketIds.Count == 0)
+            {
+                evt = await _context.EventData.GetEventById(eventId, showTimeId);
+            }
+            else
+            {
+                evt = await _context.EventData.GetEventById(eventId, showTimeId, ticketIds);
+            }
+            if (evt == null) return new GetEventBookingResponse(HttpStatusCode.BadRequest, "Event Not Exist", null);
+
+            var dataResponse = _mapper.Map<EventBookingDto>(evt);
+            return new GetEventBookingResponse(HttpStatusCode.OK, "Get Event Succeed", dataResponse);
         }
     }
 }

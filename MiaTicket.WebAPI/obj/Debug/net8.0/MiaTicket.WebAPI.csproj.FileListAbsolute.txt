@@ -84,3 +84,5 @@ E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\Newtonsoft.
 E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\MiaTicket.Email.dll
 E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\MiaTicket.Email.pdb
 E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\AutoMapper.dll
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\MiaTicket.VNPay.dll
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\MiaTicket.VNPay.pdb

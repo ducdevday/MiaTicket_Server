@@ -55,7 +55,6 @@ namespace MiaTicket.BussinessLogic.Business
                 return new GetCategoriesDiscoveryResponse(HttpStatusCode.Conflict, "Get Category List Failed", null);
             }
             var cateList = categories.Select(x => _mapper.Map<CategoryDiscoveryDto>(x)).ToList();
-            await _context.Commit();
             return new GetCategoriesDiscoveryResponse(HttpStatusCode.OK, "Get Category List Success", cateList);
         }
 
@@ -86,7 +85,6 @@ namespace MiaTicket.BussinessLogic.Business
 
             await _context.CategoryData.DeleteCategory(category);
             await _context.Commit();
-
             return new DeleteCategoryResponse(HttpStatusCode.OK, "Category Delete Successfully", true);
 
         }

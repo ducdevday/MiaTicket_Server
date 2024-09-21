@@ -50,10 +50,13 @@ builder.Services.AddTransient<IEventBusiness, EventBusiness>();
 builder.Services.AddTransient<ICategoryBusiness, CategoryBusiness>();
 builder.Services.AddTransient<IBannerBusiness, BannerBusiness>();
 builder.Services.AddTransient<IVnAddressBusiness, VnAddressBusiness>();
+builder.Services.AddTransient<IVNPayInformationBusiness, VNPayInformationBusiness>();
+builder.Services.AddTransient<IOrderBusiness, OrderBusiness>();
 builder.Services.AddSingleton<IAuthorizationHandler, UserAuthorizeHandler>();
 builder.Services.AddSingleton(setting);
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddMemoryCache();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("Angular UI", x =>

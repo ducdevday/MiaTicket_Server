@@ -20,10 +20,9 @@ namespace MiaTicket.Data.Configuration
             builder.Property(x => x.Name).IsRequired().IsUnicode().HasMaxLength(255);
             builder.Property(x => x.Slug).HasComputedColumnSql("LOWER(CONCAT(REPLACE(Name, ' ', '-'), '-', Id))");
             builder.Property(x => x.Description).IsRequired().IsUnicode();
-            builder.Property(x => x.IsOffline).IsRequired();
-            builder.Property(x => x.AddressName).HasMaxLength(255).IsUnicode();
-            builder.Property(x => x.AddressNo).HasMaxLength(255).IsUnicode();
-            builder.Property(x => x.AddressWard).HasMaxLength(255).IsUnicode();
+            builder.Property(x => x.AddressName).IsRequired().HasMaxLength(255).IsUnicode();
+            builder.Property(x => x.AddressNo).IsRequired().HasMaxLength(255).IsUnicode();
+            builder.Property(x => x.AddressWard).IsRequired().HasMaxLength(255).IsUnicode();
             builder.Property(x => x.AddressDistrict).HasMaxLength(255).IsUnicode();
             builder.Property(x => x.BackgroundUrl).IsRequired().HasMaxLength(255);
             builder.Property(x => x.LogoUrl).IsRequired().HasMaxLength(255);

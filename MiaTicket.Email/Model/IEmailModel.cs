@@ -2,9 +2,9 @@
 {
     public interface IEmailModel
     {
-        string Sender { get; set; }
-        string Receiver { get; set; }
-        string Body { get; }
-        string Subject { get; set; }
+        public string Sender { get; set; }
+        public string Receiver { get; set; }
+        public string Body { get; }
+        public string Subject { get; set; }
     }
 }

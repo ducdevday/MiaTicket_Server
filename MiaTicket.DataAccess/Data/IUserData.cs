@@ -16,7 +16,7 @@ namespace MiaTicket.DataAccess.Data
         public Task<bool> IsGenderValid(int Gender);
         public Task<User> CreateAccount(string name, string email, byte[] password, string phoneNumber, DateTime birthDate, int gender);
         public Task<User?> GetAccountByEmail(string email);
-        public Task<User> GetAccountById(Guid uId);
+        public Task<User?> GetAccountById(Guid uId);
         public Task<bool> ChangePassword(Guid uId, byte[] password);
         public Task<User?> UpdateAccount(Guid uId, string name, string phoneNumber, DateTime birthDate, int gender, string? avatarUrl);
         public Task<User?> ActivateAccount(string email);
@@ -69,7 +69,7 @@ namespace MiaTicket.DataAccess.Data
             return Task.FromResult(entity);
         }
 
-        public Task<User> GetAccountById(Guid uId)
+        public Task<User?> GetAccountById(Guid uId)
         {
             return Task.FromResult(_context.User.FirstOrDefault(x => x.Id == uId));
         }

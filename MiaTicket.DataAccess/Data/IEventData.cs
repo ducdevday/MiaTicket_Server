@@ -9,6 +9,8 @@ namespace MiaTicket.DataAccess.Data
     {
         Task<Event> CreateEvent(Event entity);
         Task<Event?> GetEventById(int id);
+        Task<Event?> GetEventById(int eventId, int showTimeId);
+        Task<Event?> GetEventById(int eventId, int showTimeId, List<int> ticketIds);
         Task<bool> IsExistEvent(int id);
         Task<Event> UpdateEvent(Event entity);
         Task DeleteEvent(Event entity);
@@ -46,6 +48,24 @@ namespace MiaTicket.DataAccess.Data
             var evt = _context.Event.Include(e => e.ShowTimes)
                 .ThenInclude(st => st.Tickets).FirstOrDefault(x => x.Id == id);
             return Task.FromResult(evt);
+        }
+
+        public Task<Event?> GetEventById(int eventId, int showTimeId)
+        {
+            var evt = _context.Event.Include(e => e.ShowTimes.Where(x =>x.Id == showTimeId))
+                                    .ThenInclude(st => st.Tickets)
+                                    .FirstOrDefault(e => e.Id == eventId && e.ShowTimes.Any(st => st.Id == showTimeId));
+            return Task.FromResult(evt);
+        }
+
+        public Task<Event?> GetEventById(int eventId, int showTimeId, List<int> ticketIds)
+        {
+            var evt = _context.Event
+                .Include(e => e.ShowTimes.Where(e => e.Id == showTimeId))             
+                .ThenInclude(st => st.Tickets.Where(t => ticketIds.Contains(t.Id)))               
+                .FirstOrDefault(e => e.Id == eventId && e.ShowTimes.Any(st => st.Id == showTimeId && ticketIds.All(x => st.Tickets.Select(t =>t.Id).Contains(x))));
+            return Task.FromResult(evt);
+
         }
 
         public Task<List<Event>> GetEvents(Guid userId, string key, int status, int page, int size, out int count, bool hasCounted = true)

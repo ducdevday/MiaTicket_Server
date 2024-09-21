@@ -17,16 +17,5 @@ namespace MiaTicket.BussinessLogic.Model
         public string Email { get; set; }
         public Gender Gender { get; set; }
         public string PhoneNumber { get; set; }
-
-        public UserDto(User user)
-        {
-            Id = user.Id;
-            Name = user.Name;
-            AvatarUrl = user.AvatarUrl;
-            BirthDate = user.BirthDate;
-            Email = user.Email;
-            Gender = user.Gender;
-            PhoneNumber = user.PhoneNumber;
-        }
     }
 }

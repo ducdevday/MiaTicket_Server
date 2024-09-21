@@ -1,4 +1,5 @@
-﻿using MiaTicket.BussinessLogic.Business;
+﻿using Azure.Core;
+using MiaTicket.BussinessLogic.Business;
 using MiaTicket.BussinessLogic.Request;
 using MiaTicket.Data.Enum;
 using MiaTicket.WebAPI.Policy;
@@ -84,6 +85,20 @@ namespace MiaTicket.WebAPI.Controllers
         public async Task<IActionResult> SearchEvent([FromQuery] SearchEventRequest request)
         {
             var result = await _context.SearchEvent(request);
+            HttpContext.Response.StatusCode = (int)result.StatusCode;
+            return new JsonResult(result);
+        }
+        [HttpGet("detail/{id}")]
+        public async Task<IActionResult> GetEventDetail([FromRoute] int id) {
+            var result = await _context.GetEventDetail(id);
+            HttpContext.Response.StatusCode = (int)result.StatusCode;
+            return new JsonResult(result);
+        }
+
+        [HttpGet("detail/{eventId}/showtime/{showTimeId}")]
+        public async Task<IActionResult> GetEventBooking([FromRoute] int eventId, [FromRoute] int showTimeId, [FromQuery] List<int>? ticketIds)
+        {
+            var result = await _context.GetEventBooking(eventId, showTimeId, ticketIds);
             HttpContext.Response.StatusCode = (int)result.StatusCode;
             return new JsonResult(result);
         }

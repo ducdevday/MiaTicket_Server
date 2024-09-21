@@ -1,4 +1,6 @@
-﻿using MiaTicket.BussinessLogic.Model;
+﻿using AutoMapper;
+using Azure.Core;
+using MiaTicket.BussinessLogic.Model;
 using MiaTicket.BussinessLogic.Request;
 using MiaTicket.BussinessLogic.Response;
 using MiaTicket.BussinessLogic.Validation;
@@ -8,6 +10,7 @@ using MiaTicket.Email;
 using MiaTicket.Email.Model;
 using MiaTicket.Email.Template;
 using MiaTicket.WebAPI.Constant;
+using Microsoft.AspNetCore.Http;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
@@ -23,6 +26,7 @@ namespace MiaTicket.BussinessLogic.Business
         public Task<ResetPasswordResponse> ResetPassword(ResetPasswordRequest request);
         public Task<UpdateAccountResponse> UpdateAccount(Guid id, UpdateAccountRequest request);
         public Task<ActivateAccountResponse> ActivateAccount(ActivateAccountRequest request);
+        public Task<GetAccountInformationResponse> GetAccountInformation(Guid userId);
     }
 
     public class AccountBusiness : IAccountBusiness
@@ -32,13 +36,16 @@ namespace MiaTicket.BussinessLogic.Business
         private readonly ITokenBusiness _tokenBusiness;
         private readonly IVerifyCodeBusiness _verifyCodeBusiness;
         private readonly ICloudinaryBusiness _cloudinaryBusiness;
-
-        public AccountBusiness(IDataAccessFacade context, ITokenBusiness tokenBusiness, IVerifyCodeBusiness verifyCodeBusiness, ICloudinaryBusiness cloudinaryBusiness)
+        private readonly IMapper _mapper;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public AccountBusiness(IDataAccessFacade context, ITokenBusiness tokenBusiness, IVerifyCodeBusiness verifyCodeBusiness, ICloudinaryBusiness cloudinaryBusiness, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _tokenBusiness = tokenBusiness;
             _verifyCodeBusiness = verifyCodeBusiness;
             _cloudinaryBusiness = cloudinaryBusiness;
+            _mapper = mapper;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<CreateAccountResponse> CreateAccount(CreateAccountRequest request)
@@ -82,6 +89,7 @@ namespace MiaTicket.BussinessLogic.Business
             {
                 return new LoginResponse(HttpStatusCode.BadRequest, validation.Message, null);
             }
+
             bool isEmailExist = await _context.UserData.IsEmailExist(request.Email);
             if (!isEmailExist)
             {
@@ -103,13 +111,16 @@ namespace MiaTicket.BussinessLogic.Business
             {
                 return new LoginResponse(HttpStatusCode.Forbidden, "Email Not Verified", null);
             }
+
             string accessToken = await _tokenBusiness.GenerateAccessToken(user.Id.ToString(), user.Email, Enum.GetName(typeof(Role), user.Role));
-            var refreshToken = await _tokenBusiness.GenerateRefreshToken(user.Id.ToString(), user.Email, Enum.GetName(typeof(Role), user.Role));
+            string refreshToken = await _tokenBusiness.GenerateRefreshToken(user.Id.ToString(), user.Email, Enum.GetName(typeof(Role), user.Role));
             await _context.RefreshTokenData.SaveToken(refreshToken, user.Id);
             await _context.Commit();
 
-            return new LoginResponse(HttpStatusCode.OK, "Login Successfully", new LoginDataResponse(new UserDto(user), accessToken, refreshToken));
+            _httpContextAccessor.HttpContext.Items["refreshToken"] = refreshToken;
+            return new LoginResponse(HttpStatusCode.OK, "Login Successfully", new LoginDataResponse(user.Id, accessToken));
         }
+
 
         public async Task<LogoutResponse> Logout(LogoutRequest request)
         {
@@ -182,19 +193,19 @@ namespace MiaTicket.BussinessLogic.Business
             validation.Validate();
             if (!validation.IsValid)
             {
-                return new UpdateAccountResponse(HttpStatusCode.BadRequest, validation.Message, null);
+                return new UpdateAccountResponse(HttpStatusCode.BadRequest, validation.Message, false);
             }
 
             bool isGenderValid = await _context.UserData.IsGenderValid(request.Gender);
             if (!isGenderValid)
             {
-                return new UpdateAccountResponse(HttpStatusCode.BadRequest, "Invalid request", null);
+                return new UpdateAccountResponse(HttpStatusCode.BadRequest, "Invalid request", false);
             }
 
             var user = await _context.UserData.GetAccountById(id);
             if (user == null)
             {
-                return new UpdateAccountResponse(HttpStatusCode.Conflict, "Account does not exist", null);
+                return new UpdateAccountResponse(HttpStatusCode.Conflict, "Account does not exist", false);
             }
             string? avatarUrl = null;
             if (request.AvatarFile != null) {
@@ -203,10 +214,8 @@ namespace MiaTicket.BussinessLogic.Business
 
             var updatedUser = await _context.UserData.UpdateAccount(id, request.Name, request.PhoneNumber, request.BirthDate, request.Gender, avatarUrl );
             await _context.Commit();
-            if(updatedUser != null)
-            return new UpdateAccountResponse(HttpStatusCode.OK, "Update Account SuccessFully", new UserDto(updatedUser));
 
-            return new UpdateAccountResponse(HttpStatusCode.Conflict, "Account does not exist", null);
+            return new UpdateAccountResponse(HttpStatusCode.OK, "Update Account Success", true);
         }
 
         public async Task<ActivateAccountResponse> ActivateAccount(ActivateAccountRequest request)
@@ -235,6 +244,17 @@ namespace MiaTicket.BussinessLogic.Business
             return new ActivateAccountResponse(HttpStatusCode.OK, "Account Verify Success", true);
         }
 
+        public async Task<GetAccountInformationResponse> GetAccountInformation(Guid userId)
+        {
+            var user = await _context.UserData.GetAccountById(userId);
+            if (user == null)
+            {
+                return new GetAccountInformationResponse(HttpStatusCode.BadRequest, "Get Account Information Failed", null);
+            }
+            var dataResponse = _mapper.Map<UserDto>(user);
+            return new GetAccountInformationResponse(HttpStatusCode.OK, "Get Account Information Succeed", dataResponse);
+        }
+
         private byte[] HashPassword(string value)
         {
             string hashedPassword = BCrypt.Net.BCrypt.HashPassword(value);
@@ -248,6 +268,5 @@ namespace MiaTicket.BussinessLogic.Business
             string hashedPassword = Encoding.UTF8.GetString(hashedBytes);
             return BCrypt.Net.BCrypt.Verify(raw, hashedPassword);
         }
-
     }
 }

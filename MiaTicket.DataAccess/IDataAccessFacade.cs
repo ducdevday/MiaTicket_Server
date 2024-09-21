@@ -22,6 +22,7 @@ namespace MiaTicket.DataAccess
         public IVoucherPercentageData VoucherPercentage {  get; }
         public IRefreshTokenData RefreshTokenData { get; }
         public IVerifyCodeData VerifyCodeData { get; }
+        public IVNPayInformationData VNPayInformationData { get; }
         public Task Commit();
     }
 
@@ -138,6 +139,15 @@ namespace MiaTicket.DataAccess
             {
                 _verifyCodeData ??= new  VerifyCodeData(_context);
                 return _verifyCodeData;
+            }
+        }
+        private VNPayData _vnPayInformationData; 
+        public IVNPayInformationData VNPayInformationData
+        {
+            get 
+            { 
+                _vnPayInformationData ??= new VNPayData (_context);
+                return _vnPayInformationData;
             }
         }
 

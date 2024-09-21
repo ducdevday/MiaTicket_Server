@@ -14,6 +14,7 @@
           "MiaTicket.DataAccess": "1.0.0",
           "MiaTicket.Email": "1.0.0",
           "MiaTicket.Setting": "1.0.0",
+          "MiaTicket.VNPay": "1.0.0",
           "Microsoft.AspNetCore.Http": "2.2.2",
           "Microsoft.Extensions.Caching.Memory": "8.0.0"
         },
@@ -1065,6 +1066,15 @@
         "runtime": {
           "MiaTicket.Setting.dll": {}
         }
+      },
+      "MiaTicket.VNPay/1.0.0": {
+        "dependencies": {
+          "MiaTicket.Setting": "1.0.0",
+          "Microsoft.AspNetCore.Http": "2.2.2"
+        },
+        "runtime": {
+          "MiaTicket.VNPay.dll": {}
+        }
       }
     }
   },
@@ -1860,6 +1870,11 @@
       "sha512": ""
     },
     "MiaTicket.Setting/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "MiaTicket.VNPay/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

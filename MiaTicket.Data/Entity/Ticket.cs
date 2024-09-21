@@ -18,6 +18,6 @@ namespace MiaTicket.Data.Entity
         public string? Description { get; set; }
         public ShowTime ShowTime { get; set; }
         public int ShowTimeId { get; set; }
-
+        public List<OrderTicket>? OrderTickets {get;set;}
     }
 }

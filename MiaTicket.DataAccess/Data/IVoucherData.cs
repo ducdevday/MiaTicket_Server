@@ -9,6 +9,7 @@ namespace MiaTicket.DataAccess.Data
 {
     public interface IVoucherData
     {
+
     }
 
     public class VoucherData : IVoucherData

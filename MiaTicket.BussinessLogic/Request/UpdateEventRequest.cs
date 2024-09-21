@@ -11,7 +11,6 @@ namespace MiaTicket.BussinessLogic.Request
     public class UpdateEventRequest
     {
         public string Name { get; set; }
-        public bool IsOffline { get; set; }
         public string AddressName { get; set; }
         public string AddressNo { get; set; }
         public string AddressWard { get; set; }

@@ -8,12 +8,11 @@ namespace MiaTicket.Data.Entity
         public string Name { get; set; }
         public string Slug { get; set; }
         public string Description { get; set; }
-        public bool IsOffline { get; set; }
-        public string? AddressName { get; set; }
-        public string? AddressNo { get; set; }
-        public string? AddressWard { get; set; }
-        public string? AddressDistrict { get; set; }
-        public string? AddressProvince { get; set; }
+        public string AddressName { get; set; }
+        public string AddressNo { get; set; }
+        public string AddressWard { get; set; }
+        public string AddressDistrict { get; set; }
+        public string AddressProvince { get; set; }
         public string BackgroundUrl { get; set; }
         public string LogoUrl { get; set; }
         public string OrganizerName { get; set; }
@@ -34,6 +33,6 @@ namespace MiaTicket.Data.Entity
         public int CategoryId { get; set; }
         public User User { get; set; }  
         public Guid UserId { get; set; }
-        public Order Order { get; set; }
+        public List<Order>? Orders { get; set; }
     }
 }

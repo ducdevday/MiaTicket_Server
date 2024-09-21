@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MiaTicket.Data.Enum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,9 +17,8 @@ namespace MiaTicket.Data.Entity
         public int? TotalLimit { get; set; }
         public int? MinQuanityPerOrder { get; set; }
         public int? MaxQuanityPerOrder { get; set; }
-        public bool IsPercentage { get; set; }
-        public VoucherPercentage? VoucherPercentage { get; set; }
-        public VoucherFixedAmount? VoucherFixedAmount { get; set; }
+        public VoucherType Type { get; set; }
+        public double Value { get; set; }
         public Event Event { get; set; }
         public int EventId { get; set; }
     }

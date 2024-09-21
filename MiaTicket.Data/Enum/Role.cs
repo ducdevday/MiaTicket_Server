@@ -9,6 +9,6 @@ namespace MiaTicket.Data.Enum
     public enum Role
     {
         User,
-        Admin
+        Admin,
     }
 }

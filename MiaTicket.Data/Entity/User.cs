@@ -18,10 +18,11 @@ namespace MiaTicket.Data.Entity
         public byte[] Password { get; set; }
         public string PhoneNumber { get; set; }
         public UserStatus Status { get; set; }
-        public List<VerifyCode>? VerifyCodes { get; set; }
         public Role Role { get; set; }
-        public Order? Order { get; set; }
-        public List<Event>? Events { get; set; }
+        public List<VerifyCode>? VerifyCodes { get; set; }
+
         public List<RefreshToken>? RefreshTokens { get; set; }
+        public List<Order>? Orders { get; set; }
+        public List<Event>? Events { get; set; }
     }
 }
