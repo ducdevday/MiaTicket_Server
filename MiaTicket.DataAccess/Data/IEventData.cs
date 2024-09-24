@@ -71,7 +71,7 @@ namespace MiaTicket.DataAccess.Data
         public Task<List<Event>> GetEvents(Guid userId, string key, int status, int page, int size, out int count, bool hasCounted = true)
         {
             count = 0;
-            var query = _context.Event.Include(e => e.ShowTimes).Where(x => x.UserId == userId && x.Name.Contains(key) && x.Status == (EventStatus)status);
+            var query = _context.Event.Include(e => e.ShowTimes).Where(x => x.UserId == userId && x.Name.Contains(key) && x.Status == (EventStatus)status).OrderByDescending(x => x.CreatedAt);
             if (!hasCounted) count = query.Count();
             var evts = query.Skip((page - 1) * size).Take(size).ToList();
 

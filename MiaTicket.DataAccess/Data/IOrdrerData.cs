@@ -39,7 +39,7 @@ namespace MiaTicket.DataAccess.Data
 
         public Task<List<Order>> GetOrders(Guid userId, int pageIndex, int pageSize, string keyword, OrderStatus orderStatus, out int totalPages)
         {
-            var query = _context.Order.Include(x => x.OrderTickets).Include(x =>x.VnPayInformation).Where(x => x.EventName.Contains(keyword) && x.OrderStatus == orderStatus && x.UserId == userId);
+            var query = _context.Order.Include(x => x.OrderTickets).Include(x =>x.VnPayInformation).Where(x => x.EventName.Contains(keyword) && x.OrderStatus == orderStatus && x.UserId == userId).OrderByDescending(x => x.CreatedAt);
             totalPages = query.Count();
 
             var orders = query.Skip(pageIndex - 1).Take(pageSize).ToList();

@@ -30,7 +30,7 @@ namespace MiaTicket.Data.Configuration
             builder.Property(x => x.Quantity).IsRequired();
             builder.Property(x => x.MinimumPurchase).IsRequired();
             builder.Property(x => x.MaximumPurchase).IsRequired();
-            builder.Property(x => x.Description).HasMaxLength(50).IsUnicode();
+            builder.Property(x => x.Description).HasMaxLength(255).IsUnicode();
             builder.HasOne(x => x.ShowTime).WithMany(x => x.Tickets).HasForeignKey(x => x.ShowTimeId);
         }
     }

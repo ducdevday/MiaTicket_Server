@@ -15,7 +15,7 @@ namespace MiaTicket.BussinessLogic.Request
         public string ReceiverEmail { get; set; }
         public string ReceiverPhoneNumber { get; set; }
         public int ShowTimeId { get; set; }
-        public string? VoucherCode { get; set; }
+        public int? VoucherId { get; set; }
         public PaymentType PaymentType { get; set; }
         public List<OrderTicketDto> OrderTickets { get; set; }
     }

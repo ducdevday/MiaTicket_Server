@@ -14,6 +14,7 @@ namespace MiaTicket.BussinessLogic.Model
         public string EventName { get; set; }
         public DateTime ShowTimeStart { get; set; }
         public DateTime ShowTimeEnd { get; set; }
+        public DateTime CreatedAt { get; set; }
         public string AddressName { get; set; }
         public string AddressDetail { get; set; }
         public List<OrderTicketDetailDto> OrderTickets { get; set; }

@@ -47,7 +47,7 @@ namespace MiaTicket.WebAPI.Middleware
 
                 var result = JsonSerializer.Serialize(new
                 {
-                    message = ex?.Message,
+                    //message = ex?.Message,
                     statusCode = response.StatusCode
                 });
                 await response.WriteAsync(result);

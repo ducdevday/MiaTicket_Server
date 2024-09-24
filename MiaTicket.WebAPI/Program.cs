@@ -52,6 +52,7 @@ builder.Services.AddTransient<IBannerBusiness, BannerBusiness>();
 builder.Services.AddTransient<IVnAddressBusiness, VnAddressBusiness>();
 builder.Services.AddTransient<IVNPayInformationBusiness, VNPayInformationBusiness>();
 builder.Services.AddTransient<IOrderBusiness, OrderBusiness>();
+builder.Services.AddTransient<IVoucherBusiness, VoucherBusiness>();
 builder.Services.AddSingleton<IAuthorizationHandler, UserAuthorizeHandler>();
 builder.Services.AddSingleton(setting);
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));

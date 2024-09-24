@@ -416,9 +416,9 @@ namespace MiaTicket.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .HasMaxLength(50)
+                        .HasMaxLength(255)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int>("MaximumPurchase")
                         .HasColumnType("int");
@@ -593,10 +593,13 @@ namespace MiaTicket.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("AppliedQuantity")
+                        .HasColumnType("int");
+
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
+                        .HasMaxLength(12)
+                        .HasColumnType("nvarchar(12)");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
@@ -604,10 +607,13 @@ namespace MiaTicket.Data.Migrations
                     b.Property<int>("EventId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("MaxQuanityPerOrder")
+                    b.Property<int?>("InitQuantity")
                         .HasColumnType("int");
 
-                    b.Property<int?>("MinQuanityPerOrder")
+                    b.Property<int?>("MaxQuantityPerOrder")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MinQuantityPerOrder")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -619,9 +625,6 @@ namespace MiaTicket.Data.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("TotalLimit")
-                        .HasColumnType("int");
-
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
@@ -629,6 +632,9 @@ namespace MiaTicket.Data.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
 
                     b.HasIndex("EventId");
 

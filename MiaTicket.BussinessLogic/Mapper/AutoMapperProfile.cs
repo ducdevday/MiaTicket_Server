@@ -107,6 +107,7 @@ namespace MiaTicket.BussinessLogic.Mapper
                                         .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.BackgroundUrl))
                                         .ForMember(dest => dest.ShowTimeStart, opt => opt.MapFrom(src => src.DateStart))
                                         .ForMember(dest => dest.ShowTimeEnd, opt => opt.MapFrom(src => src.DateEnd))
+                                        .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
                                         .ForMember(dest => dest.AddressName, opt => opt.MapFrom(src => src.AddressName))
                                         .ForMember(dest => dest.AddressDetail, opt => opt.MapFrom(src => src.AddressDetail))
                                         .ForMember(dest => dest.OrderTickets, opt => opt.MapFrom(src => src.OrderTickets))
@@ -123,6 +124,21 @@ namespace MiaTicket.BussinessLogic.Mapper
                                         .ForMember(dest => dest.ReceiverEmail, opt => opt.MapFrom(src => src.OrderStatus == OrderStatus.Finished ? src.ReceiverEmail : null))
                                         .ForMember(dest => dest.ReceiverPhoneNumber, opt => opt.MapFrom(src => src.OrderStatus == OrderStatus.Finished ? src.ReceiverPhoneNumber : null));
 
+            //**********************************************Voucher MAPPER**************************************************************
+            CreateMap<CreateVoucherRequest, Voucher>()
+                                        .ForMember(dest => dest.InitQuantity, opt => opt.MapFrom(src => src.Quantity))
+                                        .ForMember(dest => dest.AppliedQuantity, opt => opt.MapFrom(src => src.Quantity == null ? (int?)null : 0));
+
+            CreateMap<UpdateVoucherRequest, Voucher>()
+                            .ForMember(dest => dest.InitQuantity, opt => opt.MapFrom(src => src.Quantity));
+            CreateMap<Voucher, VoucherDto>();
+
+            CreateMap<Voucher, VoucherDiscoveryDto>()
+                                        .ForMember(dest => dest.IsAvailable, opt => opt.MapFrom(src => src.AppliedQuantity != null && src.InitQuantity != null ?  src.AppliedQuantity < src.InitQuantity : true && DateTime.UtcNow > src.StartDate && DateTime.UtcNow < src.EndDate));
+                                        
+
+            CreateMap<Voucher, SearchVoucherDto>();
+                                        
         }
     }
 }

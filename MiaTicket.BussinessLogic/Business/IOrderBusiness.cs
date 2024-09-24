@@ -72,6 +72,19 @@ namespace MiaTicket.BussinessLogic.Business
                     return new CreateOrderResponse(HttpStatusCode.Conflict, "Tickets have invalid quantity", string.Empty);
             }
 
+            Voucher? voucher = null;
+            if (request.VoucherId != null)
+            {
+                voucher = await _context.VoucherData.GetVoucherById((int)request.VoucherId);
+
+                if(voucher != null){
+                    if(voucher.EventId != request.EventId)
+                            return new CreateOrderResponse(HttpStatusCode.Conflict, "Voucher Not Valid", string.Empty);
+                    voucher.AppliedQuantity++;
+                    var updatedVoucher = await _context.VoucherData.UpdateVoucher(voucher); 
+                }
+            }
+
             var order = _mapper.Map<Order>(request);
             order.EventName = selectedEvent.Name;
             order.AddressName = selectedEvent.AddressName ?? "";
@@ -86,8 +99,6 @@ namespace MiaTicket.BussinessLogic.Business
             order.QrCode = GenerateQrCode(8);
             order.UserId = userId;
 
-
-
             foreach (var orderTicket in order.OrderTickets)
             {
                 var ticket = selectedTickets.FirstOrDefault(t => t.Id == orderTicket.TicketId);
@@ -101,9 +112,8 @@ namespace MiaTicket.BussinessLogic.Business
                 }
             }
 
-            //TODO: Tạm thời chưa xử lý phần voucher nên code tạm
-            var pricingStrategy = OrderPricingFactory.GetPriceStragegy(null);
-            var totalPrice = pricingStrategy.CalculateTotalPrice(order.OrderTickets, 0);
+            var pricingStrategy = OrderPricingFactory.GetPriceStragegy(voucher?.Type);
+            var totalPrice = pricingStrategy.CalculateTotalPrice(order.OrderTickets, voucher?.Value ?? 0);
             order.TotalPrice = totalPrice;
 
             var paymentUrl = string.Empty;
@@ -119,7 +129,6 @@ namespace MiaTicket.BussinessLogic.Business
                     return new CreateOrderResponse(HttpStatusCode.InternalServerError, "Payment GateWay Error", string.Empty);
                 }
             }
-
             await _context.OrderData.CreateOrder(order);
             await _context.Commit();
             return new CreateOrderResponse(HttpStatusCode.OK, "Order created successfully", paymentUrl);
