@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiaTicket.Setting", "MiaTic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiaTicket.Email", "MiaTicket.Email\MiaTicket.Email.csproj", "{CB67FE10-BCE4-42B4-9D0D-D272124357B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiaTicket.VNPay", "MiaTicket.VNPay\MiaTicket.VNPay.csproj", "{EC05415A-7E1D-4FB4-BC87-7DFD470F69F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiaTicket.VNPay", "MiaTicket.VNPay\MiaTicket.VNPay.csproj", "{EC05415A-7E1D-4FB4-BC87-7DFD470F69F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiaTicket.ZaloPay", "MiaTicket.ZaloPay\MiaTicket.ZaloPay.csproj", "{74CA9550-0368-4EFE-8933-BA709CA20DEF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{EC05415A-7E1D-4FB4-BC87-7DFD470F69F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC05415A-7E1D-4FB4-BC87-7DFD470F69F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC05415A-7E1D-4FB4-BC87-7DFD470F69F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74CA9550-0368-4EFE-8933-BA709CA20DEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74CA9550-0368-4EFE-8933-BA709CA20DEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74CA9550-0368-4EFE-8933-BA709CA20DEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74CA9550-0368-4EFE-8933-BA709CA20DEF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,61 +1,49 @@
-﻿using MiaTicket.Setting;
-using MiaTicket.VNPay.Constant;
+﻿using MiaTicket.VNPay.Config;
 using MiaTicket.VNPay.Library;
+using MiaTicket.VNPay.Model;
+using MiaTicket.VNPay.Response;
 using MiaTicket.VNPay.Util;
 using Microsoft.AspNetCore.Http;
-using System.Net;
+using Microsoft.Extensions.Options;
 using System.Net.Http.Headers;
-using System.Text.Json;
 using System.Text;
-using MiaTicket.VNPay.Response;
-using MiaTicket.VNPay.Model;
+using System.Text.Json;
 
 namespace MiaTicket.VNPay
 {
-    public class VNPayService
+    public interface IVNPayService {
+        CreatePaymentResult CreatePayment(double totalPrice);
+        Task<QueryPaymentResult?> QueryPaymentAsync(string transactionCode, string transactionDate);
+    }
+    public class VNPayService : IVNPayService
     {
-        private static VNPayService _instance;
-        private static object _lock = new object();
-        private EnviromentSetting _setting = EnviromentSetting.GetInstance();
-        private HttpClient _httpClient;
-        private VNPayService()
-        {
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly HttpClient _httpClient;
+        private readonly VNPayConfig _vnpayConfig;
 
+        public VNPayService(IHttpContextAccessor httpContextAccessor, HttpClient httpClient, IOptions<VNPayConfig> vnpayConfig)
+        {
+            _httpContextAccessor = httpContextAccessor;
+            _httpClient = httpClient;
+            _vnpayConfig = vnpayConfig.Value;
         }
 
-        public static VNPayService GetInstance()
-        {
-            if (_instance == null)
-            {
-                lock (_lock)
-                {
-                    if (_instance == null)
-                    {
-                        _instance = new VNPayService();
-                        _instance._httpClient = new HttpClient();
-                    }
-                    return _instance;
-                }
-            }
-            return _instance;
-        }
-
-        public CreatePaymentResult CreatePayment(IHttpContextAccessor httpContextAccessor, double totalPrice)
+        public CreatePaymentResult CreatePayment(double totalPrice)
         {
             var vnPayLibrary = new VNPayLibrary();
             var createdAt = DateTime.Now;
-            var expireAt = createdAt.AddMinutes(VNPayConstant.VNPAY_EXPIRE_IN_MINUTE);
+            var expireAt = createdAt.AddMinutes(_vnpayConfig.ExpireInMinute);
 
             var createdUTCAt = DateTime.UtcNow;
-            var expireUTCAt = createdUTCAt.AddMinutes(VNPayConstant.VNPAY_EXPIRE_IN_MINUTE);
+            var expireUTCAt = createdUTCAt.AddMinutes(_vnpayConfig.ExpireInMinute);
 
-            string vnp_Returnurl = _setting.GetVnPayReturnUrl(); //URL nhan ket qua tra ve 
-            string vnp_Url = VNPayConstant.VNPAY_URL; //URL thanh toan cua VNPAY 
-            string vnp_TmnCode = _setting.GetVnPayTMNCode(); //Ma website
-            string vnp_HashSecret = _setting.GetVnPaySecretKey(); //Chuoi bi mat
-            string vnp_Version = VNPayConstant.VNPAY_VERSION;
+            string vnp_Returnurl = _vnpayConfig.ReturnUrl; //URL nhan ket qua tra ve 
+            string vnp_Url = _vnpayConfig.PaymentUrl; //URL thanh toan cua VNPAY 
+            string vnp_TmnCode = _vnpayConfig.TmnCode; //Ma website
+            string vnp_HashSecret = _vnpayConfig.HashSecret; //Chuoi bi mat
+            string vnp_Version = _vnpayConfig.Version;
             var vnp_CreateDate = createdAt.ToString("yyyyMMddHHmmss");
-            string vnp_IpAddr = VNPayUtil.GetIpAddress(httpContextAccessor);
+            string vnp_IpAddr = VNPayUtil.GetIpAddress(_httpContextAccessor);
             var vnp_Amount = (totalPrice * 100).ToString();
             var vnp_CurrCode = "VND";
             var vnp_OrderType = "other";
@@ -91,19 +79,19 @@ namespace MiaTicket.VNPay
             return result;
         }
 
-        public async Task<QueryPaymentResult?> QueryPaymentAsync(IHttpContextAccessor httpContextAccessor, string transactionCode, string transactionDate)
+        public async Task<QueryPaymentResult?> QueryPaymentAsync(string transactionCode, string transactionDate)
         {
-            var vnp_Api = VNPayConstant.VNPAY_API;
-            var vnp_HashSecret = _setting.GetVnPaySecretKey(); //Secret KEy
-            var vnp_TmnCode = _setting.GetVnPayTMNCode(); // Terminal Id
+            var vnp_Api = _vnpayConfig.PaymentApi;
+            var vnp_HashSecret = _vnpayConfig.HashSecret; //Secret KEy
+            var vnp_TmnCode = _vnpayConfig.TmnCode; // Terminal Id
             var vnp_RequestId = DateTime.Now.Ticks.ToString(); //Mã hệ thống merchant tự sinh ứng với mỗi yêu cầu truy vấn giao dịch. Mã này là duy nhất dùng để phân biệt các yêu cầu truy vấn giao dịch. Không được trùng lặp trong ngày.
-            var vnp_Version = VNPayConstant.VNPAY_VERSION; //2.1.0
+            var vnp_Version = _vnpayConfig.Version; //2.1.0
             var vnp_Command = "querydr";
             var vnp_TxnRef = transactionCode; // Mã giao dịch thanh toán tham chiếu
             var vnp_OrderInfo = "Truy van giao dich:" + transactionCode;
             var vnp_TransactionDate = transactionDate;
             var vnp_CreateDate = DateTime.Now.ToString("yyyyMMddHHmmss");
-            var vnp_IpAddr = VNPayUtil.GetIpAddress(httpContextAccessor);
+            var vnp_IpAddr = VNPayUtil.GetIpAddress(_httpContextAccessor);
 
             var signData = vnp_RequestId + "|" + vnp_Version + "|" + vnp_Command + "|" + vnp_TmnCode + "|" + vnp_TxnRef + "|" + vnp_TransactionDate + "|" + vnp_CreateDate + "|" + vnp_IpAddr + "|" + vnp_OrderInfo;
             var vnp_SecureHash = VNPayUtil.HmacSHA512(vnp_HashSecret, signData);

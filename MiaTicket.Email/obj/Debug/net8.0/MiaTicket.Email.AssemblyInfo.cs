@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MiaTicket.Email")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2687fe0eaddc932a6b84d49e2f4737fba34b29c2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6a76f7708ec193d5cddda45c2e19a98a9852ac95")]
 [assembly: System.Reflection.AssemblyProductAttribute("MiaTicket.Email")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MiaTicket.Email")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

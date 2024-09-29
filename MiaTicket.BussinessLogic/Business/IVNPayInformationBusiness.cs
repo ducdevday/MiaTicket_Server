@@ -31,19 +31,20 @@ namespace MiaTicket.BussinessLogic.Business
         private readonly IDataAccessFacade _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMapper _mapper;
-        private readonly VNPayService _vnPayService = VNPayService.GetInstance();
+        private readonly IVNPayService _vnPayService;
         private readonly EmailService _emailService = EmailService.GetInstance();
 
-        public VNPayInformationBusiness(IDataAccessFacade context, IHttpContextAccessor httpContextAccessor, IMapper mapper)
+        public VNPayInformationBusiness(IDataAccessFacade context, IHttpContextAccessor httpContextAccessor, IMapper mapper, IVNPayService vnPayService)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
+            _vnPayService = vnPayService;
         }
 
         public VnPayInformation? CreatePayment(double totalPrice)
         {
-            var paymentInformation = _vnPayService.CreatePayment(_httpContextAccessor, totalPrice);
+            var paymentInformation = _vnPayService.CreatePayment(totalPrice);
             if (paymentInformation == null) return null;
             var vnPayInformation = _mapper.Map<VnPayInformation>(paymentInformation);
             return vnPayInformation;
@@ -62,7 +63,7 @@ namespace MiaTicket.BussinessLogic.Business
             // In case User Paid Success But Call This API AGAIN
             if (vnPayInformation.PaymentStatus == PaymentStatus.Paid) return new UpdatePaymentVnPayResponse(HttpStatusCode.OK, "Payment Succeed", _mapper.Map<VnPayInformationDto>(vnPayInformation));
 
-            var queryResult = await _vnPayService.QueryPaymentAsync(_httpContextAccessor, request.TransactionCode, request.TransactionDate);
+            var queryResult = await _vnPayService.QueryPaymentAsync(request.TransactionCode, request.TransactionDate);
 
             if(queryResult == null) return new UpdatePaymentVnPayResponse(HttpStatusCode.BadRequest, "Payment Information Not Found", null);
 

@@ -30,9 +30,6 @@ namespace MiaTicket.Setting
         private static int _smtpPort = 587;
         private static string _smtpEmail = string.Empty;
         private static string _smtpAppPassword = string.Empty;
-        private static string _vnpaySecretKey = string.Empty;
-        private static string _vnpayTMNCode = string.Empty;
-        private static string _vnpayReturnUrl = string.Empty;
         private EnviromentSetting() { }
 
         public static EnviromentSetting GetInstance()
@@ -55,9 +52,6 @@ namespace MiaTicket.Setting
                         int.TryParse(Environment.GetEnvironmentVariable(SMTP_PORT), out _smtpPort);
                         _smtpEmail = Environment.GetEnvironmentVariable(SMTP_EMAIL);
                         _smtpAppPassword = Environment.GetEnvironmentVariable(SMTP_APP_PASSWORD);
-                        _vnpaySecretKey = Environment.GetEnvironmentVariable(VNPAY_SECRET_KEY);
-                        _vnpayTMNCode = Environment.GetEnvironmentVariable(VNPAY_TMN_CODE);
-                        _vnpayReturnUrl = Environment.GetEnvironmentVariable(VNPAY_RETURN_URL);
                     }
                 }
             }
@@ -73,10 +67,5 @@ namespace MiaTicket.Setting
         public int GetSMTPPort() => _smtpPort;
         public string GetSMTPEmail() => _smtpEmail;
         public string GetSMTPAppPassword() => _smtpAppPassword;
-        public string GetVnPaySecretKey() => _vnpaySecretKey;
-        public string GetVnPayTMNCode() => _vnpayTMNCode;
-        public string GetVnPayReturnUrl() => _vnpayReturnUrl;
     }
-
-
 }

@@ -2,6 +2,8 @@ using MiaTicket.BussinessLogic.Business;
 using MiaTicket.BussinessLogic.Mapper;
 using MiaTicket.DataAccess;
 using MiaTicket.Setting;
+using MiaTicket.VNPay;
+using MiaTicket.VNPay.Config;
 using MiaTicket.WebAPI.Middleware;
 using MiaTicket.WebAPI.Policy;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -37,9 +39,10 @@ builder.Services.AddSwaggerGen(x =>
                     }
                 },
                 new string[] { }
-            }
-        });
+        }
+    });
 });
+builder.Services.Configure<VNPayConfig>(builder.Configuration.GetSection(VNPayConfig.ConfigName));
 
 builder.Services.AddTransient<IDataAccessFacade, DataAccessFacade>();
 builder.Services.AddTransient<IAccountBusiness, AccountBusiness>();
@@ -53,6 +56,7 @@ builder.Services.AddTransient<IVnAddressBusiness, VnAddressBusiness>();
 builder.Services.AddTransient<IVNPayInformationBusiness, VNPayInformationBusiness>();
 builder.Services.AddTransient<IOrderBusiness, OrderBusiness>();
 builder.Services.AddTransient<IVoucherBusiness, VoucherBusiness>();
+builder.Services.AddTransient<IVNPayService, VNPayService>();
 builder.Services.AddSingleton<IAuthorizationHandler, UserAuthorizeHandler>();
 builder.Services.AddSingleton(setting);
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
