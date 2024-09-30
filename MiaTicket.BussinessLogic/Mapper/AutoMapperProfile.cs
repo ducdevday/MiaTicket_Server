@@ -4,6 +4,7 @@ using MiaTicket.BussinessLogic.Request;
 using MiaTicket.Data.Entity;
 using MiaTicket.VNPay.Model;
 using MiaTicket.Data.Enum;
+using MiaTicket.ZaloPay.Model;
 
 namespace MiaTicket.BussinessLogic.Mapper
 {
@@ -82,8 +83,11 @@ namespace MiaTicket.BussinessLogic.Mapper
             CreateMap<OrderTicketDto, OrderTicket>().ForMember(dest => dest.TicketId, opt => opt.MapFrom(src => src.TicketId))
                                                     .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity));
 
-            CreateMap<CreatePaymentResult, VnPayInformation>();
+            CreateMap<CreateVnPayPaymentResult, VnPayInformation>();
             CreateMap<VnPayInformation, VnPayInformationDto>().ForMember(dest => dest.OrderStatus, opt => opt.MapFrom(src => src.Order.OrderStatus));
+
+            CreateMap<CreateZaloPayPaymentResult, ZaloPayInformation>();
+            CreateMap<ZaloPayInformation, ZaloPayInformationDto>().ForMember(dest => dest.OrderStatus, opt => opt.MapFrom(src => src.Order.OrderStatus));
 
             CreateMap<OrderTicket, OrderTicketDetailDto>()
                                         .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))

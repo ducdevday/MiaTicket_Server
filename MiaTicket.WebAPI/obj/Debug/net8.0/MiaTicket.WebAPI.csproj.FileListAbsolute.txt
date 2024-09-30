@@ -86,3 +86,7 @@ E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\MiaTicket.E
 E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\AutoMapper.dll
 E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\MiaTicket.VNPay.dll
 E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\MiaTicket.VNPay.pdb
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\Microsoft.Extensions.ObjectPool.dll
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\MiaTicket.ZaloPay.dll
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\MiaTicket.ZaloPay.pdb

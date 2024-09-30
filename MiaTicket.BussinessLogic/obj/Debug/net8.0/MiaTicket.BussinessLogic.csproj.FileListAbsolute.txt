@@ -22,3 +22,5 @@ E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.BussinessLogic\bin\Debug\net8.0\Mia
 E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.BussinessLogic\bin\Debug\net8.0\MiaTicket.Email.pdb
 E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.BussinessLogic\bin\Debug\net8.0\MiaTicket.VNPay.dll
 E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.BussinessLogic\bin\Debug\net8.0\MiaTicket.VNPay.pdb
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.BussinessLogic\bin\Debug\net8.0\MiaTicket.ZaloPay.dll
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.BussinessLogic\bin\Debug\net8.0\MiaTicket.ZaloPay.pdb

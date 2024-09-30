@@ -18,11 +18,10 @@ namespace MiaTicket.DataAccess
         public ITicketData TicketData { get; }
         public IUserData UserData { get; }
         public IVoucherData VoucherData { get; }
-        public IVoucherFixedAmountData VoucherFixedAmountData { get; }
-        public IVoucherPercentageData VoucherPercentage {  get; }
         public IRefreshTokenData RefreshTokenData { get; }
         public IVerifyCodeData VerifyCodeData { get; }
         public IVNPayInformationData VNPayInformationData { get; }
+        public IZaloPayInformationData ZaloPayInformationData { get; }
         public Task Commit();
     }
 
@@ -107,23 +106,6 @@ namespace MiaTicket.DataAccess
             }
         }
 
-        private VoucherFixedAmountData _voucherFixedAmountData;
-        
-        public IVoucherFixedAmountData VoucherFixedAmountData {
-            get { 
-                _voucherFixedAmountData ??= new VoucherFixedAmountData(_context);
-                return _voucherFixedAmountData;
-            }        
-        }
-
-        private VoucherPercentage _voucherPercentage;
-        public IVoucherPercentageData VoucherPercentage {
-            get {
-                _voucherPercentage ??= new VoucherPercentage(_context);
-                return _voucherPercentage;
-            }   
-        }
-
         private RefreshTokenData _refreshTokenData;
         public IRefreshTokenData RefreshTokenData {
             get {
@@ -141,13 +123,21 @@ namespace MiaTicket.DataAccess
                 return _verifyCodeData;
             }
         }
-        private VNPayData _vnPayInformationData; 
+        private VNPayInformationData _vnPayInformationData; 
         public IVNPayInformationData VNPayInformationData
         {
             get 
             { 
-                _vnPayInformationData ??= new VNPayData (_context);
+                _vnPayInformationData ??= new VNPayInformationData (_context);
                 return _vnPayInformationData;
+            }
+        }
+        private ZaloPayInformationData _zaloPayInformationData;
+        public IZaloPayInformationData ZaloPayInformationData {
+            get 
+            {
+                _zaloPayInformationData ??= new ZaloPayInformationData(_context);
+                return _zaloPayInformationData;
             }
         }
 

@@ -12,8 +12,8 @@ using System.Text.Json;
 namespace MiaTicket.VNPay
 {
     public interface IVNPayService {
-        CreatePaymentResult CreatePayment(double totalPrice);
-        Task<QueryPaymentResult?> QueryPaymentAsync(string transactionCode, string transactionDate);
+        CreateVnPayPaymentResult? CreatePayment(double totalPrice);
+        Task<QueryVnPayPaymentResult?> QueryPaymentAsync(string transactionCode, string transactionDate);
     }
     public class VNPayService : IVNPayService
     {
@@ -28,7 +28,7 @@ namespace MiaTicket.VNPay
             _vnpayConfig = vnpayConfig.Value;
         }
 
-        public CreatePaymentResult CreatePayment(double totalPrice)
+        public CreateVnPayPaymentResult? CreatePayment(double totalPrice)
         {
             var vnPayLibrary = new VNPayLibrary();
             var createdAt = DateTime.Now;
@@ -68,7 +68,7 @@ namespace MiaTicket.VNPay
 
             string paymentUrl = vnPayLibrary.CreateRequestUrl(vnp_Url, vnp_HashSecret);
 
-            CreatePaymentResult result = new CreatePaymentResult()
+            CreateVnPayPaymentResult result = new CreateVnPayPaymentResult()
             {
                 TransactionCode = vnp_TxnRef,
                 CreatedAt = createdUTCAt,
@@ -79,7 +79,7 @@ namespace MiaTicket.VNPay
             return result;
         }
 
-        public async Task<QueryPaymentResult?> QueryPaymentAsync(string transactionCode, string transactionDate)
+        public async Task<QueryVnPayPaymentResult?> QueryPaymentAsync(string transactionCode, string transactionDate)
         {
             var vnp_Api = _vnpayConfig.PaymentApi;
             var vnp_HashSecret = _vnpayConfig.HashSecret; //Secret KEy
@@ -117,7 +117,7 @@ namespace MiaTicket.VNPay
             if (response.IsSuccessStatusCode)
             {
                 var responseData = await response.Content.ReadAsStringAsync();
-                var queryPaymentResponse = JsonSerializer.Deserialize<QueryPaymentResult>(responseData, new JsonSerializerOptions
+                var queryPaymentResponse = JsonSerializer.Deserialize<QueryVnPayPaymentResult>(responseData, new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
                 });

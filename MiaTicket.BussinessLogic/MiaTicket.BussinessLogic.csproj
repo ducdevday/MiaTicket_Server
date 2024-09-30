@@ -19,6 +19,7 @@
     <ProjectReference Include="..\MiaTicket.Email\MiaTicket.Email.csproj" />
     <ProjectReference Include="..\MiaTicket.Setting\MiaTicket.Setting.csproj" />
     <ProjectReference Include="..\MiaTicket.VNPay\MiaTicket.VNPay.csproj" />
+    <ProjectReference Include="..\MiaTicket.ZaloPay\MiaTicket.ZaloPay.csproj" />
   </ItemGroup>
 
 </Project>

@@ -3,7 +3,7 @@
 namespace MiaTicket.VNPay.Response
 {
 
-    public class QueryPaymentResult
+    public class QueryVnPayPaymentResult
     {
         [JsonPropertyName("vnp_ResponseId")]
         public string VnpResponseId { get; set; } = string.Empty;

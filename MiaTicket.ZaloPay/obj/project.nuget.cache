@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "K0m2cm5rFXg=",
+  "dgSpecHash": "TndYIvvVOu8=",
   "success": true,
   "projectFilePath": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.ZaloPay\\MiaTicket.ZaloPay.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Ming Duc\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\Ming Duc\\.nuget\\packages\\microsoft.extensions.objectpool\\8.0.8\\microsoft.extensions.objectpool.8.0.8.nupkg.sha512",
+    "C:\\Users\\Ming Duc\\.nuget\\packages\\microsoft.extensions.options\\8.0.2\\microsoft.extensions.options.8.0.2.nupkg.sha512",
+    "C:\\Users\\Ming Duc\\.nuget\\packages\\microsoft.extensions.primitives\\8.0.0\\microsoft.extensions.primitives.8.0.0.nupkg.sha512"
+  ],
   "logs": []
 }

@@ -15,10 +15,10 @@ namespace MiaTicket.DataAccess.Data
         Task<VnPayInformation> UpdateVnPayInformation(VnPayInformation vnPayInformation);
     }
 
-    public class VNPayData : IVNPayInformationData
+    public class VNPayInformationData : IVNPayInformationData
     {
         private readonly MiaTicketDBContext _context;
-        public VNPayData(MiaTicketDBContext context)
+        public VNPayInformationData(MiaTicketDBContext context)
         {
             _context = context;
         }

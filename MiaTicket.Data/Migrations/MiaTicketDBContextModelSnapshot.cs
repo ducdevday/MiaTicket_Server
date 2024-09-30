@@ -641,6 +641,48 @@ namespace MiaTicket.Data.Migrations
                     b.ToTable("Voucher", (string)null);
                 });
 
+            modelBuilder.Entity("MiaTicket.Data.Entity.ZaloPayInformation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ExpireAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PaymentStatus")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<string>("PaymentUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("TotalAmount")
+                        .HasColumnType("float");
+
+                    b.Property<string>("TransactionCode")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId")
+                        .IsUnique();
+
+                    b.ToTable("ZaloPayInformation", (string)null);
+                });
+
             modelBuilder.Entity("MiaTicket.Data.Entity.Banner", b =>
                 {
                     b.HasOne("MiaTicket.Data.Entity.Event", "Event")
@@ -783,6 +825,17 @@ namespace MiaTicket.Data.Migrations
                     b.Navigation("Event");
                 });
 
+            modelBuilder.Entity("MiaTicket.Data.Entity.ZaloPayInformation", b =>
+                {
+                    b.HasOne("MiaTicket.Data.Entity.Order", "Order")
+                        .WithOne("ZaloPayInformation")
+                        .HasForeignKey("MiaTicket.Data.Entity.ZaloPayInformation", "OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("MiaTicket.Data.Entity.Category", b =>
                 {
                     b.Navigation("Events");
@@ -804,6 +857,8 @@ namespace MiaTicket.Data.Migrations
                     b.Navigation("OrderTickets");
 
                     b.Navigation("VnPayInformation");
+
+                    b.Navigation("ZaloPayInformation");
                 });
 
             modelBuilder.Entity("MiaTicket.Data.Entity.ShowTime", b =>

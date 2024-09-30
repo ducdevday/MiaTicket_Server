@@ -35,14 +35,16 @@ namespace MiaTicket.BussinessLogic.Business
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IVNPayInformationBusiness _vnPayBusiness;
+        private readonly IZaloPayInformationBusiness _zaloPayBusiness;
 
 
-        public OrderBusiness(IDataAccessFacade context, IMapper mapper, IHttpContextAccessor httpContextAccessor, IVNPayInformationBusiness vNPayBusiness)
+        public OrderBusiness(IDataAccessFacade context, IMapper mapper, IHttpContextAccessor httpContextAccessor, IVNPayInformationBusiness vNPayBusiness, IZaloPayInformationBusiness zaloPayBusiness)
         {
             _context = context;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
             _vnPayBusiness = vNPayBusiness;
+            _zaloPayBusiness = zaloPayBusiness;
         }
 
         public async Task<CreateOrderResponse> CreateOrder(Guid userId, CreateOrderRequest request)
@@ -125,10 +127,23 @@ namespace MiaTicket.BussinessLogic.Business
                     paymentUrl = vnPayInformation.PaymentUrl;
                     order.VnPayInformation = vnPayInformation;
                 }
-                else {
-                    return new CreateOrderResponse(HttpStatusCode.InternalServerError, "Payment GateWay Error", string.Empty);
+                else
+                {
+                    return new CreateOrderResponse(HttpStatusCode.InternalServerError, "VnPay Payment GateWay Error", string.Empty);
                 }
             }
+            else if (request.PaymentType == PaymentType.ZaloPay) {
+                var zaloPayInformation = await _zaloPayBusiness.CreatePayment(totalPrice);
+                if (zaloPayInformation != null)
+                {
+                    paymentUrl = zaloPayInformation.PaymentUrl;
+                    order.ZaloPayInformation = zaloPayInformation;
+                }
+                else {
+                    return new CreateOrderResponse(HttpStatusCode.InternalServerError, "ZaloPay Payment GateWay Error", string.Empty);
+                }
+            }
+
             await _context.OrderData.CreateOrder(order);
             await _context.Commit();
             return new CreateOrderResponse(HttpStatusCode.OK, "Order created successfully", paymentUrl);

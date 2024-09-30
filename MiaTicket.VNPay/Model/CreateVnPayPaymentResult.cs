@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MiaTicket.VNPay.Model
 {
-    public class CreatePaymentResult
+    public class CreateVnPayPaymentResult
     {
         public string TransactionCode { get; set; }
         public DateTime CreatedAt { get; set; }

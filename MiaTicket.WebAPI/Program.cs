@@ -3,6 +3,7 @@ using MiaTicket.BussinessLogic.Mapper;
 using MiaTicket.DataAccess;
 using MiaTicket.Setting;
 using MiaTicket.VNPay;
+using MiaTicket.ZaloPay;
 using MiaTicket.VNPay.Config;
 using MiaTicket.WebAPI.Middleware;
 using MiaTicket.WebAPI.Policy;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MiaTicket.ZaloPay.Config;
 
 var builder = WebApplication.CreateBuilder(args);
 var setting = EnviromentSetting.GetInstance();
@@ -43,6 +45,7 @@ builder.Services.AddSwaggerGen(x =>
     });
 });
 builder.Services.Configure<VNPayConfig>(builder.Configuration.GetSection(VNPayConfig.ConfigName));
+builder.Services.Configure<ZaloPayConfig>(builder.Configuration.GetSection(ZaloPayConfig.ConfigName));
 
 builder.Services.AddTransient<IDataAccessFacade, DataAccessFacade>();
 builder.Services.AddTransient<IAccountBusiness, AccountBusiness>();
@@ -54,9 +57,11 @@ builder.Services.AddTransient<ICategoryBusiness, CategoryBusiness>();
 builder.Services.AddTransient<IBannerBusiness, BannerBusiness>();
 builder.Services.AddTransient<IVnAddressBusiness, VnAddressBusiness>();
 builder.Services.AddTransient<IVNPayInformationBusiness, VNPayInformationBusiness>();
+builder.Services.AddTransient<IZaloPayInformationBusiness, ZaloPayInformationBusiness>();
 builder.Services.AddTransient<IOrderBusiness, OrderBusiness>();
 builder.Services.AddTransient<IVoucherBusiness, VoucherBusiness>();
 builder.Services.AddTransient<IVNPayService, VNPayService>();
+builder.Services.AddTransient<IZaloPayService, ZaloPayService>();
 builder.Services.AddSingleton<IAuthorizationHandler, UserAuthorizeHandler>();
 builder.Services.AddSingleton(setting);
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));

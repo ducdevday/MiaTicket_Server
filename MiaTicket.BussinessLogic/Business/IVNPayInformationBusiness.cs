@@ -17,13 +17,14 @@ using MiaTicket.Email.Model;
 using System.Net.Sockets;
 using MiaTicket.BussinessLogic.Util;
 using CloudinaryDotNet.Actions;
+using MiaTicket.ZaloPay;
 
 namespace MiaTicket.BussinessLogic.Business
 {
     public interface IVNPayInformationBusiness
     {
         VnPayInformation? CreatePayment(double totalPrice);
-        Task<UpdatePaymentVnPayResponse> UpdatePaymentVnPay(UpdatePaymentVnPayRequest request);
+        Task<UpdatePaymentVnPayResponse> UpdatePayment(UpdatePaymentVnPayRequest request);
         Task SendOrderResultMail(Order order);
     }
 
@@ -50,7 +51,7 @@ namespace MiaTicket.BussinessLogic.Business
             return vnPayInformation;
         }
 
-        public async Task<UpdatePaymentVnPayResponse> UpdatePaymentVnPay(UpdatePaymentVnPayRequest request)
+        public async Task<UpdatePaymentVnPayResponse> UpdatePayment(UpdatePaymentVnPayRequest request)
         {
             var validation = new UpdatePaymentVnPayValidation(request);
             validation.Validate();

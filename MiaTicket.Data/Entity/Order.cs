@@ -37,5 +37,6 @@ namespace MiaTicket.Data.Entity
         public OrderStatus OrderStatus { get; set; }
         public List<OrderTicket> OrderTickets { get; set; }
         public VnPayInformation? VnPayInformation { get; set; }
+        public ZaloPayInformation? ZaloPayInformation { get;set; }
     }
 }
