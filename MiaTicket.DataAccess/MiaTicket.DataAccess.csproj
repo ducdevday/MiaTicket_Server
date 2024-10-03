@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MiaTicket.DataCache\MiaTicket.DataCache.csproj" />
     <ProjectReference Include="..\MiaTicket.Data\MiaTicket.Data.csproj" />
+    <ProjectReference Include="..\MiaTicket.Setting\MiaTicket.Setting.csproj" />
   </ItemGroup>
 
 </Project>

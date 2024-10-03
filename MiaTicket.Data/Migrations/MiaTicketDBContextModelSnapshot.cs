@@ -350,33 +350,6 @@ namespace MiaTicket.Data.Migrations
                     b.ToTable("OrderTicket", (string)null);
                 });
 
-            modelBuilder.Entity("MiaTicket.Data.Entity.RefreshToken", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("IsDisable")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("RefreshToken", (string)null);
-                });
-
             modelBuilder.Entity("MiaTicket.Data.Entity.ShowTime", b =>
                 {
                     b.Property<int>("Id")
@@ -759,17 +732,6 @@ namespace MiaTicket.Data.Migrations
                     b.Navigation("Ticket");
                 });
 
-            modelBuilder.Entity("MiaTicket.Data.Entity.RefreshToken", b =>
-                {
-                    b.HasOne("MiaTicket.Data.Entity.User", "User")
-                        .WithMany("RefreshTokens")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("MiaTicket.Data.Entity.ShowTime", b =>
                 {
                     b.HasOne("MiaTicket.Data.Entity.Event", "Event")
@@ -878,8 +840,6 @@ namespace MiaTicket.Data.Migrations
                     b.Navigation("Events");
 
                     b.Navigation("Orders");
-
-                    b.Navigation("RefreshTokens");
 
                     b.Navigation("VerifyCodes");
                 });

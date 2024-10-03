@@ -112,10 +112,10 @@ namespace MiaTicket.BussinessLogic.Business
                 return new LoginResponse(HttpStatusCode.Forbidden, "Email Not Verified", null);
             }
 
-            string accessToken = await _tokenBusiness.GenerateAccessToken(user.Id.ToString(), user.Email, Enum.GetName(typeof(Role), user.Role));
-            string refreshToken = await _tokenBusiness.GenerateRefreshToken(user.Id.ToString(), user.Email, Enum.GetName(typeof(Role), user.Role));
-            await _context.RefreshTokenData.SaveToken(refreshToken, user.Id);
-            await _context.Commit();
+            string accessToken = _tokenBusiness.GenerateAccessToken(user.Id.ToString(), user.Email, Enum.GetName(typeof(Role), user.Role));
+            string refreshToken = _tokenBusiness.GenerateRefreshToken(user.Id.ToString(), user.Email, Enum.GetName(typeof(Role), user.Role));
+
+            _tokenBusiness.SetUserToken(user.Id.ToString(), refreshToken, false);
 
             _httpContextAccessor.HttpContext.Items["refreshToken"] = refreshToken;
             return new LoginResponse(HttpStatusCode.OK, "Login Successfully", new LoginDataResponse(user.Id, accessToken));
@@ -132,9 +132,9 @@ namespace MiaTicket.BussinessLogic.Business
             var account = await _context.UserData.GetAccountById(request.userId);
 
             if (account == null) return new LogoutResponse(HttpStatusCode.Conflict, "Account does not exist", false);
-            
-            await _context.RefreshTokenData.ClearAllTokenByUserId(request.userId);
-            await _context.Commit();
+
+            _tokenBusiness.DeleteUserToken(request.userId.ToString(), request.refreshToken);
+
             return new LogoutResponse(HttpStatusCode.OK, "Logout Successfully", true);
         }
 

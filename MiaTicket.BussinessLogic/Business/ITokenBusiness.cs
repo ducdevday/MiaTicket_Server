@@ -3,6 +3,8 @@ using MiaTicket.BussinessLogic.Request;
 using MiaTicket.BussinessLogic.Response;
 using MiaTicket.Data.Entity;
 using MiaTicket.DataAccess;
+using MiaTicket.DataAccess.Data;
+using MiaTicket.DataCache;
 using MiaTicket.Setting;
 using MiaTicket.WebAPI.Constant;
 using Microsoft.EntityFrameworkCore;
@@ -18,19 +20,27 @@ namespace MiaTicket.BussinessLogic.Business
     public interface ITokenBusiness
     {
         public Task<GenerateTokenResponse> GenerateToken(GenerateTokenRequest request);
-        public Task<string> GenerateAccessToken(string id, string email, string role);
-        public Task<string> GenerateRefreshToken(string id, string email, string role);
-
+        public string GenerateAccessToken(string id, string email, string role);
+        public string GenerateRefreshToken(string id, string email, string role);
+        public void SetUserToken(string userId, string token, bool isUsed);
+        public bool? GetUserToken(string userId, string token);
+        public void DeleteUserToken(string userId, string token);
+        public void DeleteAllUserToken(string userId);
     }
 
     public class TokenBusiness : ITokenBusiness
     {
         private readonly EnviromentSetting _setting;
         private readonly IDataAccessFacade _context;
-        public TokenBusiness(IDataAccessFacade context, EnviromentSetting setting)
+
+        private readonly IRedisCacheService _cache;
+        public const string PREFIX_KEY_USER_TOKEN = "user_token";
+        private const string PREFIX_FORMAT = PREFIX_KEY_USER_TOKEN + ":{0}:{1}";
+        public TokenBusiness(IDataAccessFacade context, EnviromentSetting setting, IRedisCacheService cache)
         {
             _setting = setting;
             _context = context;
+            _cache = cache;
         }
 
         public async Task<GenerateTokenResponse> GenerateToken(GenerateTokenRequest request)
@@ -43,23 +53,19 @@ namespace MiaTicket.BussinessLogic.Business
             var id = principal.FindFirst("id")?.Value;
             var email = principal.FindFirst("email")?.Value;
             var role = principal.FindFirst("role")?.Value;
-            if (principal == null || id == null || email == null || role == null) return new GenerateTokenResponse(HttpStatusCode.Unauthorized, "Invalid RefreshToken", null);
+            if (principal == null || id == null || email == null || role == null) return new GenerateTokenResponse(HttpStatusCode.Unauthorized, "Invalid request", null);
 
-            var currentRefreshToken = await _context.RefreshTokenData.GetLastTokenByUserId(new Guid(id));
-            if (currentRefreshToken == null || currentRefreshToken.Value != request.RefreshToken || currentRefreshToken.IsDisable)
-            {
-                return new GenerateTokenResponse(HttpStatusCode.Unauthorized, "Invalid RefreshToken", null);
-            }
+            bool? isTokenUsed = GetUserToken(id, request.RefreshToken);
 
-            var accessToken = await GenerateAccessToken(id, email, role);
-            var refreshToken = await GenerateRefreshToken(id, email, role);
-            await _context.RefreshTokenData.DisableAllTokenByUserId(new Guid(id));
-            await _context.RefreshTokenData.SaveToken(refreshToken, new Guid(id));
+            if (isTokenUsed == null) return new GenerateTokenResponse(HttpStatusCode.Unauthorized, "Token not found in database", null);
+
+            var accessToken = GenerateAccessToken(id, email, role);
+
             await _context.Commit();
-            return new GenerateTokenResponse(HttpStatusCode.OK, "Generated Token", new RefreshTokenDataResponse(accessToken, refreshToken));
+            return new GenerateTokenResponse(HttpStatusCode.OK, "Generated Token", new RefreshTokenDataResponse(accessToken));
         }
 
-        public async Task<string> GenerateAccessToken(string id, string email, string role)
+        public string GenerateAccessToken(string id, string email, string role)
         {
             var claims = new[]
             {
@@ -82,7 +88,7 @@ namespace MiaTicket.BussinessLogic.Business
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public async Task<string> GenerateRefreshToken(string id, string email, string role)
+        public string GenerateRefreshToken(string id, string email, string role)
         {
             var _setting = EnviromentSetting.GetInstance();
             var claims = new[] {
@@ -105,7 +111,7 @@ namespace MiaTicket.BussinessLogic.Business
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        private ClaimsPrincipal DecodeToken(string token)
+        private ClaimsPrincipal? DecodeToken(string token)
         {
 
             var tokenHandler = new JwtSecurityTokenHandler()
@@ -130,10 +136,8 @@ namespace MiaTicket.BussinessLogic.Business
 
                 var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken validatedToken);
 
-                // Optionally, check if the token is indeed a JWT token
                 if (validatedToken is JwtSecurityToken jwtToken)
                 {
-                    // Here, the token is successfully validated and claims can be accessed
                     return principal;
                 }
             }
@@ -142,6 +146,29 @@ namespace MiaTicket.BussinessLogic.Business
                 return null;
             }
             return null;
+        }
+
+        public void SetUserToken(string userId, string token, bool isUsed)
+        {
+            string key = string.Format(PREFIX_FORMAT, userId, token);
+            _cache.SetData(key, isUsed, TimeSpan.FromDays(AppConstant.REFRESH_TOKEN_EXPIRE_IN_DAYS));
+        }
+
+        public bool? GetUserToken(string userId, string token)
+        {
+            string key = string.Format(PREFIX_FORMAT, userId, token);
+            return _cache.GetData<bool?>(key);
+        }
+
+        public void DeleteUserToken(string userId, string token) {
+            string key = string.Format(PREFIX_FORMAT, userId, token);
+            _cache.RemoveData(key);
+        }
+
+        public void DeleteAllUserToken(string userId)
+        {
+            string pattern = string.Format(PREFIX_FORMAT, userId, "*");
+            _cache.RemoveDataBaseOnPattern(pattern);
         }
     }
 }

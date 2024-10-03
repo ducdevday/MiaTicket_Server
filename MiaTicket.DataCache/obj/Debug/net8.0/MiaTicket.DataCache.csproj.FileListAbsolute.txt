@@ -1,0 +1,16 @@
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataCache\bin\Debug\net8.0\MiaTicket.DataCache.deps.json
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataCache\bin\Debug\net8.0\MiaTicket.DataCache.dll
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataCache\bin\Debug\net8.0\MiaTicket.DataCache.pdb
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataCache\bin\Debug\net8.0\MiaTicket.Setting.dll
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataCache\bin\Debug\net8.0\MiaTicket.Setting.pdb
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataCache\obj\Debug\net8.0\MiaTicket.DataCache.csproj.AssemblyReference.cache
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataCache\obj\Debug\net8.0\MiaTicket.DataCache.GeneratedMSBuildEditorConfig.editorconfig
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataCache\obj\Debug\net8.0\MiaTicket.DataCache.AssemblyInfoInputs.cache
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataCache\obj\Debug\net8.0\MiaTicket.DataCache.AssemblyInfo.cs
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataCache\obj\Debug\net8.0\MiaTicket.DataCache.csproj.CoreCompileInputs.cache
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataCache\obj\Debug\net8.0\MiaTicket.DataCache.sourcelink.json
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataCache\obj\Debug\net8.0\MiaTicke.2E08753D.Up2Date
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataCache\obj\Debug\net8.0\MiaTicket.DataCache.dll
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataCache\obj\Debug\net8.0\refint\MiaTicket.DataCache.dll
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataCache\obj\Debug\net8.0\MiaTicket.DataCache.pdb
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataCache\obj\Debug\net8.0\ref\MiaTicket.DataCache.dll

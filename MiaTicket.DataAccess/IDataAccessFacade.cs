@@ -18,7 +18,6 @@ namespace MiaTicket.DataAccess
         public ITicketData TicketData { get; }
         public IUserData UserData { get; }
         public IVoucherData VoucherData { get; }
-        public IRefreshTokenData RefreshTokenData { get; }
         public IVerifyCodeData VerifyCodeData { get; }
         public IVNPayInformationData VNPayInformationData { get; }
         public IZaloPayInformationData ZaloPayInformationData { get; }
@@ -103,14 +102,6 @@ namespace MiaTicket.DataAccess
             get {
                 _voucherData ??= new VoucherData(_context);
                 return _voucherData;
-            }
-        }
-
-        private RefreshTokenData _refreshTokenData;
-        public IRefreshTokenData RefreshTokenData {
-            get {
-                _refreshTokenData ??= new RefreshTokenData(_context);
-                return _refreshTokenData;
             }
         }
 

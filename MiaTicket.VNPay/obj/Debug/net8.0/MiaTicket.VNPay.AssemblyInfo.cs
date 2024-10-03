@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MiaTicket.VNPay")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3d744bd9686da1a8c0de14e0491e620893346539")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+47122f83de6bc00100cd1b9c1af835f24ebb719f")]
 [assembly: System.Reflection.AssemblyProductAttribute("MiaTicket.VNPay")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MiaTicket.VNPay")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

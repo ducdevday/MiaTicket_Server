@@ -21,7 +21,6 @@ namespace MiaTicket.Data.Entity
         public Role Role { get; set; }
         public List<VerifyCode>? VerifyCodes { get; set; }
 
-        public List<RefreshToken>? RefreshTokens { get; set; }
         public List<Order>? Orders { get; set; }
         public List<Event>? Events { get; set; }
     }

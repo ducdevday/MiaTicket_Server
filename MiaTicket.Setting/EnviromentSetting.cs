@@ -17,9 +17,7 @@ namespace MiaTicket.Setting
         private const string SMTP_PORT = "SmtpPort";
         private const string SMTP_EMAIL = "SmtpEmail";
         private const string SMTP_APP_PASSWORD = "SmtpAppPassword";
-        private const string VNPAY_SECRET_KEY = "VnPaySecretKey";
-        private const string VNPAY_TMN_CODE = "VNPayTMNCode";
-        private const string VNPAY_RETURN_URL = "VNPayReturnUrl";
+        private const string REDIS_CONNECTION_STRING_KEY = "RedisConnectionString";
 
         private static string _connectionString = string.Empty;
         private static string _issuer = string.Empty;
@@ -30,11 +28,12 @@ namespace MiaTicket.Setting
         private static int _smtpPort = 587;
         private static string _smtpEmail = string.Empty;
         private static string _smtpAppPassword = string.Empty;
+        private static string _redisConnectionString = string.Empty;
+
         private EnviromentSetting() { }
 
         public static EnviromentSetting GetInstance()
         {
-
             if (_instance == null)
             {
                 lock (_lockObject)
@@ -52,6 +51,7 @@ namespace MiaTicket.Setting
                         int.TryParse(Environment.GetEnvironmentVariable(SMTP_PORT), out _smtpPort);
                         _smtpEmail = Environment.GetEnvironmentVariable(SMTP_EMAIL);
                         _smtpAppPassword = Environment.GetEnvironmentVariable(SMTP_APP_PASSWORD);
+                        _redisConnectionString = Environment.GetEnvironmentVariable(REDIS_CONNECTION_STRING_KEY);
                     }
                 }
             }
@@ -67,5 +67,6 @@ namespace MiaTicket.Setting
         public int GetSMTPPort() => _smtpPort;
         public string GetSMTPEmail() => _smtpEmail;
         public string GetSMTPAppPassword() => _smtpAppPassword;
+        public string GetRedisConnectionString() => _redisConnectionString;
     }
 }

@@ -11,10 +11,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("0cc3a3e2-38d4-46b4-ba92-b4e7a53e2bf4")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("MiaTicket.WebAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3d744bd9686da1a8c0de14e0491e620893346539")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+47122f83de6bc00100cd1b9c1af835f24ebb719f")]
 [assembly: System.Reflection.AssemblyProductAttribute("MiaTicket.WebAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MiaTicket.WebAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

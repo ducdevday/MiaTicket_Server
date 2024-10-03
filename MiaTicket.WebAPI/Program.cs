@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MiaTicket.ZaloPay.Config;
+using MiaTicket.DataCache;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 var setting = EnviromentSetting.GetInstance();
@@ -44,9 +46,27 @@ builder.Services.AddSwaggerGen(x =>
         }
     });
 });
+builder.Services.AddStackExchangeRedisCache(redisOptions =>
+{
+   string connection = setting.GetRedisConnectionString();
+    redisOptions.Configuration = connection;
+});
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+{
+    var redisConnection = setting.GetRedisConnectionString(); // "localhost:6379"
+
+    var config = new ConfigurationOptions
+    {
+        AbortOnConnectFail = false
+    };
+    // Parse host and port
+    config.EndPoints.Add(redisConnection);
+
+    return ConnectionMultiplexer.Connect(config);
+});
+
 builder.Services.Configure<VNPayConfig>(builder.Configuration.GetSection(VNPayConfig.ConfigName));
 builder.Services.Configure<ZaloPayConfig>(builder.Configuration.GetSection(ZaloPayConfig.ConfigName));
-
 builder.Services.AddTransient<IDataAccessFacade, DataAccessFacade>();
 builder.Services.AddTransient<IAccountBusiness, AccountBusiness>();
 builder.Services.AddTransient<ITokenBusiness, TokenBusiness>();
@@ -65,6 +85,7 @@ builder.Services.AddTransient<IZaloPayService, ZaloPayService>();
 builder.Services.AddSingleton<IAuthorizationHandler, UserAuthorizeHandler>();
 builder.Services.AddSingleton(setting);
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
+builder.Services.AddTransient<IRedisCacheService, RedisCacherService>();
 builder.Services.AddMemoryCache();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddCors(opt =>

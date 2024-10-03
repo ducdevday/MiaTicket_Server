@@ -68,7 +68,8 @@ namespace MiaTicket.WebAPI.Controllers
         public async Task<IActionResult> Logout()
         {
             _ = Guid.TryParse(User.FindFirst("id")?.Value, out Guid userId);
-            var request = new LogoutRequest(userId);
+            var refreshToken = HttpContext.Request.Cookies["refreshToken"];
+            var request = new LogoutRequest(userId, refreshToken);
             var result = await _context.Logout(request);
             HttpContext.Response.StatusCode = (int)result.StatusCode;
             HttpContext.Response.Cookies.Append("refreshToken", "", new CookieOptions

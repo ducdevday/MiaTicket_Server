@@ -10,12 +10,10 @@ namespace MiaTicket.BussinessLogic.Model
     {
         public string AccessToken { get; set; }
 
-        public string RefreshToken { get; set; }
 
-        public RefreshTokenDataResponse(string accessToken, string refreshToken)
+        public RefreshTokenDataResponse(string accessToken)
         {
             AccessToken = accessToken;
-            RefreshToken = refreshToken;
         }
     }
 }

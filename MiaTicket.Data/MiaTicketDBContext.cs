@@ -24,7 +24,6 @@ namespace MiaTicket.Data
             modelBuilder.ApplyConfiguration(new TicketCfg());
             modelBuilder.ApplyConfiguration(new UserCfg());
             modelBuilder.ApplyConfiguration(new VoucherCfg());
-            modelBuilder.ApplyConfiguration(new RefreshTokenCfg());
             modelBuilder.ApplyConfiguration(new VerifyCodeCfg());
             modelBuilder.ApplyConfiguration(new VnPayInformationCfg());
             modelBuilder.ApplyConfiguration(new ZaloPayInformationCfg());
@@ -45,7 +44,6 @@ namespace MiaTicket.Data
         public DbSet<Ticket> Ticket { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<Voucher> Voucher { get; set; }
-        public DbSet<RefreshToken> RefreshToken { get; set; }
         public DbSet<VerifyCode> VerifyCode { get; set; }
         public DbSet<VnPayInformation> VnPayInformation { get; set; }
         public DbSet<ZaloPayInformation> ZaloPayInformation { get; set; }

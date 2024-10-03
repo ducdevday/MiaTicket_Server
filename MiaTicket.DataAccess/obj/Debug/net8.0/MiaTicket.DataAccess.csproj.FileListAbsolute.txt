@@ -16,3 +16,5 @@ E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataAccess\bin\Debug\net8.0\MiaTick
 E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataAccess\bin\Debug\net8.0\MiaTicket.Setting.pdb
 E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataAccess\obj\Debug\net8.0\MiaTicket.DataAccess.csproj.AssemblyReference.cache
 E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataAccess\obj\Debug\net8.0\MiaTicke.0F40FF98.Up2Date
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataAccess\bin\Debug\net8.0\MiaTicket.DataCache.dll
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.DataAccess\bin\Debug\net8.0\MiaTicket.DataCache.pdb
