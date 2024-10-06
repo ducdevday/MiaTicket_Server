@@ -10,15 +10,9 @@ using MiaTicket.DataAccess;
 using MiaTicket.Email;
 using MiaTicket.Email.Model;
 using MiaTicket.Email.Template;
-using MiaTicket.VNPay;
 using MiaTicket.ZaloPay;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MiaTicket.BussinessLogic.Business
 {
@@ -34,14 +28,14 @@ namespace MiaTicket.BussinessLogic.Business
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMapper _mapper;
         private readonly IZaloPayService _zaloPayService;
-        private readonly EmailService _emailService = EmailService.GetInstance();
-
-        public ZaloPayInformationBusiness(IDataAccessFacade context, IHttpContextAccessor httpContextAccessor, IMapper mapper, IZaloPayService zaloPayService)
+        private readonly IEmailProducer _emailProducer;
+        public ZaloPayInformationBusiness(IDataAccessFacade context, IHttpContextAccessor httpContextAccessor, IMapper mapper, IZaloPayService zaloPayService, IEmailProducer emailProducer)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
             _zaloPayService = zaloPayService;
+            _emailProducer = emailProducer;
         }
         public async Task<ZaloPayInformation?> CreatePayment(double totalPrice)
         {
@@ -142,7 +136,8 @@ namespace MiaTicket.BussinessLogic.Business
                 Body = orderResultBody,
                 Subject = "<MiaTicket>Order successful notification"
             };
-            _emailService.Push(orderResultEmail);
+
+            _emailProducer.SendMessage(orderResultEmail);
 
             return Task.CompletedTask;
         }

@@ -3,14 +3,13 @@ using MiaTicket.BussinessLogic.Response;
 using MiaTicket.BussinessLogic.Validation;
 using MiaTicket.Data.Enum;
 using MiaTicket.DataAccess;
+using MiaTicket.Email;
 using MiaTicket.Email.Model;
 using MiaTicket.Email.Template;
-using MiaTicket.Email;
 using MiaTicket.WebAPI.Constant;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
-using System;
 namespace MiaTicket.BussinessLogic.Business
 {
     public interface IVerifyCodeBusiness
@@ -23,10 +22,11 @@ namespace MiaTicket.BussinessLogic.Business
     public class VerifyCodeBusiness : IVerifyCodeBusiness
     {
         private readonly IDataAccessFacade _context;
-        private readonly EmailService _emailService = EmailService.GetInstance();
-        public VerifyCodeBusiness(IDataAccessFacade context)
+        private readonly IEmailProducer _emailProducer;
+        public VerifyCodeBusiness(IDataAccessFacade context, IEmailProducer emailProducer)
         {
             _context = context;
+            _emailProducer = emailProducer;
         }
 
         public async Task<SendVerifyCodeResponse> SendVerifyCode(SendVerifyCodeRequest request)
@@ -43,25 +43,27 @@ namespace MiaTicket.BussinessLogic.Business
                 case VerifyType.Register:
                     {
                         string activelink = $"{AppConstant.EMAIL_VERIFY_FINISH_PATH}?email={request.Email}&code={addedVerifyCode}";
-                        await _emailService.Push(new EmailModel()
+                        EmailModel emailModel = new EmailModel()
                         {
                             Sender = "MiaTicket@email.com",
                             Receiver = request.Email,
                             Body = ActivateEmailTemplate.GetEmailVerifyTemplate().Replace("{BRAND}", "MiaTicket").Replace("{EXPIRE_IN}", $"{AppConstant.VERIFY_CODE_EXPIRE_IN_MINUTES}").Replace("{ACTIVATE_URL}", activelink),
                             Subject = "<MiaTicket>Your email address verification"
-                        });
+                        };
+                        _emailProducer.SendMessage(emailModel);
                         break;
                     }
                 case VerifyType.ResetPassword:
                     {
                         string resetPasswordLink = $"{AppConstant.RESET_PASSWORD_PATH}?email={request.Email}&code={addedVerifyCode}";
-                        await _emailService.Push(new EmailModel()
+                        EmailModel emailModel = new EmailModel()
                         {
                             Sender = "MiaTicket@email.com",
                             Receiver = request.Email,
                             Body = ResetPasswordEmailTemplate.GetResetPasswordEmailTemplate().Replace("{BRAND}", "MiaTicket").Replace("{EXPIRE_IN}", $"{AppConstant.VERIFY_CODE_EXPIRE_IN_MINUTES}").Replace("{SET_PASSWORD_URL}", resetPasswordLink),
                             Subject = "<MiaTicket>Confirm Reset Password"
-                        });
+                        };
+                        _emailProducer.SendMessage(emailModel);
                         break;
                     }
                 default:

@@ -31,14 +31,14 @@ namespace MiaTicket.BussinessLogic.Business
 
     public class AccountBusiness : IAccountBusiness
     {
-        private readonly EmailService _emailService = EmailService.GetInstance();
         private readonly IDataAccessFacade _context;
         private readonly ITokenBusiness _tokenBusiness;
         private readonly IVerifyCodeBusiness _verifyCodeBusiness;
         private readonly ICloudinaryBusiness _cloudinaryBusiness;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public AccountBusiness(IDataAccessFacade context, ITokenBusiness tokenBusiness, IVerifyCodeBusiness verifyCodeBusiness, ICloudinaryBusiness cloudinaryBusiness, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        private readonly IEmailProducer _emailProducer;
+        public AccountBusiness(IDataAccessFacade context, ITokenBusiness tokenBusiness, IVerifyCodeBusiness verifyCodeBusiness, ICloudinaryBusiness cloudinaryBusiness, IMapper mapper, IHttpContextAccessor httpContextAccessor, IEmailProducer emailProducer)
         {
             _context = context;
             _tokenBusiness = tokenBusiness;
@@ -46,6 +46,7 @@ namespace MiaTicket.BussinessLogic.Business
             _cloudinaryBusiness = cloudinaryBusiness;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
+            _emailProducer = emailProducer;
         }
 
         public async Task<CreateAccountResponse> CreateAccount(CreateAccountRequest request)
@@ -70,13 +71,14 @@ namespace MiaTicket.BussinessLogic.Business
             var addedVerifyCode = await _context.VerifyCodeData.CreateVerifyCode(addedUser.Id, _verifyCodeBusiness.GenerateRandomString(AppConstant.VERIFY_CODE_LENGHT), DateTime.Now.AddMinutes(AppConstant.VERIFY_CODE_EXPIRE_IN_MINUTES), VerifyType.Register);
             await _context.Commit();
             string activelink = $"{AppConstant.EMAIL_VERIFY_FINISH_PATH}?email={request.Email}&code={addedVerifyCode}";
-            await _emailService.Push(new EmailModel()
+            var emailModel = new EmailModel()
             {
                 Sender = "MiaTicket@email.com",
                 Receiver = addedUser.Email,
-                Body = ActivateEmailTemplate.GetEmailVerifyTemplate().Replace("{BRAND}", "MiaTicket").Replace("{EXPIRE_IN}",$"{AppConstant.VERIFY_CODE_EXPIRE_IN_MINUTES}").Replace("{ACTIVATE_URL}", activelink),
+                Body = ActivateEmailTemplate.GetEmailVerifyTemplate().Replace("{BRAND}", "MiaTicket").Replace("{EXPIRE_IN}", $"{AppConstant.VERIFY_CODE_EXPIRE_IN_MINUTES}").Replace("{ACTIVATE_URL}", activelink),
                 Subject = "<MiaTicket>Your email address verification"
-            });
+            };
+            _emailProducer.SendMessage(emailModel);
 
             return new CreateAccountResponse(HttpStatusCode.OK, "Register Successfully", true);
         }
