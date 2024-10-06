@@ -1,5 +1,33 @@
 name: dockercompose5116071195702982887
 services:
+  miaticket.rabbitmq:
+    container_name: miaticket.rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_PASS: mypass
+      RABBITMQ_DEFAULT_USER: guest
+    image: rabbitmq:4.0.2-management-alpine
+    networks:
+      default: null
+    ports:
+    - mode: ingress
+      target: 5672
+      published: "5672"
+      protocol: tcp
+    - mode: ingress
+      target: 15672
+      published: "15672"
+      protocol: tcp
+  miaticket.redis:
+    container_name: miaticket.redis
+    image: redis:latest
+    networks:
+      default: null
+    ports:
+    - mode: ingress
+      target: 6379
+      published: "6379"
+      protocol: tcp
+    restart: always
   miaticket.webapi:
     build:
       context: E:\WorkSpace\Home\Dotnet\MiaTicket
