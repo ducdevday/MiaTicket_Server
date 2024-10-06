@@ -14,6 +14,8 @@ using Microsoft.OpenApi.Models;
 using MiaTicket.ZaloPay.Config;
 using MiaTicket.DataCache;
 using StackExchange.Redis;
+using MiaTicket.Email;
+using RabbitMQ.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 var setting = EnviromentSetting.GetInstance();
@@ -53,16 +55,27 @@ builder.Services.AddStackExchangeRedisCache(redisOptions =>
 });
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
 {
-    var redisConnection = setting.GetRedisConnectionString(); // "localhost:6379"
+    var redisConnection = setting.GetRedisConnectionString();
 
     var config = new ConfigurationOptions
     {
         AbortOnConnectFail = false
     };
-    // Parse host and port
     config.EndPoints.Add(redisConnection);
 
     return ConnectionMultiplexer.Connect(config);
+});
+
+builder.Services.AddSingleton<IConnection>(sp =>
+{
+    var factory = new ConnectionFactory
+    {
+        HostName = "192.168.1.17",
+        UserName = "guest",
+        Password = "mypass",
+        VirtualHost = "/",
+    };
+    return factory.CreateConnection();
 });
 
 builder.Services.Configure<VNPayConfig>(builder.Configuration.GetSection(VNPayConfig.ConfigName));
@@ -84,10 +97,14 @@ builder.Services.AddTransient<IVNPayService, VNPayService>();
 builder.Services.AddTransient<IZaloPayService, ZaloPayService>();
 builder.Services.AddSingleton<IAuthorizationHandler, UserAuthorizeHandler>();
 builder.Services.AddSingleton(setting);
+builder.Services.AddSingleton<IEmailProducer, EmailProducer>();
+builder.Services.AddSingleton<IEmailConsumer, EmailConsumer>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 builder.Services.AddTransient<IRedisCacheService, RedisCacherService>();
 builder.Services.AddMemoryCache();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddHostedService<EmailBackgroundHandler>();
+
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("Angular UI", x =>

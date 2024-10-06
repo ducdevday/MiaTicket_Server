@@ -135,7 +135,7 @@ namespace MiaTicket.BussinessLogic.Business
                                                                                         .Replace("{{Address}}", $"{order.AddressName}, {order.AddressDetail}")
                                                                                         .Replace("{{TicketItems}}", ticketsHtml);
 
-            var orderResultEmail = new OrderEmail()
+            var orderResultEmail = new EmailModel()
             {
                 Sender = "MiaTicket@email.com",
                 Receiver = order.ReceiverEmail,

@@ -7,9 +7,19 @@ services:
       context: .
       dockerfile: MiaTicket.WebAPI/Dockerfile
   miaticket.redis:
-    image: redis:latest
     container_name: miaticket.redis
+    image: redis:latest
     restart: always
     ports:
     - '6379:6379'
+  miaticket.rabbitmq:   
+    container_name: miaticket.rabbitmq
+    image: rabbitmq:4.0.2-management-alpine
+    environment: 
+    - RABBITMQ_DEFAULT_USER=guest
+    - RABBITMQ_DEFAULT_PASS=mypass
+    ports:
+    - '5672:5672'
+    - '15672:15672'
+
       

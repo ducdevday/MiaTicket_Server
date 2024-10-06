@@ -52,3 +52,4 @@ E:\WorkSpace\Home\Dotnet\MiaTicket\bin\Debug\MiaTicket.Email.pdb
 E:\WorkSpace\Home\Dotnet\MiaTicket\obj\Debug\docker-compose.dcproj.AssemblyReference.cache
 E:\WorkSpace\Home\Dotnet\MiaTicket\obj\Debug\docker-compose.dcproj.CoreCompileInputs.cache
 E:\WorkSpace\Home\Dotnet\MiaTicket\obj\Debug\docker-c.35A3FFBA.Up2Date
+E:\WorkSpace\Home\Dotnet\MiaTicket\bin\Debug\RabbitMQ.Client.dll

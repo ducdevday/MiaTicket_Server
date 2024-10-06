@@ -70,7 +70,7 @@ namespace MiaTicket.BussinessLogic.Business
             var addedVerifyCode = await _context.VerifyCodeData.CreateVerifyCode(addedUser.Id, _verifyCodeBusiness.GenerateRandomString(AppConstant.VERIFY_CODE_LENGHT), DateTime.Now.AddMinutes(AppConstant.VERIFY_CODE_EXPIRE_IN_MINUTES), VerifyType.Register);
             await _context.Commit();
             string activelink = $"{AppConstant.EMAIL_VERIFY_FINISH_PATH}?email={request.Email}&code={addedVerifyCode}";
-            await _emailService.Push(new ActivateEmail()
+            await _emailService.Push(new EmailModel()
             {
                 Sender = "MiaTicket@email.com",
                 Receiver = addedUser.Email,

@@ -43,7 +43,7 @@ namespace MiaTicket.BussinessLogic.Business
                 case VerifyType.Register:
                     {
                         string activelink = $"{AppConstant.EMAIL_VERIFY_FINISH_PATH}?email={request.Email}&code={addedVerifyCode}";
-                        await _emailService.Push(new ActivateEmail()
+                        await _emailService.Push(new EmailModel()
                         {
                             Sender = "MiaTicket@email.com",
                             Receiver = request.Email,
@@ -55,7 +55,7 @@ namespace MiaTicket.BussinessLogic.Business
                 case VerifyType.ResetPassword:
                     {
                         string resetPasswordLink = $"{AppConstant.RESET_PASSWORD_PATH}?email={request.Email}&code={addedVerifyCode}";
-                        await _emailService.Push(new ResetPasswordEmail()
+                        await _emailService.Push(new EmailModel()
                         {
                             Sender = "MiaTicket@email.com",
                             Receiver = request.Email,

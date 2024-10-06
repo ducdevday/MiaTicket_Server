@@ -33,14 +33,15 @@ namespace MiaTicket.BussinessLogic.Business
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMapper _mapper;
         private readonly IVNPayService _vnPayService;
-        private readonly EmailService _emailService = EmailService.GetInstance();
+        private readonly IEmailProducer _emailProducer;
 
-        public VNPayInformationBusiness(IDataAccessFacade context, IHttpContextAccessor httpContextAccessor, IMapper mapper, IVNPayService vnPayService)
+        public VNPayInformationBusiness(IDataAccessFacade context, IHttpContextAccessor httpContextAccessor, IMapper mapper, IVNPayService vnPayService, IEmailProducer emailProducer)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
             _vnPayService = vnPayService;
+            _emailProducer = emailProducer;
         }
 
         public VnPayInformation? CreatePayment(double totalPrice)
@@ -139,14 +140,15 @@ namespace MiaTicket.BussinessLogic.Business
                                                                                         .Replace("{{Address}}", $"{order.AddressName}, {order.AddressDetail}")
                                                                                         .Replace("{{TicketItems}}", ticketsHtml);
                                                                                         
-            var orderResultEmail = new OrderEmail()
+            var orderResultEmail = new EmailModel()
             {
                 Sender = "MiaTicket@email.com",
                 Receiver = order.ReceiverEmail,
                 Body = orderResultBody,
                 Subject = "<MiaTicket>Order successful notification"
             };
-            _emailService.Push(orderResultEmail);
+
+            _emailProducer.SendMessage(orderResultEmail);
 
             return Task.CompletedTask;
         }

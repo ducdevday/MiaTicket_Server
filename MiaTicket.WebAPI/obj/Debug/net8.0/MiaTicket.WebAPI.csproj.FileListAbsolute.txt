@@ -97,3 +97,4 @@ E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\Pipelines.S
 E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\StackExchange.Redis.dll
 E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\MiaTicket.DataCache.dll
 E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\MiaTicket.DataCache.pdb
+E:\WorkSpace\Home\Dotnet\MiaTicket\MiaTicket.WebAPI\bin\Debug\net8.0\RabbitMQ.Client.dll
