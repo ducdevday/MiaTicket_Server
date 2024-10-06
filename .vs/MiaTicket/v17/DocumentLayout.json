@@ -5,6 +5,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{C313C215-2312-491A-BBED-DC0772B6F73C}|Solution Items{C313C215-2312-491A-BBED-DC0772B6F73C}|E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
       "RelativeMoniker": "D:0:0:{C313C215-2312-491A-BBED-DC0772B6F73C}|Solution Items{C313C215-2312-491A-BBED-DC0772B6F73C}|solutionrelative:.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1A813E12-E3B2-4955-A85D-B379919A8E4A}|MiaTicket.WebAPI\\MiaTicket.WebAPI.csproj|e:\\workspace\\home\\dotnet\\miaticket\\miaticket.webapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{1A813E12-E3B2-4955-A85D-B379919A8E4A}|MiaTicket.WebAPI\\MiaTicket.WebAPI.csproj|solutionrelative:miaticket.webapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,8 +18,21 @@
       "DocumentGroups": [
         {
           "DockedHeight": 51,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 5,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.WebAPI\\appsettings.json",
+              "RelativeDocumentMoniker": "MiaTicket.WebAPI\\appsettings.json",
+              "ToolTip": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.WebAPI\\appsettings.json",
+              "RelativeToolTip": "MiaTicket.WebAPI\\appsettings.json",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAB4AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-10-06T17:38:33.157Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:2:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
@@ -40,7 +57,7 @@
               "RelativeDocumentMoniker": ".gitignore",
               "ToolTip": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\.gitignore",
               "RelativeToolTip": ".gitignore",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABwAAAAPAAAA",
+              "ViewState": "AQIAABgAAAAAAAAAAAAAACYAAAAHAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001407|",
               "WhenOpened": "2024-10-06T17:37:48.8Z",
               "EditorCaption": ""

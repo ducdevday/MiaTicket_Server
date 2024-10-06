@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MiaTicket.WebAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+01a51da84abf23359a5993934bc0e484e665bc66")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3664d53d0abec400dfb1e4c8a508b9e6e5a96d3b")]
 [assembly: System.Reflection.AssemblyProductAttribute("MiaTicket.WebAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MiaTicket.WebAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
