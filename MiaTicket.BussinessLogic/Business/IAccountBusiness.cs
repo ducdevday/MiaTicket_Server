@@ -4,6 +4,8 @@ using MiaTicket.BussinessLogic.Model;
 using MiaTicket.BussinessLogic.Request;
 using MiaTicket.BussinessLogic.Response;
 using MiaTicket.BussinessLogic.Validation;
+using MiaTicket.CloudinaryStorage;
+using MiaTicket.CloudinaryStorage.Model;
 using MiaTicket.Data.Enum;
 using MiaTicket.DataAccess;
 using MiaTicket.Email;
@@ -34,11 +36,11 @@ namespace MiaTicket.BussinessLogic.Business
         private readonly IDataAccessFacade _context;
         private readonly ITokenBusiness _tokenBusiness;
         private readonly IVerifyCodeBusiness _verifyCodeBusiness;
-        private readonly ICloudinaryBusiness _cloudinaryBusiness;
+        private readonly ICloudinaryService _cloudinaryBusiness;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IEmailProducer _emailProducer;
-        public AccountBusiness(IDataAccessFacade context, ITokenBusiness tokenBusiness, IVerifyCodeBusiness verifyCodeBusiness, ICloudinaryBusiness cloudinaryBusiness, IMapper mapper, IHttpContextAccessor httpContextAccessor, IEmailProducer emailProducer)
+        public AccountBusiness(IDataAccessFacade context, ITokenBusiness tokenBusiness, IVerifyCodeBusiness verifyCodeBusiness, ICloudinaryService cloudinaryBusiness, IMapper mapper, IHttpContextAccessor httpContextAccessor, IEmailProducer emailProducer)
         {
             _context = context;
             _tokenBusiness = tokenBusiness;

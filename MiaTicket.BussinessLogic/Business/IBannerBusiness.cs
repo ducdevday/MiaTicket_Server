@@ -2,6 +2,8 @@
 using MiaTicket.BussinessLogic.Model;
 using MiaTicket.BussinessLogic.Request;
 using MiaTicket.BussinessLogic.Response;
+using MiaTicket.CloudinaryStorage;
+using MiaTicket.CloudinaryStorage.Model;
 using MiaTicket.DataAccess;
 using System.Net;
 
@@ -16,10 +18,10 @@ namespace MiaTicket.BussinessLogic.Business
     public class BannerBusiness : IBannerBusiness
     {
         private readonly IDataAccessFacade _context;
-        private readonly ICloudinaryBusiness _cloudinary;
+        private readonly ICloudinaryService _cloudinary;
         private readonly IMapper _mapper;
 
-        public BannerBusiness(IDataAccessFacade context, ICloudinaryBusiness cloudinary, IMapper mapper)
+        public BannerBusiness(IDataAccessFacade context, ICloudinaryService cloudinary, IMapper mapper)
         {
             _context = context;
             _cloudinary = cloudinary;

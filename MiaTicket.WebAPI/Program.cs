@@ -16,6 +16,7 @@ using MiaTicket.DataCache;
 using StackExchange.Redis;
 using MiaTicket.Email;
 using RabbitMQ.Client;
+using MiaTicket.CloudinaryStorage;
 
 var builder = WebApplication.CreateBuilder(args);
 var setting = EnviromentSetting.GetInstance();
@@ -83,7 +84,6 @@ builder.Services.Configure<ZaloPayConfig>(builder.Configuration.GetSection(ZaloP
 builder.Services.AddTransient<IDataAccessFacade, DataAccessFacade>();
 builder.Services.AddTransient<IAccountBusiness, AccountBusiness>();
 builder.Services.AddTransient<ITokenBusiness, TokenBusiness>();
-builder.Services.AddTransient<ICloudinaryBusiness, CloudinaryBusiness>();
 builder.Services.AddTransient<IVerifyCodeBusiness, VerifyCodeBusiness>();
 builder.Services.AddTransient<IEventBusiness, EventBusiness>();
 builder.Services.AddTransient<ICategoryBusiness, CategoryBusiness>();
@@ -97,6 +97,7 @@ builder.Services.AddTransient<IVNPayService, VNPayService>();
 builder.Services.AddTransient<IZaloPayService, ZaloPayService>();
 builder.Services.AddSingleton<IAuthorizationHandler, UserAuthorizeHandler>();
 builder.Services.AddSingleton(setting);
+builder.Services.AddSingleton<ICloudinaryService, CloudinaryService>();
 builder.Services.AddSingleton<IEmailProducer, EmailProducer>();
 builder.Services.AddSingleton<IEmailConsumer, EmailConsumer>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
