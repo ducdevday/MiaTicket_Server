@@ -9,7 +9,6 @@ using MiaTicket.Data.Entity;
 using MiaTicket.BussinessLogic.Util;
 using MiaTicket.Data.Enum;
 using Microsoft.Extensions.Caching.Memory;
-using MiaTicket.WebAPI.Constant;
 using MiaTicket.CloudinaryStorage;
 using MiaTicket.CloudinaryStorage.Model;
 namespace MiaTicket.BussinessLogic.Business
@@ -33,7 +32,7 @@ namespace MiaTicket.BussinessLogic.Business
     public class EventBusiness : IEventBusiness
     {
         private readonly IDataAccessFacade _context;
-        private readonly ICloudinaryService _cloudinaryBusiness;
+        private readonly ICloudinaryService  _cloudinaryBusiness;
         private readonly IMapper _mapper;
         private readonly IMemoryCache _memoryCache;
 

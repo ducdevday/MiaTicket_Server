@@ -1,22 +1,22 @@
 using MiaTicket.BussinessLogic.Business;
 using MiaTicket.BussinessLogic.Mapper;
 using MiaTicket.DataAccess;
+using MiaTicket.DataCache;
+using MiaTicket.Email;
 using MiaTicket.Setting;
 using MiaTicket.VNPay;
-using MiaTicket.ZaloPay;
+using MiaTicket.CloudinaryStorage;
 using MiaTicket.VNPay.Config;
 using MiaTicket.WebAPI.Middleware;
 using MiaTicket.WebAPI.Policy;
+using MiaTicket.ZaloPay;
+using MiaTicket.ZaloPay.Config;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using MiaTicket.ZaloPay.Config;
-using MiaTicket.DataCache;
-using StackExchange.Redis;
-using MiaTicket.Email;
 using RabbitMQ.Client;
-using MiaTicket.CloudinaryStorage;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 var setting = EnviromentSetting.GetInstance();

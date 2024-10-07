@@ -25,12 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiaTicket.DataCache", "MiaT
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{B4CCC09B-5479-4C00-BB8D-AE59B69A73ED}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C313C215-2312-491A-BBED-DC0772B6F73C}"
-	ProjectSection(SolutionItems) = preProject
-		.gitignore = .gitignore
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiaTicket.CloudinaryStorage", "..\MiaTicket.CloudinaryStorage\MiaTicket.CloudinaryStorage.csproj", "{B2DDFB08-B730-4C5C-88B0-9EE8CC2AC527}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiaTicket.CloudinaryStorage", "MiaTicket.CloudinaryStorage\MiaTicket.CloudinaryStorage.csproj", "{D23BDF36-5AF1-4CEF-9A04-B0DC72BD3BB5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -82,10 +77,10 @@ Global
 		{B4CCC09B-5479-4C00-BB8D-AE59B69A73ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4CCC09B-5479-4C00-BB8D-AE59B69A73ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4CCC09B-5479-4C00-BB8D-AE59B69A73ED}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B2DDFB08-B730-4C5C-88B0-9EE8CC2AC527}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B2DDFB08-B730-4C5C-88B0-9EE8CC2AC527}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B2DDFB08-B730-4C5C-88B0-9EE8CC2AC527}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B2DDFB08-B730-4C5C-88B0-9EE8CC2AC527}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D23BDF36-5AF1-4CEF-9A04-B0DC72BD3BB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D23BDF36-5AF1-4CEF-9A04-B0DC72BD3BB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D23BDF36-5AF1-4CEF-9A04-B0DC72BD3BB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D23BDF36-5AF1-4CEF-9A04-B0DC72BD3BB5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

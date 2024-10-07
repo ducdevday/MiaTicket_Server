@@ -1,24 +1,14 @@
 ﻿using AutoMapper;
+using MiaTicket.BussinessLogic.Factory;
+using MiaTicket.BussinessLogic.Model;
 using MiaTicket.BussinessLogic.Request;
 using MiaTicket.BussinessLogic.Response;
 using MiaTicket.BussinessLogic.Validation;
-using MiaTicket.DataAccess;
 using MiaTicket.Data.Entity;
-
-using System.Net;
-using System;
-using Microsoft.AspNetCore.Http;
-using MiaTicket.VNPay;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Runtime.InteropServices;
-using System.Transactions;
-using MiaTicket.VNPay.Model;
-using MiaTicket.VNPay.Response;
-using MiaTicket.BussinessLogic.Factory;
-using MiaTicket.BussinessLogic.Stragegy;
 using MiaTicket.Data.Enum;
-using MiaTicket.BussinessLogic.Model;
-using Azure.Core;
+using MiaTicket.DataAccess;
+using Microsoft.AspNetCore.Http;
+using System.Net;
 namespace MiaTicket.BussinessLogic.Business
 {
     public interface IOrderBusiness

@@ -1,7 +1,5 @@
 ﻿using MiaTicket.BussinessLogic.Business;
 using MiaTicket.BussinessLogic.Request;
-using MiaTicket.WebAPI.Constant;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MiaTicket.WebAPI.Controllers

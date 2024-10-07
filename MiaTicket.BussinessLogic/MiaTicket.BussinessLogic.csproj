@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\MiaTicket.CloudinaryStorage\MiaTicket.CloudinaryStorage.csproj" />
+    <ProjectReference Include="..\MiaTicket.CloudinaryStorage\MiaTicket.CloudinaryStorage.csproj" />
     <ProjectReference Include="..\MiaTicket.DataAccess\MiaTicket.DataAccess.csproj" />
     <ProjectReference Include="..\MiaTicket.Email\MiaTicket.Email.csproj" />
     <ProjectReference Include="..\MiaTicket.Setting\MiaTicket.Setting.csproj" />

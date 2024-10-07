@@ -1,23 +1,18 @@
 ﻿using AutoMapper;
+using MiaTicket.BussinessLogic.Model;
 using MiaTicket.BussinessLogic.Request;
 using MiaTicket.BussinessLogic.Response;
+using MiaTicket.BussinessLogic.Util;
 using MiaTicket.BussinessLogic.Validation;
 using MiaTicket.Data.Entity;
+using MiaTicket.Data.Enum;
 using MiaTicket.DataAccess;
+using MiaTicket.Email;
+using MiaTicket.Email.Model;
+using MiaTicket.Email.Template;
 using MiaTicket.VNPay;
-using MiaTicket.VNPay.Response;
 using Microsoft.AspNetCore.Http;
 using System.Net;
-using MiaTicket.Data.Enum;
-using MiaTicket.BussinessLogic.Model;
-using MiaTicket.Email;
-using MiaTicket.Email.Template;
-using MiaTicket.WebAPI.Constant;
-using MiaTicket.Email.Model;
-using System.Net.Sockets;
-using MiaTicket.BussinessLogic.Util;
-using CloudinaryDotNet.Actions;
-using MiaTicket.ZaloPay;
 
 namespace MiaTicket.BussinessLogic.Business
 {

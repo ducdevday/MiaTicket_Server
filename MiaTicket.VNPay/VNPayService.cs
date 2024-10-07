@@ -1,7 +1,6 @@
 ﻿using MiaTicket.VNPay.Config;
 using MiaTicket.VNPay.Library;
 using MiaTicket.VNPay.Model;
-using MiaTicket.VNPay.Response;
 using MiaTicket.VNPay.Util;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;

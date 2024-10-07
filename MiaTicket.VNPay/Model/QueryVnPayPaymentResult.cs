@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace MiaTicket.VNPay.Response
+namespace MiaTicket.VNPay.Model
 {
 
     public class QueryVnPayPaymentResult

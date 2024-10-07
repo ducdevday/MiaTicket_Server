@@ -6,7 +6,6 @@ using MiaTicket.DataAccess;
 using MiaTicket.DataAccess.Data;
 using MiaTicket.DataCache;
 using MiaTicket.Setting;
-using MiaTicket.WebAPI.Constant;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

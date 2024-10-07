@@ -1,4 +1,4 @@
-﻿namespace MiaTicket.WebAPI.Constant
+﻿namespace MiaTicket.Setting
 {
     public static class AppConstant
     {

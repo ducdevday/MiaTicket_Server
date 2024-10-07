@@ -11,7 +11,7 @@ using MiaTicket.DataAccess;
 using MiaTicket.Email;
 using MiaTicket.Email.Model;
 using MiaTicket.Email.Template;
-using MiaTicket.WebAPI.Constant;
+using MiaTicket.Setting;
 using Microsoft.AspNetCore.Http;
 using System.Net;
 using System.Security.Cryptography;
