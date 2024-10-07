@@ -3,27 +3,10 @@
   "WorkspaceRootPath": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{8C6EBB25-09EB-4FFF-BF33-8BF50FA9EE96}|MiaTicket.BussinessLogic\\MiaTicket.BussinessLogic.csproj|e:\\workspace\\home\\dotnet\\miaticket\\miaticket.bussinesslogic\\business\\ibannerbusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8C6EBB25-09EB-4FFF-BF33-8BF50FA9EE96}|MiaTicket.BussinessLogic\\MiaTicket.BussinessLogic.csproj|solutionrelative:miaticket.bussinesslogic\\business\\ibannerbusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B2DDFB08-B730-4C5C-88B0-9EE8CC2AC527}|..\\MiaTicket.CloudinaryStorage\\MiaTicket.CloudinaryStorage.csproj|e:\\workspace\\home\\dotnet\\miaticket.cloudinarystorage\\icloudinaryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8C6EBB25-09EB-4FFF-BF33-8BF50FA9EE96}|MiaTicket.BussinessLogic\\MiaTicket.BussinessLogic.csproj|e:\\workspace\\home\\dotnet\\miaticket\\miaticket.bussinesslogic\\business\\ieventbusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8C6EBB25-09EB-4FFF-BF33-8BF50FA9EE96}|MiaTicket.BussinessLogic\\MiaTicket.BussinessLogic.csproj|solutionrelative:miaticket.bussinesslogic\\business\\ieventbusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8C6EBB25-09EB-4FFF-BF33-8BF50FA9EE96}|MiaTicket.BussinessLogic\\MiaTicket.BussinessLogic.csproj|e:\\workspace\\home\\dotnet\\miaticket\\miaticket.bussinesslogic\\business\\iaccountbusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8C6EBB25-09EB-4FFF-BF33-8BF50FA9EE96}|MiaTicket.BussinessLogic\\MiaTicket.BussinessLogic.csproj|solutionrelative:miaticket.bussinesslogic\\business\\iaccountbusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1A813E12-E3B2-4955-A85D-B379919A8E4A}|MiaTicket.WebAPI\\MiaTicket.WebAPI.csproj|e:\\workspace\\home\\dotnet\\miaticket\\miaticket.webapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1A813E12-E3B2-4955-A85D-B379919A8E4A}|MiaTicket.WebAPI\\MiaTicket.WebAPI.csproj|solutionrelative:miaticket.webapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8C6EBB25-09EB-4FFF-BF33-8BF50FA9EE96}|MiaTicket.BussinessLogic\\MiaTicket.BussinessLogic.csproj|e:\\workspace\\home\\dotnet\\miaticket\\miaticket.bussinesslogic\\business\\icategorybusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{8C6EBB25-09EB-4FFF-BF33-8BF50FA9EE96}|MiaTicket.BussinessLogic\\MiaTicket.BussinessLogic.csproj|solutionrelative:miaticket.bussinesslogic\\business\\icategorybusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{45359F96-7F77-4F21-817D-438A4E760EE5}|..\\MiaTicket.Cloudinary\\MiaTicket.CloudinaryStorage.csproj|e:\\workspace\\home\\dotnet\\miaticket.cloudinary\\icoundinaryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B2DDFB08-B730-4C5C-88B0-9EE8CC2AC527}|..\\MiaTicket.CloudinaryStorage\\MiaTicket.CloudinaryStorage.csproj|e:\\workspace\\home\\dotnet\\miaticket.cloudinarystorage\\model\\filetype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -33,7 +16,7 @@
       "DocumentGroups": [
         {
           "DockedHeight": 51,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -53,80 +36,28 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "IEventBusiness.cs",
-              "DocumentMoniker": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.BussinessLogic\\Business\\IEventBusiness.cs",
-              "RelativeDocumentMoniker": "MiaTicket.BussinessLogic\\Business\\IEventBusiness.cs",
-              "ToolTip": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.BussinessLogic\\Business\\IEventBusiness.cs",
-              "RelativeToolTip": "MiaTicket.BussinessLogic\\Business\\IEventBusiness.cs",
-              "ViewState": "AQIAACkAAAAAAAAAAAAcwDwAAABYAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-07T07:06:11.038Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "IBannerBusiness.cs",
-              "DocumentMoniker": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.BussinessLogic\\Business\\IBannerBusiness.cs",
-              "RelativeDocumentMoniker": "MiaTicket.BussinessLogic\\Business\\IBannerBusiness.cs",
-              "ToolTip": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.BussinessLogic\\Business\\IBannerBusiness.cs",
-              "RelativeToolTip": "MiaTicket.BussinessLogic\\Business\\IBannerBusiness.cs",
-              "ViewState": "AQIAABEAAAAAAAAAAAAwwCMAAABcAAAA",
+              "Title": "ICloudinaryService.cs",
+              "DocumentMoniker": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket.CloudinaryStorage\\ICloudinaryService.cs",
+              "RelativeDocumentMoniker": "..\\MiaTicket.CloudinaryStorage\\ICloudinaryService.cs",
+              "ToolTip": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket.CloudinaryStorage\\ICloudinaryService.cs",
+              "RelativeToolTip": "..\\MiaTicket.CloudinaryStorage\\ICloudinaryService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACAAAAA0AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-07T07:05:53.483Z",
+              "WhenOpened": "2024-10-07T07:15:37.439Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Program.cs",
-              "DocumentMoniker": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.WebAPI\\Program.cs",
-              "RelativeDocumentMoniker": "MiaTicket.WebAPI\\Program.cs",
-              "ToolTip": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.WebAPI\\Program.cs",
-              "RelativeToolTip": "MiaTicket.WebAPI\\Program.cs",
-              "ViewState": "AQIAACgAAAAAAAAAAAAAAGMAAABDAAAA",
+              "DocumentIndex": 1,
+              "Title": "FileType.cs",
+              "DocumentMoniker": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket.CloudinaryStorage\\Model\\FileType.cs",
+              "RelativeDocumentMoniker": "..\\MiaTicket.CloudinaryStorage\\Model\\FileType.cs",
+              "ToolTip": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket.CloudinaryStorage\\Model\\FileType.cs",
+              "RelativeToolTip": "..\\MiaTicket.CloudinaryStorage\\Model\\FileType.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAFAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-07T06:56:13.139Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "ICoundinaryService.cs",
-              "DocumentMoniker": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket.Cloudinary\\ICoundinaryService.cs",
-              "RelativeDocumentMoniker": "..\\MiaTicket.Cloudinary\\ICoundinaryService.cs",
-              "ToolTip": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket.Cloudinary\\ICoundinaryService.cs",
-              "RelativeToolTip": "..\\MiaTicket.Cloudinary\\ICoundinaryService.cs",
-              "ViewState": "AQIAADIAAAAAAAAAAAAwwAwAAAARAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-07T06:55:41.937Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "IAccountBusiness.cs",
-              "DocumentMoniker": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.BussinessLogic\\Business\\IAccountBusiness.cs",
-              "RelativeDocumentMoniker": "MiaTicket.BussinessLogic\\Business\\IAccountBusiness.cs",
-              "ToolTip": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.BussinessLogic\\Business\\IAccountBusiness.cs",
-              "RelativeToolTip": "MiaTicket.BussinessLogic\\Business\\IAccountBusiness.cs",
-              "ViewState": "AQIAAAcAAAAAAAAAAAAmwNcAAABiAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-07T06:49:09.015Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "ICategoryBusiness.cs",
-              "DocumentMoniker": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.BussinessLogic\\Business\\ICategoryBusiness.cs",
-              "RelativeDocumentMoniker": "MiaTicket.BussinessLogic\\Business\\ICategoryBusiness.cs",
-              "ToolTip": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.BussinessLogic\\Business\\ICategoryBusiness.cs",
-              "RelativeToolTip": "MiaTicket.BussinessLogic\\Business\\ICategoryBusiness.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-07T06:43:50.258Z",
+              "WhenOpened": "2024-10-07T07:15:10.797Z",
               "EditorCaption": ""
             }
           ]
