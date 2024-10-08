@@ -34,7 +34,7 @@ The MiaTicket_Server is a backend system that handles functionalities/requests t
 # 4. How to use
 - Step 1: Start docker and open a terminal in the project root directory.
 - Step 2: Run the command "docker compose up -d" to start the service applications.
-- Step 3: Assest https://localhost:8081/swagger/index.html to test the API on localhost
+- Step 3: Access https://localhost:8081/swagger/index.html to test the API on localhost
 
 # 5. Other related information
 - Web : [website](https://github.com/ducdevday/MiaTicket_Website)
