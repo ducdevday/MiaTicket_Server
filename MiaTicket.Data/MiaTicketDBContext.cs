@@ -33,6 +33,7 @@ namespace MiaTicket.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(_setting.GetConnectionString());
+
         }
 
         public DbSet<Banner> Banner { get; set; }

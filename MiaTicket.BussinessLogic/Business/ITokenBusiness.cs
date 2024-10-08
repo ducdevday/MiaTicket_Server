@@ -56,7 +56,7 @@ namespace MiaTicket.BussinessLogic.Business
 
             bool? isTokenUsed = GetUserToken(id, request.RefreshToken);
 
-            if (isTokenUsed == null) return new GenerateTokenResponse(HttpStatusCode.Unauthorized, "Token not found in database", null);
+            if (isTokenUsed == null) return new GenerateTokenResponse(HttpStatusCode.BadRequest, "Token not found in database", null);
 
             var accessToken = GenerateAccessToken(id, email, role);
 

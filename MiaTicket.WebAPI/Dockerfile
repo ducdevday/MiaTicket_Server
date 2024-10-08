@@ -11,9 +11,10 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["MiaTicket.WebAPI/MiaTicket.WebAPI.csproj", "MiaTicket.WebAPI/"]
 COPY ["MiaTicket.BussinessLogic/MiaTicket.BussinessLogic.csproj", "MiaTicket.BussinessLogic/"]
+COPY ["MiaTicket.CloudinaryStorage/MiaTicket.CloudinaryStorage.csproj", "MiaTicket.CloudinaryStorage/"]
+COPY ["MiaTicket.Setting/MiaTicket.Setting.csproj", "MiaTicket.Setting/"]
 COPY ["MiaTicket.DataAccess/MiaTicket.DataAccess.csproj", "MiaTicket.DataAccess/"]
 COPY ["MiaTicket.DataCache/MiaTicket.DataCache.csproj", "MiaTicket.DataCache/"]
-COPY ["MiaTicket.Setting/MiaTicket.Setting.csproj", "MiaTicket.Setting/"]
 COPY ["MiaTicket.Data/MiaTicket.Data.csproj", "MiaTicket.Data/"]
 COPY ["MiaTicket.Email/MiaTicket.Email.csproj", "MiaTicket.Email/"]
 COPY ["MiaTicket.VNPay/MiaTicket.VNPay.csproj", "MiaTicket.VNPay/"]

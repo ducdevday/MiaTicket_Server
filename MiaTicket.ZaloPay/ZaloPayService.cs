@@ -1,4 +1,5 @@
-﻿using MiaTicket.ZaloPay.Config;
+﻿using MiaTicket.Setting;
+using MiaTicket.ZaloPay.Config;
 using MiaTicket.ZaloPay.Extension;
 using MiaTicket.ZaloPay.Model;
 using MiaTicket.ZaloPay.Util;
@@ -17,6 +18,7 @@ namespace MiaTicket.ZaloPay
     {
         private readonly HttpClient _httpClient;
         private readonly ZaloPayConfig _zaloPayConfig;
+        private readonly EnviromentSetting _setting = EnviromentSetting.GetInstance();
 
         public ZaloPayService(HttpClient httpClient, IOptions<ZaloPayConfig> zaloPayConfig)
         {
@@ -76,7 +78,7 @@ namespace MiaTicket.ZaloPay
             string appTime = DateTime.Now.GetTimeStamp().ToString();
             string embed_data = string.Format("{{\"redirecturl\":\"{0}\"}}", _zaloPayConfig.RedirectUrl);
             string item = "[]";
-            string key = _zaloPayConfig.Key1;
+            string key = _setting.GetZaloPayKey1();
             string mac = MakeCreateSignature(appId,appTransId, appUser, amount,appTime,embed_data, item, key);
             keyValuePairs.Add("app_id", appId);
             keyValuePairs.Add("app_user", appUser);
@@ -102,7 +104,7 @@ namespace MiaTicket.ZaloPay
         private Dictionary<string, string> GetQueryContent(string transactionCode)
         {
             Dictionary<string, string> keyValuePairs = new Dictionary<string, string>();
-            string key = _zaloPayConfig.Key1;
+            string key = _setting.GetZaloPayKey1();
             string mac = MakeQuerySignature(_zaloPayConfig.AppId.ToString(), transactionCode, key);
             keyValuePairs.Add("app_id", _zaloPayConfig.AppId.ToString());
             keyValuePairs.Add("app_trans_id", transactionCode);

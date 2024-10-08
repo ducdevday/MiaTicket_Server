@@ -25,7 +25,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiaTicket.DataCache", "MiaT
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{B4CCC09B-5479-4C00-BB8D-AE59B69A73ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiaTicket.CloudinaryStorage", "MiaTicket.CloudinaryStorage\MiaTicket.CloudinaryStorage.csproj", "{D23BDF36-5AF1-4CEF-9A04-B0DC72BD3BB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiaTicket.CloudinaryStorage", "MiaTicket.CloudinaryStorage\MiaTicket.CloudinaryStorage.csproj", "{D23BDF36-5AF1-4CEF-9A04-B0DC72BD3BB5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E1A9624F-69C2-429F-8C3A-1FEDD839F511}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		init-db.sql = init-db.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

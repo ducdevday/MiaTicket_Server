@@ -6,20 +6,54 @@ services:
     build:
       context: .
       dockerfile: MiaTicket.WebAPI/Dockerfile
+    environment:
+    - MiaTickConnectionString=${MiaTickConnectionString}
+    - MiaTickIssuer=${MiaTickIssuer}
+    - MiaTickAudience=${MiaTickAudience}
+    - SecretKey=${SecretKey}
+    - CloudinaryUrl=${CloudinaryUrl}
+    - SmtpServer=${SmtpServer}
+    - SmtpPort=${SmtpPort}
+    - SmtpEmail=${SmtpEmail}
+    - SmtpAppPassword=${SmtpAppPassword}
+    - RedisConnectionString=${RedisConnectionString}
+    - VNPay_TMNCODE=${VNPay_TMNCODE}
+    - VNPay_HashSecret=${VNPay_HashSecret}
+    - ZaloPay_Key1=${ZaloPay_Key1}
+    - ZaloPay_Key2=${ZaloPay_Key2}
+    - RabbitMQConnectionString=${RabbitMQConnectionString}
+    - RabbitMQUserName=${RabbitMQUserName}
+    - RabbitMQPassword=${RabbitMQPassword}
+    ports:
+    - "8080:8080"
+    - "8081:8081"
+    networks:
+    - my_network
+    depends_on:
+    - miaticket.redis
+    - miaticket.rabbitmq
+      
   miaticket.redis:
     container_name: miaticket.redis
     image: redis:latest
     restart: always
     ports:
     - '6379:6379'
+    networks:
+    - my_network
+
   miaticket.rabbitmq:   
     container_name: miaticket.rabbitmq
     image: rabbitmq:4.0.2-management-alpine
     environment: 
-    - RABBITMQ_DEFAULT_USER=guest
-    - RABBITMQ_DEFAULT_PASS=mypass
+    - RABBITMQ_DEFAULT_USER=${RabbitMQUserName}
+    - RABBITMQ_DEFAULT_PASS=${RabbitMQPassword}
     ports:
     - '5672:5672'
     - '15672:15672'
+    networks:
+    - my_network
 
-      
+networks:
+  my_network:
+    driver: bridge  

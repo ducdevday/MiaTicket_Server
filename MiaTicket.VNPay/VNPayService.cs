@@ -1,4 +1,5 @@
-﻿using MiaTicket.VNPay.Config;
+﻿using MiaTicket.Setting;
+using MiaTicket.VNPay.Config;
 using MiaTicket.VNPay.Library;
 using MiaTicket.VNPay.Model;
 using MiaTicket.VNPay.Util;
@@ -19,7 +20,7 @@ namespace MiaTicket.VNPay
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly HttpClient _httpClient;
         private readonly VNPayConfig _vnpayConfig;
-
+        private readonly EnviromentSetting _setting = EnviromentSetting.GetInstance();
         public VNPayService(IHttpContextAccessor httpContextAccessor, HttpClient httpClient, IOptions<VNPayConfig> vnpayConfig)
         {
             _httpContextAccessor = httpContextAccessor;
@@ -38,8 +39,8 @@ namespace MiaTicket.VNPay
 
             string vnp_Returnurl = _vnpayConfig.ReturnUrl; //URL nhan ket qua tra ve 
             string vnp_Url = _vnpayConfig.PaymentUrl; //URL thanh toan cua VNPAY 
-            string vnp_TmnCode = _vnpayConfig.TmnCode; //Ma website
-            string vnp_HashSecret = _vnpayConfig.HashSecret; //Chuoi bi mat
+            string vnp_TmnCode = _setting.GetVnPayTmnCode(); //Ma website
+            string vnp_HashSecret = _setting.GetVnPayHashSecret(); //Chuoi bi mat
             string vnp_Version = _vnpayConfig.Version;
             var vnp_CreateDate = createdAt.ToString("yyyyMMddHHmmss");
             string vnp_IpAddr = VNPayUtil.GetIpAddress(_httpContextAccessor);
@@ -81,8 +82,8 @@ namespace MiaTicket.VNPay
         public async Task<QueryVnPayPaymentResult?> QueryPaymentAsync(string transactionCode, string transactionDate)
         {
             var vnp_Api = _vnpayConfig.PaymentApi;
-            var vnp_HashSecret = _vnpayConfig.HashSecret; //Secret KEy
-            var vnp_TmnCode = _vnpayConfig.TmnCode; // Terminal Id
+            var vnp_HashSecret = _setting.GetVnPayHashSecret(); //Secret KEy
+            var vnp_TmnCode = _setting.GetVnPayTmnCode(); // Terminal Id
             var vnp_RequestId = DateTime.Now.Ticks.ToString(); //Mã hệ thống merchant tự sinh ứng với mỗi yêu cầu truy vấn giao dịch. Mã này là duy nhất dùng để phân biệt các yêu cầu truy vấn giao dịch. Không được trùng lặp trong ngày.
             var vnp_Version = _vnpayConfig.Version; //2.1.0
             var vnp_Command = "querydr";

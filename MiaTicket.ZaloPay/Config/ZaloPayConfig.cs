@@ -16,8 +16,6 @@ namespace MiaTicket.ZaloPay.Config
             public string CallbackUrl { get; set; } = string.Empty;
             public string IpnUrl { get; set; } = string.Empty;
             public int AppId { get; set; }
-            public string Key1 { get; set; } = string.Empty;
-            public string Key2 { get; set; } = string.Empty;
             public int ExpireInMinute { get; set; }
     }
 }

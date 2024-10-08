@@ -1,0 +1,5 @@
+CREATE DATABASE [MiaTicketDB];
+GO
+
+USE [MiaTicketDB];
+GO

@@ -69,11 +69,14 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
 
 builder.Services.AddSingleton<IConnection>(sp =>
 {
+    var rabbitMQConnection = setting.GetRabbitMQConnectionString();
+    var rabbitMQUserName = setting.GetRabbitMQUserName();
+    var rabbitMQPassword = setting.GetRabbitMQPassword();
     var factory = new ConnectionFactory
     {
-        HostName = "192.168.1.17",
-        UserName = "guest",
-        Password = "mypass",
+        HostName = rabbitMQConnection,
+        UserName = rabbitMQUserName,
+        Password = rabbitMQPassword,
         VirtualHost = "/",
     };
     return factory.CreateConnection();
@@ -101,7 +104,7 @@ builder.Services.AddSingleton<ICloudinaryService, CloudinaryService>();
 builder.Services.AddSingleton<IEmailProducer, EmailProducer>();
 builder.Services.AddSingleton<IEmailConsumer, EmailConsumer>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
-builder.Services.AddTransient<IRedisCacheService, RedisCacherService>();
+builder.Services.AddSingleton<IRedisCacheService, RedisCacherService>();
 builder.Services.AddMemoryCache();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHostedService<EmailBackgroundHandler>();
