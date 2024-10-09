@@ -8,7 +8,8 @@ The MiaTicket_Server is a backend system that handles functionalities/requests t
 - Docker 
 
 # 3. Enviroment
-- Create new instance in the SQL Server with any name you like.
+- Create new instance in the SQL Server for WebApi with any name you like.
+- Create new instance in the SQL Server for Hangfire with any name you like.
 - Add enviroment variables.
 
 ```
@@ -16,19 +17,20 @@ The MiaTicket_Server is a backend system that handles functionalities/requests t
 `MiaTickIssuer` = "Your Issuer"  
 `MiaTickAudience` = "Your Audience"  
 `SecretKey` = "Your Secret Key"  
-`CloudinaryUrl` = "Cloudinary URL" (Register at [Cloudinary](https://cloudinary.com/) to get this)  
+`CloudinaryUrl` = "Cloudinary URL" (Register at (https://cloudinary.com/ to get this)  
 `SmtpServer` = "Your SMTP Server"  
 `SmtpPort` = "Your SMTP Port"  
 `SmtpEmail` = "Your SMTP Email"  
 `SmtpAppPassword` = "Your SMTP App Password"  
 `RedisConnectionString` = "Your Redis Connection String"  
-`VNPay_TMNCODE` = "Your VNPay TMNCODE"  (Register at [VNPAY SANBOX](https://sandbox.vnpayment.vn/apis/) to get this)  
-`VNPay_HashSecret` = "Your VNPay Hash Secret" (Register at [VNPAY SANBOX](https://sandbox.vnpayment.vn/apis/) to get this)  
-`ZaloPay_Key1` = "Your ZaloPay Key1" (Register at [ZaloPay SANBOX](https://docs.zalopay.vn/v1/start/) to get this)  
-`ZaloPay_Key2` = "Your ZaloPay Key2" (Register at [ZaloPay SANBOX](https://docs.zalopay.vn/v1/start/) to get this)  
+`VNPay_TMNCODE` = "Your VNPay TMNCODE"  (Register at https://sandbox.vnpayment.vn/apis/ to get this)  
+`VNPay_HashSecret` = "Your VNPay Hash Secret" (Register at https://sandbox.vnpayment.vn/apis/ to get this)  
+`ZaloPay_Key1` = "Your ZaloPay Key1" (Register at https://docs.zalopay.vn/v1/start/ to get this)  
+`ZaloPay_Key2` = "Your ZaloPay Key2" (Register at https://docs.zalopay.vn/v1/start/ to get this)  
 `RabbitMQConnectionString` = "Your RabbitMQ Connection String"  
 `RabbitMQUserName` = "Your RabbitMQ Username"  
 `RabbitMQPassword` = "Your RabbitMQ Password"  
+`MiaTickHangFireConnectionString` = "Your HangFire Connection String"
 ```
 
 # 4. How to use
