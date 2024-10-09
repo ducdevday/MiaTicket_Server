@@ -16,6 +16,7 @@ namespace MiaTicket.DataAccess.Data
         Task<List<Event>> GetTrendingEvent(int count);
         Task<Order> CreateOrder(Order order);
         Task<Order?> GetOrder(Guid userId, int orderId);
+        Task<Order?> GetOrderById(int orderId);
         Task<List<Order>> GetOrders(Guid userId, int pageIndex, int pageSize, string keyword, OrderStatus orderStatus, out int totalPages);
         Task<Order> UpdateOrder(Order order);
     }
@@ -34,6 +35,12 @@ namespace MiaTicket.DataAccess.Data
         public Task<Order?> GetOrder(Guid userId, int orderId)
         {
             var order = _context.Order.Include(x => x.OrderTickets).FirstOrDefault(x => x.Id == orderId && x.UserId == userId);
+            return Task.FromResult(order);
+        }
+
+        public Task<Order?> GetOrderById(int orderId)
+        {
+            var order = _context.Order.Find(orderId);
             return Task.FromResult(order);
         }
 

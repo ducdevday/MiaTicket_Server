@@ -7,6 +7,7 @@ using MiaTicket.BussinessLogic.Validation;
 using MiaTicket.Data.Entity;
 using MiaTicket.Data.Enum;
 using MiaTicket.DataAccess;
+using MiaTicket.Schedular.Service;
 using Microsoft.AspNetCore.Http;
 using System.Net;
 namespace MiaTicket.BussinessLogic.Business
@@ -26,15 +27,15 @@ namespace MiaTicket.BussinessLogic.Business
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IVNPayInformationBusiness _vnPayBusiness;
         private readonly IZaloPayInformationBusiness _zaloPayBusiness;
-
-
-        public OrderBusiness(IDataAccessFacade context, IMapper mapper, IHttpContextAccessor httpContextAccessor, IVNPayInformationBusiness vNPayBusiness, IZaloPayInformationBusiness zaloPayBusiness)
+        private readonly IOrderCancellationService _orderCancellationService;
+        public OrderBusiness(IDataAccessFacade context, IMapper mapper, IHttpContextAccessor httpContextAccessor, IVNPayInformationBusiness vNPayBusiness, IZaloPayInformationBusiness zaloPayBusiness, IOrderCancellationService orderCancellationService)
         {
             _context = context;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
             _vnPayBusiness = vNPayBusiness;
             _zaloPayBusiness = zaloPayBusiness;
+            _orderCancellationService = orderCancellationService;
         }
 
         public async Task<CreateOrderResponse> CreateOrder(Guid userId, CreateOrderRequest request)
@@ -136,6 +137,9 @@ namespace MiaTicket.BussinessLogic.Business
 
             await _context.OrderData.CreateOrder(order);
             await _context.Commit();
+
+            await _orderCancellationService.ScheduleCancelOrderIfNotPaid(order.Id);
+        
             return new CreateOrderResponse(HttpStatusCode.OK, "Order created successfully", paymentUrl);
         }
 

@@ -17,6 +17,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RabbitMQ.Client;
 using StackExchange.Redis;
+using Hangfire;
+using MiaTicket.Schedular.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 var setting = EnviromentSetting.GetInstance();
@@ -51,7 +53,7 @@ builder.Services.AddSwaggerGen(x =>
 });
 builder.Services.AddStackExchangeRedisCache(redisOptions =>
 {
-   string connection = setting.GetRedisConnectionString();
+    string connection = setting.GetRedisConnectionString();
     redisOptions.Configuration = connection;
 });
 builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
@@ -82,6 +84,12 @@ builder.Services.AddSingleton<IConnection>(sp =>
     return factory.CreateConnection();
 });
 
+builder.Services.AddHangfire(config => config.SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+                                                .UseSimpleAssemblyNameTypeSerializer()
+                                                .UseRecommendedSerializerSettings()
+                                                .UseSqlServerStorage(setting.GetHangFireConnectionString()));
+builder.Services.AddHangfireServer();
+
 builder.Services.Configure<VNPayConfig>(builder.Configuration.GetSection(VNPayConfig.ConfigName));
 builder.Services.Configure<ZaloPayConfig>(builder.Configuration.GetSection(ZaloPayConfig.ConfigName));
 builder.Services.AddTransient<IDataAccessFacade, DataAccessFacade>();
@@ -98,6 +106,7 @@ builder.Services.AddTransient<IOrderBusiness, OrderBusiness>();
 builder.Services.AddTransient<IVoucherBusiness, VoucherBusiness>();
 builder.Services.AddTransient<IVNPayService, VNPayService>();
 builder.Services.AddTransient<IZaloPayService, ZaloPayService>();
+builder.Services.AddTransient<IOrderCancellationService, OrderCancellationService>();
 builder.Services.AddSingleton<IAuthorizationHandler, UserAuthorizeHandler>();
 builder.Services.AddSingleton(setting);
 builder.Services.AddSingleton<ICloudinaryService, CloudinaryService>();
@@ -113,10 +122,10 @@ builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("Angular UI", x =>
     {
-    x.AllowAnyMethod()
-            .AllowAnyHeader()
-            .SetIsOriginAllowed(origin => true) // allow any origin
-            .AllowCredentials();
+        x.AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true) // allow any origin
+                .AllowCredentials();
     });
 
 });
@@ -159,5 +168,8 @@ app.UseAuthorization();
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapControllers();
+
+app.UseHangfireDashboard();
+app.MapHangfireDashboard("/hangfire");
 
 app.Run();

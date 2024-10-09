@@ -41,7 +41,7 @@ namespace MiaTicket.ZaloPay
                     {
                         TransactionCode = appTransId,
                         CreatedAt = DateTime.UtcNow,
-                        ExpireAt = DateTime.UtcNow.AddMinutes(_zaloPayConfig.ExpireInMinute),
+                        ExpireAt = DateTime.UtcNow.AddMinutes(AppConstant.PAYMENT_LINK_EXPIRE_IN_MINUTES),
                         TotalAmount = totalPrice,
                         PaymentUrl = responseData.OrderUrl,
                     };

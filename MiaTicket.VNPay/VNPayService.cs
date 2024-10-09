@@ -32,10 +32,10 @@ namespace MiaTicket.VNPay
         {
             var vnPayLibrary = new VNPayLibrary();
             var createdAt = DateTime.Now;
-            var expireAt = createdAt.AddMinutes(_vnpayConfig.ExpireInMinute);
+            var expireAt = createdAt.AddMinutes(AppConstant.PAYMENT_LINK_EXPIRE_IN_MINUTES);
 
             var createdUTCAt = DateTime.UtcNow;
-            var expireUTCAt = createdUTCAt.AddMinutes(_vnpayConfig.ExpireInMinute);
+            var expireUTCAt = createdUTCAt.AddMinutes(AppConstant.PAYMENT_LINK_EXPIRE_IN_MINUTES);
 
             string vnp_Returnurl = _vnpayConfig.ReturnUrl; //URL nhan ket qua tra ve 
             string vnp_Url = _vnpayConfig.PaymentUrl; //URL thanh toan cua VNPAY 

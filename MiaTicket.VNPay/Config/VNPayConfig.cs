@@ -13,6 +13,5 @@ namespace MiaTicket.VNPay.Config
         public string ReturnUrl { get; set; } = string.Empty;
         public string PaymentUrl { get; set; } = string.Empty;
         public string PaymentApi { get; set; } = string.Empty;
-        public int ExpireInMinute { get; set; }
     }
 }
