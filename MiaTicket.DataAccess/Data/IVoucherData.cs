@@ -1,6 +1,7 @@
 ﻿using MiaTicket.Data;
 using MiaTicket.Data.Entity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +13,13 @@ namespace MiaTicket.DataAccess.Data
     public interface IVoucherData
     {
         Task<Voucher> CreateVoucher(Voucher voucher);
-        Task<List<Voucher>> GetVouchers(Func<Voucher, bool> predicate);
+        Task<List<Voucher>> GetVoucherByEventId(int eventId);
+        Task<List<Voucher>> SearchVouchers(int eventId, string keyword, out string eventName);
         Task<Voucher?> GetVoucherById(int voucherId);
         Task<bool> IsVoucherCodeExist(string code);
         Task<Voucher> UpdateVoucher(Voucher voucher);
         Task DeleteVoucher(Voucher voucher);
-        Task<Voucher?> SearchVoucher(int eventId, string code);
+        Task<Voucher?> FindVoucher(int eventId, string code);
     }
 
     public class VoucherData : IVoucherData
@@ -50,12 +52,19 @@ namespace MiaTicket.DataAccess.Data
             return Task.FromResult(_context.Voucher.Include(x => x.Event).FirstOrDefault(v => v.Id == voucherId));
         }
 
-        public Task<List<Voucher>> GetVouchers(Func<Voucher, bool> predicate)
+        public Task<List<Voucher>> SearchVouchers(int eventId, string keyword, out string eventName)
         {
-            return Task.FromResult(_context.Voucher.Include(x => x.Event).Where(predicate).ToList());
+            var vouchers = _context.Voucher
+                       .Include(x => x.Event)
+                       .Where(x => x.EventId == eventId && x.Name.Contains(keyword))
+                       .ToList();
+
+            eventName = vouchers.FirstOrDefault()?.Event?.Name ?? string.Empty; 
+
+            return Task.FromResult(vouchers);
         }
 
-        public Task<Voucher?> SearchVoucher(int eventId, string code)
+        public Task<Voucher?> FindVoucher(int eventId, string code)
         {
             return Task.FromResult(_context.Voucher.FirstOrDefault(x => x.EventId == eventId && x.Code == code));
         }
@@ -63,6 +72,11 @@ namespace MiaTicket.DataAccess.Data
         public Task<Voucher> UpdateVoucher(Voucher voucher)
         {
             return Task.FromResult(_context.Voucher.Update(voucher).Entity);
+        }
+
+        public Task<List<Voucher>> GetVoucherByEventId(int eventId)
+        {
+            return Task.FromResult(_context.Voucher.Where(x => x.EventId == eventId).ToList());
         }
     }
 }

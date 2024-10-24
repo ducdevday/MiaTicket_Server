@@ -27,6 +27,7 @@ services:
     - RabbitMQConnectionString=${RabbitMQConnectionString}
     - RabbitMQUserName=${RabbitMQUserName}
     - RabbitMQPassword=${RabbitMQPassword}
+    - MiaTickHangFireConnectionString=${MiaTickHangFireConnectionString}
     ports:
     - "8080:8080"
     - "8081:8081"

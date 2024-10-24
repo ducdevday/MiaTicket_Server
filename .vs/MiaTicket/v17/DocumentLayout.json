@@ -3,60 +3,16 @@
   "WorkspaceRootPath": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B4CCC09B-5479-4C00-BB8D-AE59B69A73ED}|docker-compose.dcproj|e:\\workspace\\home\\dotnet\\miaticket\\docker-compose.yml||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{B4CCC09B-5479-4C00-BB8D-AE59B69A73ED}|docker-compose.dcproj|solutionrelative:docker-compose.yml||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B4CCC09B-5479-4C00-BB8D-AE59B69A73ED}|docker-compose.dcproj|e:\\workspace\\home\\dotnet\\miaticket\\docker-compose.dcproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{B4CCC09B-5479-4C00-BB8D-AE59B69A73ED}|docker-compose.dcproj|solutionrelative:docker-compose.dcproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7721E204-4519-4EF5-82EB-EFE747B9268C}|MiaTicket.Schedular\\MiaTicket.Schedular.csproj|e:\\workspace\\home\\dotnet\\miaticket\\miaticket.schedular\\service\\iordercancellationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7721E204-4519-4EF5-82EB-EFE747B9268C}|MiaTicket.Schedular\\MiaTicket.Schedular.csproj|solutionrelative:miaticket.schedular\\service\\iordercancellationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2E58FB35-365E-43E9-899C-2F145563619F}|MiaTicket.Setting\\MiaTicket.Setting.csproj|e:\\workspace\\home\\dotnet\\miaticket\\miaticket.setting\\enviromentsetting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2E58FB35-365E-43E9-899C-2F145563619F}|MiaTicket.Setting\\MiaTicket.Setting.csproj|solutionrelative:miaticket.setting\\enviromentsetting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EC05415A-7E1D-4FB4-BC87-7DFD470F69F6}|MiaTicket.VNPay\\MiaTicket.VNPay.csproj|e:\\workspace\\home\\dotnet\\miaticket\\miaticket.vnpay\\vnpayservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EC05415A-7E1D-4FB4-BC87-7DFD470F69F6}|MiaTicket.VNPay\\MiaTicket.VNPay.csproj|solutionrelative:miaticket.vnpay\\vnpayservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1A813E12-E3B2-4955-A85D-B379919A8E4A}|MiaTicket.WebAPI\\MiaTicket.WebAPI.csproj|e:\\workspace\\home\\dotnet\\miaticket\\miaticket.webapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1A813E12-E3B2-4955-A85D-B379919A8E4A}|MiaTicket.WebAPI\\MiaTicket.WebAPI.csproj|solutionrelative:miaticket.webapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{16B34DBE-B1D8-473F-B9F4-36680DA9E482}|MiaTicket.DataAccess\\MiaTicket.DataAccess.csproj|e:\\workspace\\home\\dotnet\\miaticket\\miaticket.dataaccess\\data\\iordrerdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{16B34DBE-B1D8-473F-B9F4-36680DA9E482}|MiaTicket.DataAccess\\MiaTicket.DataAccess.csproj|solutionrelative:miaticket.dataaccess\\data\\iordrerdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8C6EBB25-09EB-4FFF-BF33-8BF50FA9EE96}|MiaTicket.BussinessLogic\\MiaTicket.BussinessLogic.csproj|e:\\workspace\\home\\dotnet\\miaticket\\miaticket.bussinesslogic\\business\\iorderbusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8C6EBB25-09EB-4FFF-BF33-8BF50FA9EE96}|MiaTicket.BussinessLogic\\MiaTicket.BussinessLogic.csproj|solutionrelative:miaticket.bussinesslogic\\business\\iorderbusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8C6EBB25-09EB-4FFF-BF33-8BF50FA9EE96}|MiaTicket.BussinessLogic\\MiaTicket.BussinessLogic.csproj|e:\\workspace\\home\\dotnet\\miaticket\\miaticket.bussinesslogic\\miaticket.bussinesslogic.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{8C6EBB25-09EB-4FFF-BF33-8BF50FA9EE96}|MiaTicket.BussinessLogic\\MiaTicket.BussinessLogic.csproj|solutionrelative:miaticket.bussinesslogic\\miaticket.bussinesslogic.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7721E204-4519-4EF5-82EB-EFE747B9268C}|MiaTicket.Schedular\\MiaTicket.Schedular.csproj|e:\\workspace\\home\\dotnet\\miaticket\\miaticket.schedular\\miaticket.schedular.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{7721E204-4519-4EF5-82EB-EFE747B9268C}|MiaTicket.Schedular\\MiaTicket.Schedular.csproj|solutionrelative:miaticket.schedular\\miaticket.schedular.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C48732D4-2300-4501-A9CF-041F05608BFA}|MiaTicket.ZaloPay\\MiaTicket.ZaloPay.csproj|e:\\workspace\\home\\dotnet\\miaticket\\miaticket.zalopay\\zalopayservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C48732D4-2300-4501-A9CF-041F05608BFA}|MiaTicket.ZaloPay\\MiaTicket.ZaloPay.csproj|solutionrelative:miaticket.zalopay\\zalopayservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2E58FB35-365E-43E9-899C-2F145563619F}|MiaTicket.Setting\\MiaTicket.Setting.csproj|e:\\workspace\\home\\dotnet\\miaticket\\miaticket.setting\\appconstant.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2E58FB35-365E-43E9-899C-2F145563619F}|MiaTicket.Setting\\MiaTicket.Setting.csproj|solutionrelative:miaticket.setting\\appconstant.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EC05415A-7E1D-4FB4-BC87-7DFD470F69F6}|MiaTicket.VNPay\\MiaTicket.VNPay.csproj|e:\\workspace\\home\\dotnet\\miaticket\\miaticket.vnpay\\config\\vnpayconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EC05415A-7E1D-4FB4-BC87-7DFD470F69F6}|MiaTicket.VNPay\\MiaTicket.VNPay.csproj|solutionrelative:miaticket.vnpay\\config\\vnpayconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1A813E12-E3B2-4955-A85D-B379919A8E4A}|MiaTicket.WebAPI\\MiaTicket.WebAPI.csproj|e:\\workspace\\home\\dotnet\\miaticket\\miaticket.webapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{1A813E12-E3B2-4955-A85D-B379919A8E4A}|MiaTicket.WebAPI\\MiaTicket.WebAPI.csproj|solutionrelative:miaticket.webapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C48732D4-2300-4501-A9CF-041F05608BFA}|MiaTicket.ZaloPay\\MiaTicket.ZaloPay.csproj|e:\\workspace\\home\\dotnet\\miaticket\\miaticket.zalopay\\config\\zalopayconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C48732D4-2300-4501-A9CF-041F05608BFA}|MiaTicket.ZaloPay\\MiaTicket.ZaloPay.csproj|solutionrelative:miaticket.zalopay\\config\\zalopayconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{1A813E12-E3B2-4955-A85D-B379919A8E4A}|MiaTicket.WebAPI\\MiaTicket.WebAPI.csproj|e:\\workspace\\home\\dotnet\\miaticket\\miaticket.webapi\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1A813E12-E3B2-4955-A85D-B379919A8E4A}|MiaTicket.WebAPI\\MiaTicket.WebAPI.csproj|solutionrelative:miaticket.webapi\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -87,183 +43,40 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "docker-compose.yml",
-              "DocumentMoniker": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\docker-compose.yml",
-              "RelativeDocumentMoniker": "docker-compose.yml",
-              "ToolTip": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\docker-compose.yml",
-              "RelativeToolTip": "docker-compose.yml",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-10-09T10:14:37.366Z",
+              "Title": "IOrdrerData.cs",
+              "DocumentMoniker": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.DataAccess\\Data\\IOrdrerData.cs",
+              "RelativeDocumentMoniker": "MiaTicket.DataAccess\\Data\\IOrdrerData.cs",
+              "ToolTip": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.DataAccess\\Data\\IOrdrerData.cs",
+              "RelativeToolTip": "MiaTicket.DataAccess\\Data\\IOrdrerData.cs",
+              "ViewState": "AQIAABgAAAAAAAAAAAAmwCQAAAA7AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-24T16:31:00.385Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "docker-compose",
-              "DocumentMoniker": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\docker-compose.dcproj",
-              "RelativeDocumentMoniker": "docker-compose.dcproj",
-              "ToolTip": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\docker-compose.dcproj",
-              "RelativeToolTip": "docker-compose.dcproj",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-10-09T10:14:35.19Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "MiaTicket.BussinessLogic",
-              "DocumentMoniker": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.BussinessLogic\\MiaTicket.BussinessLogic.csproj",
-              "RelativeDocumentMoniker": "MiaTicket.BussinessLogic\\MiaTicket.BussinessLogic.csproj",
-              "ToolTip": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.BussinessLogic\\MiaTicket.BussinessLogic.csproj",
-              "RelativeToolTip": "MiaTicket.BussinessLogic\\MiaTicket.BussinessLogic.csproj",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2024-10-09T09:58:08.84Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
               "Title": "IOrderBusiness.cs",
               "DocumentMoniker": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.BussinessLogic\\Business\\IOrderBusiness.cs",
               "RelativeDocumentMoniker": "MiaTicket.BussinessLogic\\Business\\IOrderBusiness.cs",
               "ToolTip": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.BussinessLogic\\Business\\IOrderBusiness.cs",
               "RelativeToolTip": "MiaTicket.BussinessLogic\\Business\\IOrderBusiness.cs",
-              "ViewState": "AQIAAGkAAAAAAAAAAAAuwIkAAAAuAAAA",
+              "ViewState": "AQIAAIcAAAAAAAAAAAAhwJ4AAAA8AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-09T09:50:21.45Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "VNPayService.cs",
-              "DocumentMoniker": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.VNPay\\VNPayService.cs",
-              "RelativeDocumentMoniker": "MiaTicket.VNPay\\VNPayService.cs",
-              "ToolTip": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.VNPay\\VNPayService.cs",
-              "RelativeToolTip": "MiaTicket.VNPay\\VNPayService.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAACoAAAAMAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-09T09:46:33.135Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "ZaloPayService.cs",
-              "DocumentMoniker": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.ZaloPay\\ZaloPayService.cs",
-              "RelativeDocumentMoniker": "MiaTicket.ZaloPay\\ZaloPayService.cs",
-              "ToolTip": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.ZaloPay\\ZaloPayService.cs",
-              "RelativeToolTip": "MiaTicket.ZaloPay\\ZaloPayService.cs",
-              "ViewState": "AQIAAAcAAAAAAAAAAAAAwBQAAAAdAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-09T09:46:12.029Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "AppConstant.cs",
-              "DocumentMoniker": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.Setting\\AppConstant.cs",
-              "RelativeDocumentMoniker": "MiaTicket.Setting\\AppConstant.cs",
-              "ToolTip": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.Setting\\AppConstant.cs",
-              "RelativeToolTip": "MiaTicket.Setting\\AppConstant.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAA8AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-09T09:45:19.311Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.WebAPI\\appsettings.json",
-              "RelativeDocumentMoniker": "MiaTicket.WebAPI\\appsettings.json",
-              "ToolTip": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.WebAPI\\appsettings.json",
-              "RelativeToolTip": "MiaTicket.WebAPI\\appsettings.json",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAABRAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-10-09T09:45:07.129Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "ZaloPayConfig.cs",
-              "DocumentMoniker": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.ZaloPay\\Config\\ZaloPayConfig.cs",
-              "RelativeDocumentMoniker": "MiaTicket.ZaloPay\\Config\\ZaloPayConfig.cs",
-              "ToolTip": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.ZaloPay\\Config\\ZaloPayConfig.cs",
-              "RelativeToolTip": "MiaTicket.ZaloPay\\Config\\ZaloPayConfig.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABQAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-09T09:44:51.752Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "VNPayConfig.cs",
-              "DocumentMoniker": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.VNPay\\Config\\VNPayConfig.cs",
-              "RelativeDocumentMoniker": "MiaTicket.VNPay\\Config\\VNPayConfig.cs",
-              "ToolTip": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.VNPay\\Config\\VNPayConfig.cs",
-              "RelativeToolTip": "MiaTicket.VNPay\\Config\\VNPayConfig.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAA2AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-09T09:44:32.018Z",
+              "WhenOpened": "2024-10-24T16:26:19.768Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "IOrderCancellationService.cs",
-              "DocumentMoniker": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.Schedular\\Service\\IOrderCancellationService.cs",
-              "RelativeDocumentMoniker": "MiaTicket.Schedular\\Service\\IOrderCancellationService.cs",
-              "ToolTip": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.Schedular\\Service\\IOrderCancellationService.cs",
-              "RelativeToolTip": "MiaTicket.Schedular\\Service\\IOrderCancellationService.cs",
-              "ViewState": "AQIAAAYAAAAAAAAAAAAAABcAAACHAAAA",
+              "Title": "OrderController.cs",
+              "DocumentMoniker": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.WebAPI\\Controllers\\OrderController.cs",
+              "RelativeDocumentMoniker": "MiaTicket.WebAPI\\Controllers\\OrderController.cs",
+              "ToolTip": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.WebAPI\\Controllers\\OrderController.cs",
+              "RelativeToolTip": "MiaTicket.WebAPI\\Controllers\\OrderController.cs",
+              "ViewState": "AQIAABgAAAAAAAAAAAAowCsAAAA2AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-09T09:40:25.027Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "EnviromentSetting.cs",
-              "DocumentMoniker": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.Setting\\EnviromentSetting.cs",
-              "RelativeDocumentMoniker": "MiaTicket.Setting\\EnviromentSetting.cs",
-              "ToolTip": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.Setting\\EnviromentSetting.cs",
-              "RelativeToolTip": "MiaTicket.Setting\\EnviromentSetting.cs",
-              "ViewState": "AQIAADYAAAAAAAAAAAAowGUAAABSAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-09T08:39:09.196Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Program.cs",
-              "DocumentMoniker": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.WebAPI\\Program.cs",
-              "RelativeDocumentMoniker": "MiaTicket.WebAPI\\Program.cs",
-              "ToolTip": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.WebAPI\\Program.cs",
-              "RelativeToolTip": "MiaTicket.WebAPI\\Program.cs",
-              "ViewState": "AQIAAFwAAAAAAAAAAAAiwGwAAABVAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-09T08:36:20.884Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "MiaTicket.Schedular",
-              "DocumentMoniker": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.Schedular\\MiaTicket.Schedular.csproj",
-              "RelativeDocumentMoniker": "MiaTicket.Schedular\\MiaTicket.Schedular.csproj",
-              "ToolTip": "E:\\WorkSpace\\Home\\Dotnet\\MiaTicket\\MiaTicket.Schedular\\MiaTicket.Schedular.csproj",
-              "RelativeToolTip": "MiaTicket.Schedular\\MiaTicket.Schedular.csproj",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2024-10-09T08:36:12.528Z",
+              "WhenOpened": "2024-10-24T16:26:16.234Z",
               "EditorCaption": ""
             }
           ]

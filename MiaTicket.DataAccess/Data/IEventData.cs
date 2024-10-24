@@ -14,7 +14,6 @@ namespace MiaTicket.DataAccess.Data
         Task<bool> IsExistEvent(int id);
         Task<Event> UpdateEvent(Event entity);
         Task DeleteEvent(Event entity);
-        Task<List<Event>> GetEvents(Guid userId, string key, int status, int page, int size, out int count, bool hasCounted = true);
         Task<List<Event>> GetLatestEvent(int count);
         Task<List<Event>> GetEventsByCategory(int categoryId, int count);
         Task<bool> IsEventSortTypeValid(int type);
@@ -45,7 +44,7 @@ namespace MiaTicket.DataAccess.Data
 
         public Task<Event?> GetEventById(int id)
         {
-            var evt = _context.Event.Include(e => e.ShowTimes)
+            var evt = _context.Event.Include(e => e.BankAccount).Include(e => e.ShowTimes)
                 .ThenInclude(st => st.Tickets).FirstOrDefault(x => x.Id == id);
             return Task.FromResult(evt);
         }
@@ -66,16 +65,6 @@ namespace MiaTicket.DataAccess.Data
                 .FirstOrDefault(e => e.Id == eventId && e.ShowTimes.Any(st => st.Id == showTimeId && ticketIds.All(x => st.Tickets.Select(t =>t.Id).Contains(x))));
             return Task.FromResult(evt);
 
-        }
-
-        public Task<List<Event>> GetEvents(Guid userId, string key, int status, int page, int size, out int count, bool hasCounted = true)
-        {
-            count = 0;
-            var query = _context.Event.Include(e => e.ShowTimes).Where(x => x.UserId == userId && x.Name.Contains(key) && x.Status == (EventStatus)status).OrderByDescending(x => x.CreatedAt);
-            if (!hasCounted) count = query.Count();
-            var evts = query.Skip((page - 1) * size).Take(size).ToList();
-
-            return Task.FromResult(evts);
         }
 
         public Task<List<Event>> GetEventsByCategory(int categoryId, int count)

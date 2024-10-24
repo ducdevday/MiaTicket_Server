@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 
 namespace MiaTicket.BussinessLogic.Response
 {
-    public class UpdatePaymentZaloPayResponse : BaseApiResponse<ZaloPayInformationDto?>
+    public class UpdatePaymentZaloPayResponse : BaseApiResponse<PaymentDto?>
     {
-        public UpdatePaymentZaloPayResponse(HttpStatusCode statusCode, string message, ZaloPayInformationDto? data) : base(statusCode, message, data)
+        public UpdatePaymentZaloPayResponse(HttpStatusCode statusCode, string message, PaymentDto? data) : base(statusCode, message, data)
         {
+
         }
     }
 }

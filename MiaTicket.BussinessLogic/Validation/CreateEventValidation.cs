@@ -19,7 +19,7 @@ namespace MiaTicket.BussinessLogic.Validation
         {
             if (string.IsNullOrEmpty(_value.Name)
                 || !RegexUtil.isStringLengthValid(_value.Name, 255)
-                || (string.IsNullOrEmpty(_value.AddressName)
+                || string.IsNullOrEmpty(_value.AddressName)
                 || !RegexUtil.isStringLengthValid(_value.AddressName, 255)
                 || string.IsNullOrEmpty(_value.AddressNo)
                 || !RegexUtil.isStringLengthValid(_value.AddressNo, 255)
@@ -46,7 +46,7 @@ namespace MiaTicket.BussinessLogic.Validation
                 || !RegexUtil.isStringLengthValid(_value.PaymentBankBranch, 50)
                 || _value.ShowTimes == null
                 || _value.ShowTimes.Count == 0
-                || _value.ShowTimes.FirstOrDefault(x => !ValidateShowTime(x)) == null)
+                || _value.ShowTimes.FirstOrDefault(x => !ValidateShowTime(x)) == null
                 )
             {
                 _message = "Invalid Request";

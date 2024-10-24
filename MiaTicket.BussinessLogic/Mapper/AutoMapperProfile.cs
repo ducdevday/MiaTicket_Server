@@ -5,6 +5,7 @@ using MiaTicket.Data.Entity;
 using MiaTicket.VNPay.Model;
 using MiaTicket.Data.Enum;
 using MiaTicket.ZaloPay.Model;
+using MiaTicket.BussinessLogic.Util;
 
 namespace MiaTicket.BussinessLogic.Mapper
 {
@@ -13,17 +14,42 @@ namespace MiaTicket.BussinessLogic.Mapper
         public AutoMapperProfile()
         {
             //**********************************************ACCOUNT MAPPER***********************************************************
+            CreateMap<CreateAccountRequest, User>()
+                                        .ForMember(dest => dest.Id, opt => opt.MapFrom(src => new Guid()))
+                                        .ForMember(dest => dest.Password, opt => opt.MapFrom(src => PasswordUtil.HashPassword(src.Password)));
+            CreateMap<UpdateAccountRequest, User>();
+
             CreateMap<User, UserDto>();
 
             //**********************************************EVENT MAPPER***********************************************************
             //---------------------------------------------------------------------------------------------------------------------
 
-            CreateMap<CreateEventRequest, Event>();
+            CreateMap<CreateEventRequest, Event>()
+                                                    .ForMember(dest => dest.BankAccount, opt => opt.MapFrom(src => new BankAccount
+                                                    {
+                                                        BankNumber = src.PaymentNumber,
+                                                        OwnerName = src.PaymentAccount,
+                                                        BankName = src.PaymentBankName,
+                                                        BankBranch = src.PaymentBankBranch
+                                                    }))
+                                                    .ForMember(dest => dest.EventOrganizers, opt => opt.MapFrom(src => new List<EventOrganizer>
+                                                    {
+                                                        new EventOrganizer
+                                                        {
+                                                            OrganizerId = src.UserId,
+                                                            Position = OrganizerPosition.Owner 
+                                                        }
+                                                    }));
             CreateMap<UpdateEventRequest, Event>();
             CreateMap<ShowTimeDto, ShowTime>();
             CreateMap<TicketDto, Ticket>();
 
-            CreateMap<Event, GetEventDataResponse>();
+            CreateMap<Event, GetEventDataResponse>()
+                                        .ForMember(dest => dest.PaymentNumber, opt => opt.MapFrom(src => src.BankAccount.BankNumber))
+                                        .ForMember(dest => dest.PaymentAccount, opt => opt.MapFrom(src => src.BankAccount.OwnerName))
+                                        .ForMember(dest => dest.PaymentBankName, opt => opt.MapFrom(src => src.BankAccount.BankName))
+                                        .ForMember(dest => dest.PaymentBankBranch, opt => opt.MapFrom(src => src.BankAccount.BankBranch));
+
             CreateMap<ShowTime, ShowTimeDto>();
             CreateMap<Ticket, TicketDto>();
 
@@ -83,11 +109,9 @@ namespace MiaTicket.BussinessLogic.Mapper
             CreateMap<OrderTicketDto, OrderTicket>().ForMember(dest => dest.TicketId, opt => opt.MapFrom(src => src.TicketId))
                                                     .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity));
 
-            CreateMap<CreateVnPayPaymentResult, VnPayInformation>();
-            CreateMap<VnPayInformation, VnPayInformationDto>().ForMember(dest => dest.OrderStatus, opt => opt.MapFrom(src => src.Order.OrderStatus));
-
-            CreateMap<CreateZaloPayPaymentResult, ZaloPayInformation>();
-            CreateMap<ZaloPayInformation, ZaloPayInformationDto>().ForMember(dest => dest.OrderStatus, opt => opt.MapFrom(src => src.Order.OrderStatus));
+            CreateMap<CreateVnPayPaymentResult, Payment>();
+            CreateMap<CreateZaloPayPaymentResult, Payment>();
+            CreateMap<Payment, PaymentDto>().ForMember(dest => dest.OrderStatus, opt => opt.MapFrom(src => src.Order.OrderStatus));
 
             CreateMap<OrderTicket, OrderTicketDetailDto>()
                                         .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
@@ -95,35 +119,35 @@ namespace MiaTicket.BussinessLogic.Mapper
                                         .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price));
             CreateMap<Order, MyOrderDto>()
                                         .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-                                        .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.BackgroundUrl))
-                                        .ForMember(dest => dest.ShowTimeStart, opt => opt.MapFrom(src => src.DateStart))
-                                        .ForMember(dest => dest.ShowTimeEnd, opt => opt.MapFrom(src => src.DateEnd))
-                                        .ForMember(dest => dest.AddressName, opt => opt.MapFrom(src => src.AddressName))
-                                        .ForMember(dest => dest.AddressDetail, opt => opt.MapFrom(src => src.AddressDetail))
+                                        .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.Event.BackgroundUrl))
+                                        .ForMember(dest => dest.ShowTimeStart, opt => opt.MapFrom(src => src.ShowTime.ShowStartAt))
+                                        .ForMember(dest => dest.ShowTimeEnd, opt => opt.MapFrom(src => src.ShowTime.ShowEndAt))
+                                        .ForMember(dest => dest.AddressName, opt => opt.MapFrom(src => src.Event.AddressName))
+                                        .ForMember(dest => dest.AddressDetail, opt => opt.MapFrom(src => FormaterUtil.FormatAddress(src.Event.AddressNo, src.Event.AddressWard, src.Event.AddressDistrict, src.Event.AddressProvince)))
                                         .ForMember(dest => dest.OrderTickets, opt => opt.MapFrom(src => src.OrderTickets))
                                         .ForMember(dest => dest.TotalPrice, opt => opt.MapFrom(src => src.TotalPrice))
-                                        .ForMember(dest => dest.IsCanCancel, opt => opt.MapFrom(src =>src.OrderStatus == OrderStatus.Pending &&(src.VnPayInformation == null || src.VnPayInformation.PaymentStatus == PaymentStatus.UnPaid)))
-                                        .ForMember(dest => dest.IsCanRepayment, opt => opt.MapFrom(src => src.OrderStatus == OrderStatus.Pending && (src.VnPayInformation == null || src.VnPayInformation.PaymentStatus == PaymentStatus.UnPaid && DateTime.UtcNow <= src.VnPayInformation.ExpireAt)))
-                                        .ForMember(dest => dest.PaymentUrl, opt => opt.MapFrom(src => src.VnPayInformation != null ? src.VnPayInformation.PaymentUrl : string.Empty));
+                                        .ForMember(dest => dest.IsCanCancel, opt => opt.MapFrom(src => src.OrderStatus == OrderStatus.Pending && src.Payment.PaymentStatus == PaymentStatus.UnPaid))
+                                        .ForMember(dest => dest.IsCanRepayment, opt => opt.MapFrom(src => src.OrderStatus == OrderStatus.Pending && (src.Payment == null || src.Payment.PaymentStatus == PaymentStatus.UnPaid && DateTime.UtcNow <= src.Payment.ExpireAt)))
+                                        .ForMember(dest => dest.PaymentUrl, opt => opt.MapFrom(src => src.Payment != null ? src.Payment.PaymentUrl : string.Empty));
 
             CreateMap<Order, OrderDetailDto>()
                                         .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-                                        .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.BackgroundUrl))
-                                        .ForMember(dest => dest.ShowTimeStart, opt => opt.MapFrom(src => src.DateStart))
-                                        .ForMember(dest => dest.ShowTimeEnd, opt => opt.MapFrom(src => src.DateEnd))
+                                        .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.Event.BackgroundUrl))
+                                        .ForMember(dest => dest.ShowTimeStart, opt => opt.MapFrom(src => src.ShowTime.ShowStartAt))
+                                        .ForMember(dest => dest.ShowTimeEnd, opt => opt.MapFrom(src => src.ShowTime.ShowEndAt))
                                         .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
-                                        .ForMember(dest => dest.AddressName, opt => opt.MapFrom(src => src.AddressName))
-                                        .ForMember(dest => dest.AddressDetail, opt => opt.MapFrom(src => src.AddressDetail))
+                                        .ForMember(dest => dest.AddressName, opt => opt.MapFrom(src => src.Event.AddressName))
+                                        .ForMember(dest => dest.AddressDetail, opt => opt.MapFrom(src => FormaterUtil.FormatAddress(src.Event.AddressNo, src.Event.AddressWard, src.Event.AddressDistrict, src.Event.AddressProvince)))
                                         .ForMember(dest => dest.OrderTickets, opt => opt.MapFrom(src => src.OrderTickets))
-                                        .ForMember(dest => dest.Discount, opt => opt.MapFrom(src => (src.OrderTickets.Sum(x => x.Price * x.Quantity) - src.TotalPrice )>0 ? (src.OrderTickets.Sum(x => x.Price * x.Quantity) - src.TotalPrice) : 0))
+                                        .ForMember(dest => dest.Discount, opt => opt.MapFrom(src => (src.OrderTickets.Sum(x => x.Price * x.Quantity) - src.TotalPrice) > 0 ? (src.OrderTickets.Sum(x => x.Price * x.Quantity) - src.TotalPrice) : 0))
                                         .ForMember(dest => dest.TotalPrice, opt => opt.MapFrom(src => src.TotalPrice))
-                                        .ForMember(dest => dest.IsCanCancel, opt => opt.MapFrom(src => src.OrderStatus == OrderStatus.Pending && (src.VnPayInformation == null || src.VnPayInformation.PaymentStatus == PaymentStatus.UnPaid)))
-                                        .ForMember(dest => dest.IsCanRepayment, opt => opt.MapFrom(src => src.OrderStatus == OrderStatus.Pending && (src.VnPayInformation == null || src.VnPayInformation.PaymentStatus == PaymentStatus.UnPaid && src.VnPayInformation.ExpireAt <= DateTime.UtcNow)))
-                                        .ForMember(dest => dest.PaymentUrl, opt => opt.MapFrom(src => src.VnPayInformation != null ? src.VnPayInformation.PaymentUrl : string.Empty))
-                                        .ForMember(dest => dest.IsUsed , opt => opt.MapFrom(src => src.IsUsed))
-                                        .ForMember(dest => dest.PaymentType, opt => opt.MapFrom(src => src.PaymentType))
+                                        .ForMember(dest => dest.IsCanCancel, opt => opt.MapFrom(src => src.OrderStatus == OrderStatus.Pending && (src.Payment == null || src.Payment.PaymentStatus == PaymentStatus.UnPaid)))
+                                        .ForMember(dest => dest.IsCanRepayment, opt => opt.MapFrom(src => src.OrderStatus == OrderStatus.Pending && (src.Payment == null || src.Payment.PaymentStatus == PaymentStatus.UnPaid && src.Payment.ExpireAt <= DateTime.UtcNow)))
+                                        .ForMember(dest => dest.PaymentUrl, opt => opt.MapFrom(src => src.Payment != null ? src.Payment.PaymentUrl : string.Empty))
+                                        .ForMember(dest => dest.IsUsed, opt => opt.MapFrom(src => src.IsUsed))
+                                        .ForMember(dest => dest.PaymentType, opt => opt.MapFrom(src => src.Payment.PaymentType))
                                         .ForMember(dest => dest.OrderStatus, opt => opt.MapFrom(src => src.OrderStatus))
-                                        .ForMember(dest => dest.QrCode,opt => opt.MapFrom(src => src.OrderStatus == OrderStatus.Finished ? src.QrCode : null))
+                                        .ForMember(dest => dest.QrCode, opt => opt.MapFrom(src => src.OrderStatus == OrderStatus.Finished ? src.QrCode : null))
                                         .ForMember(dest => dest.ReceiverName, opt => opt.MapFrom(src => src.OrderStatus == OrderStatus.Finished ? src.ReceiverName : null))
                                         .ForMember(dest => dest.ReceiverEmail, opt => opt.MapFrom(src => src.OrderStatus == OrderStatus.Finished ? src.ReceiverEmail : null))
                                         .ForMember(dest => dest.ReceiverPhoneNumber, opt => opt.MapFrom(src => src.OrderStatus == OrderStatus.Finished ? src.ReceiverPhoneNumber : null));
@@ -138,11 +162,11 @@ namespace MiaTicket.BussinessLogic.Mapper
             CreateMap<Voucher, VoucherDto>();
 
             CreateMap<Voucher, VoucherDiscoveryDto>()
-                                        .ForMember(dest => dest.IsAvailable, opt => opt.MapFrom(src => src.AppliedQuantity != null && src.InitQuantity != null ?  src.AppliedQuantity < src.InitQuantity : true && DateTime.UtcNow > src.StartDate && DateTime.UtcNow < src.EndDate));
-                                        
+                                        .ForMember(dest => dest.IsAvailable, opt => opt.MapFrom(src => src.AppliedQuantity != null && src.InitQuantity != null ? src.AppliedQuantity < src.InitQuantity : true && DateTime.UtcNow > src.StartDate && DateTime.UtcNow < src.EndDate));
+
 
             CreateMap<Voucher, SearchVoucherDto>();
-                                        
+
         }
     }
 }

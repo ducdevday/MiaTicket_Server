@@ -44,6 +44,7 @@ namespace MiaTicket.WebAPI.Controllers
             HttpContext.Response.StatusCode = (int)result.StatusCode;
             return new JsonResult(result);
         }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEvent([FromRoute] int id)
         {
@@ -51,8 +52,9 @@ namespace MiaTicket.WebAPI.Controllers
             HttpContext.Response.StatusCode = (int)result.StatusCode;
             return new JsonResult(result);
         }
+
         [HttpGet("my-events")]
-        [UserAuthorize(RequireRoles = [Role.User])]
+        [UserAuthorize(RequireRoles = [Role.Customer])]
         public async Task<IActionResult> GetMyEvents([FromQuery] GetMyEventsRequest request)
         {
             _ = Guid.TryParse(User.FindFirst("id")?.Value, out Guid userId);
@@ -60,6 +62,7 @@ namespace MiaTicket.WebAPI.Controllers
             HttpContext.Response.StatusCode = (int)result.StatusCode;
             return new JsonResult(result);
         }
+
         [HttpGet("latest")]
         public async Task<IActionResult> GetLastestEvents([FromQuery] GetLatestEventsRequest request)
         {
@@ -67,6 +70,7 @@ namespace MiaTicket.WebAPI.Controllers
             HttpContext.Response.StatusCode = (int)result.StatusCode;
             return new JsonResult(result);
         }
+
         [HttpGet("trending")]
         public async Task<IActionResult> GetTrendingEvents([FromQuery] GetTrendingEventsRequest request)
         {
@@ -74,6 +78,7 @@ namespace MiaTicket.WebAPI.Controllers
             HttpContext.Response.StatusCode = (int)result.StatusCode;
             return new JsonResult(result);
         }
+
         [HttpGet("by-category")]
         public async Task<IActionResult> GetEventsByCategory([FromQuery] GetEventsByCategoryRequest request)
         {
@@ -81,6 +86,7 @@ namespace MiaTicket.WebAPI.Controllers
             HttpContext.Response.StatusCode = (int)result.StatusCode;
             return new JsonResult(result);
         }
+
         [HttpGet("search")]
         public async Task<IActionResult> SearchEvent([FromQuery] SearchEventRequest request)
         {
@@ -88,6 +94,7 @@ namespace MiaTicket.WebAPI.Controllers
             HttpContext.Response.StatusCode = (int)result.StatusCode;
             return new JsonResult(result);
         }
+
         [HttpGet("detail/{id}")]
         public async Task<IActionResult> GetEventDetail([FromRoute] int id) {
             var result = await _context.GetEventDetail(id);

@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace MiaTicket.BussinessLogic.Response
 {
-    public class UpdatePaymentVnPayResponse : BaseApiResponse<VnPayInformationDto?>
+    public class UpdatePaymentVnPayResponse : BaseApiResponse<PaymentDto?>
     {
-        public UpdatePaymentVnPayResponse(HttpStatusCode statusCode, string message, VnPayInformationDto? data) : base(statusCode, message, data)
+        public UpdatePaymentVnPayResponse(HttpStatusCode statusCode, string message, PaymentDto? data) : base(statusCode, message, data)
         {
         }
     }

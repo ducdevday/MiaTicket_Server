@@ -10,17 +10,18 @@ namespace MiaTicket.DataAccess
 {
     public interface IDataAccessFacade
     {
+        public IAdminData AdminData { get; }
         public IBannerData BannerData { get; }
         public ICategoryData CategoryData { get; }
         public IEventData EventData { get; }
+        public IEventOrganizerData EventOrganizerData { get; }
         public IOrderData OrderData { get; }
+        public IPaymentData PaymentData { get; }
         public IShowTimeData ShowTimeData { get; }
         public ITicketData TicketData { get; }
         public IUserData UserData { get; }
+        public IVerificationCodeData VerificationCodeData { get; }
         public IVoucherData VoucherData { get; }
-        public IVerifyCodeData VerifyCodeData { get; }
-        public IVNPayInformationData VNPayInformationData { get; }
-        public IZaloPayInformationData ZaloPayInformationData { get; }
         public Task Commit();
     }
 
@@ -32,11 +33,6 @@ namespace MiaTicket.DataAccess
         {
 
         }
-
-        //public DataAccessFacade(MiaTicketDBContext context)
-        //{
-        //    _context = context;
-        //}
 
         private BannerData _bannerData;
         public IBannerData BannerData {
@@ -105,30 +101,40 @@ namespace MiaTicket.DataAccess
             }
         }
 
-        private VerifyCodeData _verifyCodeData;
-        public IVerifyCodeData VerifyCodeData
+        private VerificationCodeData _verificationCodeData;
+        public IVerificationCodeData VerificationCodeData
         {
             get
             {
-                _verifyCodeData ??= new  VerifyCodeData(_context);
-                return _verifyCodeData;
+                _verificationCodeData ??= new VerificationCodeData(_context);
+                return _verificationCodeData;
             }
         }
-        private VNPayInformationData _vnPayInformationData; 
-        public IVNPayInformationData VNPayInformationData
+
+
+        private AdminData _admindata;
+        public IAdminData AdminData {
+            get { 
+                _admindata ??= new AdminData(_context);
+                return _admindata;
+            }
+        }
+
+        private PaymentData _paymentData;
+        public IPaymentData PaymentData
         {
-            get 
-            { 
-                _vnPayInformationData ??= new VNPayInformationData (_context);
-                return _vnPayInformationData;
+            get { 
+                _paymentData ??= new PaymentData(_context);
+                return _paymentData;
             }
         }
-        private ZaloPayInformationData _zaloPayInformationData;
-        public IZaloPayInformationData ZaloPayInformationData {
-            get 
-            {
-                _zaloPayInformationData ??= new ZaloPayInformationData(_context);
-                return _zaloPayInformationData;
+
+        private EventOrganizerData _eventOrganizerData;
+        public IEventOrganizerData EventOrganizerData
+        {
+            get {
+                _eventOrganizerData ??= new EventOrganizerData(_context);
+                return _eventOrganizerData;
             }
         }
 

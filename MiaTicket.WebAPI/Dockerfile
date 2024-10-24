@@ -17,6 +17,7 @@ COPY ["MiaTicket.DataAccess/MiaTicket.DataAccess.csproj", "MiaTicket.DataAccess/
 COPY ["MiaTicket.DataCache/MiaTicket.DataCache.csproj", "MiaTicket.DataCache/"]
 COPY ["MiaTicket.Data/MiaTicket.Data.csproj", "MiaTicket.Data/"]
 COPY ["MiaTicket.Email/MiaTicket.Email.csproj", "MiaTicket.Email/"]
+COPY ["MiaTicket.Schedular/MiaTicket.Schedular.csproj", "MiaTicket.Schedular/"]
 COPY ["MiaTicket.VNPay/MiaTicket.VNPay.csproj", "MiaTicket.VNPay/"]
 COPY ["MiaTicket.ZaloPay/MiaTicket.ZaloPay.csproj", "MiaTicket.ZaloPay/"]
 RUN dotnet restore "./MiaTicket.WebAPI/MiaTicket.WebAPI.csproj"

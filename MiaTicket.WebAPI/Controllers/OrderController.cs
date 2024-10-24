@@ -20,7 +20,7 @@ namespace MiaTicket.WebAPI.Controllers
         }
 
         [HttpPost("")]
-        [UserAuthorize(RequireRoles = [Role.User])]
+        [UserAuthorize(RequireRoles = [Role.Customer])]
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrderRequest request) {
             _ = Guid.TryParse(User.FindFirst("id")?.Value, out Guid userId);
             var result = await _context.CreateOrder(userId,request);
@@ -29,7 +29,7 @@ namespace MiaTicket.WebAPI.Controllers
         }
 
         [HttpGet("my-orders")]
-        [UserAuthorize(RequireRoles = [Role.User])]
+        [UserAuthorize(RequireRoles = [Role.Customer])]
         public async Task<IActionResult> GetMyOrders([FromQuery] GetMyOrdersRequest request) {
             _ = Guid.TryParse(User.FindFirst("id")?.Value, out Guid userId);
             var result = await _context.GetMyOrders(userId, request);
@@ -38,7 +38,7 @@ namespace MiaTicket.WebAPI.Controllers
         }
 
         [HttpGet("detail/{id}")]
-        [UserAuthorize(RequireRoles = [Role.User])]
+        [UserAuthorize(RequireRoles = [Role.Customer])]
         public async Task<IActionResult> GetOrderDetail([FromRoute] int id) {
             _ = Guid.TryParse(User.FindFirst("id")?.Value, out Guid userId);
             var result = await _context.GetOrderDetail(userId, id);
@@ -47,7 +47,7 @@ namespace MiaTicket.WebAPI.Controllers
         }
 
         [HttpPatch("cancel/{id}")]
-        [UserAuthorize(RequireRoles = [Role.User])]
+        [UserAuthorize(RequireRoles = [Role.Customer])]
         public async Task<IActionResult> CancelOrder([FromRoute] int id)
         {
             _ = Guid.TryParse(User.FindFirst("id")?.Value, out Guid userId);

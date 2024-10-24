@@ -23,18 +23,16 @@ namespace MiaTicket.BussinessLogic.Business
     public class OrderBusiness : IOrderBusiness
     {
         private readonly IDataAccessFacade _context;
+        private readonly IPaymentBusiness _paymentBusiness;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IVNPayInformationBusiness _vnPayBusiness;
-        private readonly IZaloPayInformationBusiness _zaloPayBusiness;
         private readonly IOrderCancellationService _orderCancellationService;
-        public OrderBusiness(IDataAccessFacade context, IMapper mapper, IHttpContextAccessor httpContextAccessor, IVNPayInformationBusiness vNPayBusiness, IZaloPayInformationBusiness zaloPayBusiness, IOrderCancellationService orderCancellationService)
+        public OrderBusiness(IDataAccessFacade context, IPaymentBusiness paymentBusiness, IMapper mapper, IHttpContextAccessor httpContextAccessor, IOrderCancellationService orderCancellationService)
         {
             _context = context;
+            _paymentBusiness = paymentBusiness;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
-            _vnPayBusiness = vNPayBusiness;
-            _zaloPayBusiness = zaloPayBusiness;
             _orderCancellationService = orderCancellationService;
         }
 
@@ -79,16 +77,6 @@ namespace MiaTicket.BussinessLogic.Business
             }
 
             var order = _mapper.Map<Order>(request);
-            order.EventName = selectedEvent.Name;
-            order.AddressName = selectedEvent.AddressName ?? "";
-            order.AddressDetail = $"{selectedEvent.AddressNo}, {selectedEvent.AddressWard}, {selectedEvent.AddressDistrict}, {selectedEvent.AddressProvince}";
-            order.BackgroundUrl = selectedEvent.BackgroundUrl;
-            order.LogoUrl = selectedEvent.LogoUrl;
-            order.OrganizerName = selectedEvent.OrganizerName;
-            order.OrganizerInformation = selectedEvent.OrganizerInformation;
-            order.OrganizerLogoUrl = selectedEvent.OrganizerLogoUrl;
-            order.DateStart = selectedShowTime.ShowStartAt;
-            order.DateEnd = selectedShowTime.ShowEndAt;
             order.QrCode = GenerateQrCode(8);
             order.UserId = userId;
 
@@ -112,11 +100,11 @@ namespace MiaTicket.BussinessLogic.Business
             var paymentUrl = string.Empty;
             if (request.PaymentType == PaymentType.VnPay)
             {
-                var vnPayInformation = _vnPayBusiness.CreatePayment(totalPrice);
+                var vnPayInformation = _paymentBusiness.CreateVnPayPayment(totalPrice);
                 if (vnPayInformation != null)
                 {
                     paymentUrl = vnPayInformation.PaymentUrl;
-                    order.VnPayInformation = vnPayInformation;
+                    order.Payment = vnPayInformation;
                 }
                 else
                 {
@@ -124,11 +112,11 @@ namespace MiaTicket.BussinessLogic.Business
                 }
             }
             else if (request.PaymentType == PaymentType.ZaloPay) {
-                var zaloPayInformation = await _zaloPayBusiness.CreatePayment(totalPrice);
+                var zaloPayInformation = await _paymentBusiness.CreateZaloPayPayment(totalPrice);
                 if (zaloPayInformation != null)
                 {
                     paymentUrl = zaloPayInformation.PaymentUrl;
-                    order.ZaloPayInformation = zaloPayInformation;
+                    order.Payment = zaloPayInformation;
                 }
                 else {
                     return new CreateOrderResponse(HttpStatusCode.InternalServerError, "ZaloPay Payment GateWay Error", string.Empty);
@@ -157,7 +145,6 @@ namespace MiaTicket.BussinessLogic.Business
             List<MyOrderDto> dataResponse = _mapper.Map<List<MyOrderDto>>(orders);
 
             return new GetMyOrdersResponse(HttpStatusCode.OK, "Get Orders Success", dataResponse, totalPages);
-
         }
 
         public string GenerateQrCode(int length = 8)
@@ -187,7 +174,7 @@ namespace MiaTicket.BussinessLogic.Business
                 return new CancelOrderResponse(HttpStatusCode.Conflict, "Cannot Find Order", false);
             }
 
-            if (order.OrderStatus != OrderStatus.Pending || order?.VnPayInformation?.PaymentStatus == PaymentStatus.Paid)
+            if (order.OrderStatus != OrderStatus.Pending || order?.Payment?.PaymentStatus == PaymentStatus.Paid)
             {
                 return new CancelOrderResponse(HttpStatusCode.Conflict, "Cannot Cancel Order", false);
             }

@@ -28,15 +28,10 @@ namespace MiaTicket.Data.Configuration
             builder.Property(x => x.LogoUrl).IsRequired().HasMaxLength(255);
             builder.Property(x => x.OrganizerName).IsRequired().HasMaxLength(255).IsUnicode();
             builder.Property(x => x.OrganizerInformation).IsRequired().HasMaxLength(255).IsUnicode();
-            builder.Property(x => x.OrganizerLogoUrl).IsRequired().HasMaxLength(255); ;
-            builder.Property(x => x.PaymentAccount).IsRequired().HasMaxLength(100); ;
-            builder.Property(x => x.PaymentNumber).IsRequired().HasMaxLength(50); ;
-            builder.Property(x => x.PaymentBankName).IsRequired().HasMaxLength(50).IsUnicode();
-            builder.Property(x => x.PaymentBankBranch).IsRequired().HasMaxLength(50).IsUnicode();
+            builder.Property(x => x.OrganizerLogoUrl).IsRequired().HasMaxLength(255);
             builder.Property(x => x.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
-            builder.Property(x => x.Status).HasDefaultValue(EventStatus.Accepted);
+            builder.Property(x => x.Status).IsRequired();
             builder.HasOne(x => x.Category).WithMany(x => x.Events).HasForeignKey(x => x.CategoryId).OnDelete(DeleteBehavior.Restrict);
-            builder.HasOne(x => x.User).WithMany(x => x.Events).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

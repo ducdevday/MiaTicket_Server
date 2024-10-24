@@ -64,7 +64,7 @@ namespace MiaTicket.WebAPI.Controllers
         }
 
         [HttpPost("logout")]
-        [UserAuthorize(RequireRoles = [Role.User, Role.Admin])]
+        [UserAuthorize(RequireRoles = [Role.Customer, Role.Organizer])]
         public async Task<IActionResult> Logout()
         {
             _ = Guid.TryParse(User.FindFirst("id")?.Value, out Guid userId);
@@ -84,7 +84,7 @@ namespace MiaTicket.WebAPI.Controllers
         }
 
         [HttpPatch("change-password")]
-        [UserAuthorize(RequireRoles = [Role.User, Role.Admin])]
+        [UserAuthorize(RequireRoles = [Role.Customer, Role.Organizer])]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
         {
             var result = await _context.ChangePassword(request);
@@ -100,7 +100,7 @@ namespace MiaTicket.WebAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        [UserAuthorize(RequireRoles = [Role.User, Role.Admin])]
+        [UserAuthorize(RequireRoles = [Role.Customer, Role.Organizer])]
         public async Task<IActionResult> UpdateAccount([FromRoute] Guid id, [FromForm] UpdateAccountRequest request)
         {
             var result = await _context.UpdateAccount(id, request);
@@ -109,7 +109,7 @@ namespace MiaTicket.WebAPI.Controllers
         }
 
         [HttpGet("information")]
-        [UserAuthorize(RequireRoles = [Role.User, Role.Admin])]
+        [UserAuthorize(RequireRoles = [Role.Customer, Role.Organizer])]
         public async Task<IActionResult> GetAccountInformation() {
             _ = Guid.TryParse(User.FindFirst("id")?.Value, out Guid userId);
             var result = await _context.GetAccountInformation(userId);

@@ -17,22 +17,18 @@ namespace MiaTicket.Data.Entity
         public string LogoUrl { get; set; }
         public string OrganizerName { get; set; }
         public string OrganizerInformation { get; set; }
-        public string OrganizerLogoUrl {  get; set; }
-        public string PaymentAccount { get; set; }
-        public string PaymentNumber { get; set; }
-        public string PaymentBankName { get; set; }
-        public string PaymentBankBranch { get; set; }
+        public string OrganizerLogoUrl { get; set; }
         public string CreatedAt { get; set; }
         public EventStatus Status { get; set; }
         public List<Voucher>? Vouchers { get; set; }
 
+        public BankAccount BankAccount { get; set; }
         public Banner? Banner { get; set; }
         public List<ShowTime> ShowTimes { get; set; }
 
         public Category Category { get; set; }
         public int CategoryId { get; set; }
-        public User User { get; set; }  
-        public Guid UserId { get; set; }
+        public List<EventOrganizer> EventOrganizers { get; set; }
         public List<Order>? Orders { get; set; }
     }
 }

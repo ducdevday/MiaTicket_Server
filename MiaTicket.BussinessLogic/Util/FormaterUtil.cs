@@ -104,6 +104,9 @@ namespace MiaTicket.BussinessLogic.Util
             // Different years
             return $"{time1}, {date1Formatted} - {time2}, {date2Formatted}";
         }
-
+        public static string FormatAddress(string addressNo, string addressWard, string addressDistrict, string addressProvince)
+        {
+            return $"{addressNo}, {addressWard}, {addressDistrict}, {addressProvince}";
+        }
     }
 }

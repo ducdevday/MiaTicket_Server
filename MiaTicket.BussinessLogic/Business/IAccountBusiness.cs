@@ -3,9 +3,11 @@ using Azure.Core;
 using MiaTicket.BussinessLogic.Model;
 using MiaTicket.BussinessLogic.Request;
 using MiaTicket.BussinessLogic.Response;
+using MiaTicket.BussinessLogic.Util;
 using MiaTicket.BussinessLogic.Validation;
 using MiaTicket.CloudinaryStorage;
 using MiaTicket.CloudinaryStorage.Model;
+using MiaTicket.Data.Entity;
 using MiaTicket.Data.Enum;
 using MiaTicket.DataAccess;
 using MiaTicket.Email;
@@ -35,16 +37,16 @@ namespace MiaTicket.BussinessLogic.Business
     {
         private readonly IDataAccessFacade _context;
         private readonly ITokenBusiness _tokenBusiness;
-        private readonly IVerifyCodeBusiness _verifyCodeBusiness;
+        private readonly IVerificationCodeBusiness _verificationCodeBusiness;
         private readonly ICloudinaryService _cloudinaryBusiness;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IEmailProducer _emailProducer;
-        public AccountBusiness(IDataAccessFacade context, ITokenBusiness tokenBusiness, IVerifyCodeBusiness verifyCodeBusiness, ICloudinaryService cloudinaryBusiness, IMapper mapper, IHttpContextAccessor httpContextAccessor, IEmailProducer emailProducer)
+        public AccountBusiness(IDataAccessFacade context, ITokenBusiness tokenBusiness, IVerificationCodeBusiness verifyCodeBusiness, ICloudinaryService cloudinaryBusiness, IMapper mapper, IHttpContextAccessor httpContextAccessor, IEmailProducer emailProducer)
         {
             _context = context;
             _tokenBusiness = tokenBusiness;
-            _verifyCodeBusiness = verifyCodeBusiness;
+            _verificationCodeBusiness = verifyCodeBusiness;
             _cloudinaryBusiness = cloudinaryBusiness;
             _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
@@ -69,15 +71,25 @@ namespace MiaTicket.BussinessLogic.Business
             {
                 return new CreateAccountResponse(HttpStatusCode.Conflict, "Email has already existed", false);
             }
-            var addedUser = await _context.UserData.CreateAccount(request.Name, request.Email, HashPassword(request.Password), request.PhoneNumber, request.BirthDate, request.Gender);
-            var addedVerifyCode = await _context.VerifyCodeData.CreateVerifyCode(addedUser.Id, _verifyCodeBusiness.GenerateRandomString(AppConstant.VERIFY_CODE_LENGHT), DateTime.Now.AddMinutes(AppConstant.VERIFY_CODE_EXPIRE_IN_MINUTES), VerifyType.Register);
+            var account = _mapper.Map<User>(request);
+            await _context.UserData.CreateAccount(account);
+            var verificationCode = new VerificationCode()
+            {
+                UserId = account.Id,
+                Code = _verificationCodeBusiness.GenerateRandomString(AppConstant.VERIFICATION_CODE_LENGHT),
+                ExpireAt = DateTime.Now.AddMinutes(AppConstant.VERIFICATION_CODE_EXPIRE_IN_MINUTES),
+                Type = VerificationType.Register
+
+            };
+
+            await _context.VerificationCodeData.CreateVerificationCode(verificationCode);
             await _context.Commit();
-            string activelink = $"{AppConstant.EMAIL_VERIFY_FINISH_PATH}?email={request.Email}&code={addedVerifyCode}";
+            string activelink = $"{AppConstant.EMAIL_VERIFY_FINISH_PATH}?email={request.Email}&code={verificationCode.Code}";
             var emailModel = new EmailModel()
             {
                 Sender = "MiaTicket@email.com",
-                Receiver = addedUser.Email,
-                Body = ActivateEmailTemplate.GetEmailVerifyTemplate().Replace("{BRAND}", "MiaTicket").Replace("{EXPIRE_IN}", $"{AppConstant.VERIFY_CODE_EXPIRE_IN_MINUTES}").Replace("{ACTIVATE_URL}", activelink),
+                Receiver = account.Email,
+                Body = ActivateEmailTemplate.GetEmailVerifyTemplate().Replace("{BRAND}", "MiaTicket").Replace("{EXPIRE_IN}", $"{AppConstant.VERIFICATION_CODE_EXPIRE_IN_MINUTES}").Replace("{ACTIVATE_URL}", activelink),
                 Subject = "<MiaTicket>Your email address verification"
             };
             _emailProducer.SendMessage(emailModel);
@@ -106,7 +118,7 @@ namespace MiaTicket.BussinessLogic.Business
                 return new LoginResponse(HttpStatusCode.Conflict, "Email hasn't existed", null);
             }
 
-            if (!ValidatePassword(request.Password, user.Password))
+            if (!PasswordUtil.ValidatePassword(request.Password, user.Password))
             {
                 return new LoginResponse(HttpStatusCode.Conflict, "Wrong Password", null);
             }
@@ -157,11 +169,12 @@ namespace MiaTicket.BussinessLogic.Business
                 return new ChangePasswordResponse(HttpStatusCode.Conflict, "Account does not exist", false);
             }
 
-            if (!ValidatePassword(request.CurrentPassword, user.Password))
+            if (!PasswordUtil.ValidatePassword(request.CurrentPassword, user.Password))
             {
                 return new ChangePasswordResponse(HttpStatusCode.Conflict, "Wrong Password", false);
             }
-            await _context.UserData.ChangePassword(request.UserId, HashPassword(request.NewPassword));
+            user.Password = PasswordUtil.HashPassword(request.NewPassword);
+            await _context.UserData.UpdateAccount(user);
             await _context.Commit();
             return new ChangePasswordResponse(HttpStatusCode.OK, "Change Password SuccessFully", true);
         }
@@ -181,12 +194,14 @@ namespace MiaTicket.BussinessLogic.Business
             {
                 return new ResetPasswordResponse(HttpStatusCode.Conflict, "Account does not exist", false);
             }
-            
-            var isUsedCode = await _context.VerifyCodeData.IsUsedCode(request.Code);
-            if (!isUsedCode) {
+
+            var isUsedCode = await _context.VerificationCodeData.IsUsedCode(request.Code);
+            if (!isUsedCode)
+            {
                 return new ResetPasswordResponse(HttpStatusCode.Forbidden, "Not Confirm Reset Password In Email", false);
             }
-            await _context.UserData.ChangePassword(user.Id, HashPassword(request.NewPassword));
+            user.Password = PasswordUtil.HashPassword(request.NewPassword);
+            await _context.UserData.UpdateAccount(user);
             await _context.Commit();
             return new ResetPasswordResponse(HttpStatusCode.OK, "Reset Password SuccessFully", true);
         }
@@ -211,12 +226,18 @@ namespace MiaTicket.BussinessLogic.Business
             {
                 return new UpdateAccountResponse(HttpStatusCode.Conflict, "Account does not exist", false);
             }
+
             string? avatarUrl = null;
-            if (request.AvatarFile != null) {
+            if (request.AvatarFile != null)
+            {
                 avatarUrl = await _cloudinaryBusiness.UploadFileAsync(request.AvatarFile, FileType.AVATAR_IMAGE);
             }
 
-            var updatedUser = await _context.UserData.UpdateAccount(id, request.Name, request.PhoneNumber, request.BirthDate, request.Gender, avatarUrl );
+            User updateUser = _mapper.Map<User>(request);
+            if (avatarUrl != null) { 
+                updateUser.AvatarUrl = avatarUrl;
+            }
+            var updatedUser = await _context.UserData.UpdateAccount(updateUser);
             await _context.Commit();
 
             return new UpdateAccountResponse(HttpStatusCode.OK, "Update Account Success", true);
@@ -235,14 +256,16 @@ namespace MiaTicket.BussinessLogic.Business
             {
                 return new ActivateAccountResponse(HttpStatusCode.Conflict, "Account does not exist", false);
             }
-            if (user.Status != UserStatus.UnVerified) { 
+            if (user.Status != UserStatus.UnVerified)
+            {
                 return new ActivateAccountResponse(HttpStatusCode.Conflict, "Account has already verify", false);
             }
-            var isValidCode = await _context.VerifyCodeData.IsValidCode(user.Id, request.Code, VerifyType.Register);
-            if (!isValidCode) { 
+            var isValidCode = await _context.VerificationCodeData.IsValidCode(user.Id, request.Code, VerificationType.Register);
+            if (!isValidCode)
+            {
                 return new ActivateAccountResponse(HttpStatusCode.Conflict, "Code is not valid", false);
             }
-            await _context.VerifyCodeData.UpdateUseOfCode(request.Code);
+            await _context.VerificationCodeData.UpdateUseOfCode(request.Code);
             await _context.UserData.ActivateAccount(request.Email);
             await _context.Commit();
             return new ActivateAccountResponse(HttpStatusCode.OK, "Account Verify Success", true);
@@ -257,20 +280,6 @@ namespace MiaTicket.BussinessLogic.Business
             }
             var dataResponse = _mapper.Map<UserDto>(user);
             return new GetAccountInformationResponse(HttpStatusCode.OK, "Get Account Information Succeed", dataResponse);
-        }
-
-        private byte[] HashPassword(string value)
-        {
-            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(value);
-            byte[] hashedBytes = Encoding.UTF8.GetBytes(hashedPassword);
-            return hashedBytes;
-        }
-
-
-        private bool ValidatePassword(string raw, byte[] hashedBytes)
-        {
-            string hashedPassword = Encoding.UTF8.GetString(hashedBytes);
-            return BCrypt.Net.BCrypt.Verify(raw, hashedPassword);
         }
     }
 }

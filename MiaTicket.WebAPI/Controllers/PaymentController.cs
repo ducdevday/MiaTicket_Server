@@ -11,27 +11,25 @@ namespace MiaTicket.WebAPI.Controllers
     public class PaymentController : ControllerBase
     {
 
-        private readonly IVNPayInformationBusiness _vnPayInformationBusiness;
-        private readonly IZaloPayInformationBusiness _zaloPayInformationBusiness;
-        public PaymentController(IVNPayInformationBusiness vNPayInformationBusiness, IZaloPayInformationBusiness zaloPayInformationBusiness)
+        private readonly IPaymentBusiness _paymentBusiness;
+        public PaymentController(IPaymentBusiness paymentBusiness)
         {
-            _vnPayInformationBusiness = vNPayInformationBusiness;
-            _zaloPayInformationBusiness = zaloPayInformationBusiness;
+            _paymentBusiness = paymentBusiness;
         }
 
         [HttpPatch("vnpay")]
-        [UserAuthorize(RequireRoles = [Role.User])]
+        [UserAuthorize(RequireRoles = [Role.Customer])]
         public async Task<IActionResult> UpdateVnpayPayment(UpdatePaymentVnPayRequest request)
         {
-            var result = await _vnPayInformationBusiness.UpdatePayment(request);
+            var result = await _paymentBusiness.UpdateVnPayPayment(request);
             HttpContext.Response.StatusCode = (int)result.StatusCode;
             return new JsonResult(result);
         }
 
         [HttpPatch("zalopay")]
-        [UserAuthorize(RequireRoles = [Role.User])]
+        [UserAuthorize(RequireRoles = [Role.Customer])]
         public async Task<IActionResult> UpdateZaloPayment(UpdatePaymentZaloPayRequest request) {
-            var result = await _zaloPayInformationBusiness.UpdatePayment(request);
+            var result = await _paymentBusiness.UpdateZaloPayPayment(request);
             HttpContext.Response.StatusCode = (int)result.StatusCode;
             return new JsonResult(result);
         }

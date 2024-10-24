@@ -66,7 +66,10 @@ namespace MiaTicket.BussinessLogic.Business
             {
                 return new CreateEventResponse(HttpStatusCode.Conflict, "Image Cannot Uploaded", false);
             }
+
             var evt = _mapper.Map<Event>(request);
+
+            evt.Status = EventStatus.Accepted;
             evt.LogoUrl = logoUrl.Result;
             evt.BackgroundUrl = backgroundUrl.Result;
             evt.OrganizerLogoUrl = organizerLogoUrl.Result;
@@ -100,7 +103,6 @@ namespace MiaTicket.BussinessLogic.Business
             if (request.OrganizerLogoFile != null) organizerLogoUrl = await _cloudinaryBusiness.UploadFileAsync(request.OrganizerLogoFile, FileType.ORGANIZER_LOGO_IMAGE);
 
             _mapper.Map<UpdateEventRequest, Event>(request, evt);
-            evt.Id = id;
             if (logoUrl != null) evt.LogoUrl = logoUrl;
             if (backgroundUrl != null) evt.BackgroundUrl = backgroundUrl;
             if (organizerLogoUrl != null) evt.OrganizerLogoUrl = organizerLogoUrl;
@@ -144,16 +146,7 @@ namespace MiaTicket.BussinessLogic.Business
             var events = new List<Event>();
             int currentCount = 0;
 
-            // Suppose Do Cachche Event Count Result
-            //bool isEventCountExisted = _memoryCache.TryGetValue(AppConstant.EVENT_COUNT_KEYWORD, out currentCount);
-            //if (!isEventCountExisted)
-            //{
-            //    events = await _context.EventData.GetEvents(userId, request.Keyword, request.EventStatus, request.Page, request.Size, out currentCount, false);
-            //    _memoryCache.Set(AppConstant.EVENT_COUNT_KEYWORD, currentCount);
-            //}
-            //else events = await _context.EventData.GetEvents(userId, request.Keyword, request.EventStatus, request.Page, request.Size, out _);
-
-            events = await _context.EventData.GetEvents(userId, request.Keyword, request.EventStatus, request.PageIndex, request.PageSize, out currentCount, false);
+            events = await _context.EventOrganizerData.GetEventsOfUser(userId, request.Keyword, request.EventStatus, request.PageIndex, request.PageSize, out currentCount);
             var data = _mapper.Map<List<MyEventDto>>(events);
             return new GetMyEventsResponse(HttpStatusCode.OK, "Get Events Success", data, currentCount);
         }

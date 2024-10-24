@@ -22,6 +22,66 @@ namespace MiaTicket.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("MiaTicket.Data.Entity.Admin", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Account")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<byte[]>("Password")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varbinary(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Account")
+                        .IsUnique();
+
+                    b.ToTable("Admin", (string)null);
+                });
+
+            modelBuilder.Entity("MiaTicket.Data.Entity.BankAccount", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("BankBranch")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("BankName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("BankNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("OwnerName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BankAccount", (string)null);
+                });
+
             modelBuilder.Entity("MiaTicket.Data.Entity.Banner", b =>
                 {
                     b.Property<int>("Id")
@@ -148,28 +208,6 @@ namespace MiaTicket.Data.Migrations
                         .IsUnicode(true)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<string>("PaymentAccount")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("PaymentBankBranch")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("PaymentBankName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("PaymentNumber")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<string>("Slug")
                         .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
@@ -177,20 +215,31 @@ namespace MiaTicket.Data.Migrations
                         .HasComputedColumnSql("LOWER(CONCAT(REPLACE(Name, ' ', '-'), '-', Id))");
 
                     b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Event", (string)null);
+                });
+
+            modelBuilder.Entity("MiaTicket.Data.Entity.EventOrganizer", b =>
+                {
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("OrganizerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Position")
+                        .HasColumnType("int");
+
+                    b.HasKey("EventId", "OrganizerId");
+
+                    b.HasIndex("OrganizerId");
+
+                    b.ToTable("EventOrganizer", (string)null);
                 });
 
             modelBuilder.Entity("MiaTicket.Data.Entity.Order", b =>
@@ -201,78 +250,29 @@ namespace MiaTicket.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AddressDetail")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("AddressName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("BackgroundUrl")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
                     b.Property<string>("CreatedAt")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValueSql("GETUTCDATE()");
 
-                    b.Property<DateTime>("DateEnd")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateStart")
-                        .HasColumnType("datetime2");
+                    b.Property<double>("Discount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0);
 
                     b.Property<int>("EventId")
                         .HasColumnType("int");
-
-                    b.Property<string>("EventName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(255)");
 
                     b.Property<bool>("IsUsed")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
-                    b.Property<string>("LogoUrl")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
                     b.Property<int>("OrderStatus")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasDefaultValue(0);
-
-                    b.Property<string>("OrganizerInformation")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("OrganizerLogoUrl")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("OrganizerName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .IsUnicode(true)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<int>("PaymentType")
-                        .HasColumnType("int");
 
                     b.Property<string>("QrCode")
                         .IsRequired()
@@ -348,6 +348,51 @@ namespace MiaTicket.Data.Migrations
                     b.HasIndex("TicketId");
 
                     b.ToTable("OrderTicket", (string)null);
+                });
+
+            modelBuilder.Entity("MiaTicket.Data.Entity.Payment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ExpireAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PaymentStatus")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<int>("PaymentType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PaymentUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("TotalAmount")
+                        .HasColumnType("float");
+
+                    b.Property<string>("TransactionCode")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId")
+                        .IsUnique();
+
+                    b.ToTable("Payment", (string)null);
                 });
 
             modelBuilder.Entity("MiaTicket.Data.Entity.ShowTime", b =>
@@ -464,6 +509,7 @@ namespace MiaTicket.Data.Migrations
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasMaxLength(20)
+                        .IsUnicode(true)
                         .HasColumnType("nvarchar(20)");
 
                     b.Property<int>("Role")
@@ -482,7 +528,7 @@ namespace MiaTicket.Data.Migrations
                     b.ToTable("User", (string)null);
                 });
 
-            modelBuilder.Entity("MiaTicket.Data.Entity.VerifyCode", b =>
+            modelBuilder.Entity("MiaTicket.Data.Entity.VerificationCode", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -513,49 +559,7 @@ namespace MiaTicket.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("VerifyCode", (string)null);
-                });
-
-            modelBuilder.Entity("MiaTicket.Data.Entity.VnPayInformation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ExpireAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PaymentStatus")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<string>("PaymentUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("TotalAmount")
-                        .HasColumnType("float");
-
-                    b.Property<string>("TransactionCode")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId")
-                        .IsUnique();
-
-                    b.ToTable("VnPayInformation", (string)null);
+                    b.ToTable("VerificationCode", (string)null);
                 });
 
             modelBuilder.Entity("MiaTicket.Data.Entity.Voucher", b =>
@@ -614,46 +618,15 @@ namespace MiaTicket.Data.Migrations
                     b.ToTable("Voucher", (string)null);
                 });
 
-            modelBuilder.Entity("MiaTicket.Data.Entity.ZaloPayInformation", b =>
+            modelBuilder.Entity("MiaTicket.Data.Entity.BankAccount", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.HasOne("MiaTicket.Data.Entity.Event", "Event")
+                        .WithOne("BankAccount")
+                        .HasForeignKey("MiaTicket.Data.Entity.BankAccount", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ExpireAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PaymentStatus")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(0);
-
-                    b.Property<string>("PaymentUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("TotalAmount")
-                        .HasColumnType("float");
-
-                    b.Property<string>("TransactionCode")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId")
-                        .IsUnique();
-
-                    b.ToTable("ZaloPayInformation", (string)null);
+                    b.Navigation("Event");
                 });
 
             modelBuilder.Entity("MiaTicket.Data.Entity.Banner", b =>
@@ -675,15 +648,26 @@ namespace MiaTicket.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("MiaTicket.Data.Entity.User", "User")
-                        .WithMany("Events")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("MiaTicket.Data.Entity.EventOrganizer", b =>
+                {
+                    b.HasOne("MiaTicket.Data.Entity.Event", "Event")
+                        .WithMany("EventOrganizers")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Category");
+                    b.HasOne("MiaTicket.Data.Entity.User", "Organizer")
+                        .WithMany("EventOrganizers")
+                        .HasForeignKey("OrganizerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Event");
+
+                    b.Navigation("Organizer");
                 });
 
             modelBuilder.Entity("MiaTicket.Data.Entity.Order", b =>
@@ -732,6 +716,17 @@ namespace MiaTicket.Data.Migrations
                     b.Navigation("Ticket");
                 });
 
+            modelBuilder.Entity("MiaTicket.Data.Entity.Payment", b =>
+                {
+                    b.HasOne("MiaTicket.Data.Entity.Order", "Order")
+                        .WithOne("Payment")
+                        .HasForeignKey("MiaTicket.Data.Entity.Payment", "OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("MiaTicket.Data.Entity.ShowTime", b =>
                 {
                     b.HasOne("MiaTicket.Data.Entity.Event", "Event")
@@ -754,26 +749,15 @@ namespace MiaTicket.Data.Migrations
                     b.Navigation("ShowTime");
                 });
 
-            modelBuilder.Entity("MiaTicket.Data.Entity.VerifyCode", b =>
+            modelBuilder.Entity("MiaTicket.Data.Entity.VerificationCode", b =>
                 {
                     b.HasOne("MiaTicket.Data.Entity.User", "User")
-                        .WithMany("VerifyCodes")
+                        .WithMany("VerificationCodes")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("MiaTicket.Data.Entity.VnPayInformation", b =>
-                {
-                    b.HasOne("MiaTicket.Data.Entity.Order", "Order")
-                        .WithOne("VnPayInformation")
-                        .HasForeignKey("MiaTicket.Data.Entity.VnPayInformation", "OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("MiaTicket.Data.Entity.Voucher", b =>
@@ -787,17 +771,6 @@ namespace MiaTicket.Data.Migrations
                     b.Navigation("Event");
                 });
 
-            modelBuilder.Entity("MiaTicket.Data.Entity.ZaloPayInformation", b =>
-                {
-                    b.HasOne("MiaTicket.Data.Entity.Order", "Order")
-                        .WithOne("ZaloPayInformation")
-                        .HasForeignKey("MiaTicket.Data.Entity.ZaloPayInformation", "OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-                });
-
             modelBuilder.Entity("MiaTicket.Data.Entity.Category", b =>
                 {
                     b.Navigation("Events");
@@ -805,7 +778,12 @@ namespace MiaTicket.Data.Migrations
 
             modelBuilder.Entity("MiaTicket.Data.Entity.Event", b =>
                 {
+                    b.Navigation("BankAccount")
+                        .IsRequired();
+
                     b.Navigation("Banner");
+
+                    b.Navigation("EventOrganizers");
 
                     b.Navigation("Orders");
 
@@ -818,9 +796,8 @@ namespace MiaTicket.Data.Migrations
                 {
                     b.Navigation("OrderTickets");
 
-                    b.Navigation("VnPayInformation");
-
-                    b.Navigation("ZaloPayInformation");
+                    b.Navigation("Payment")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MiaTicket.Data.Entity.ShowTime", b =>
@@ -837,11 +814,11 @@ namespace MiaTicket.Data.Migrations
 
             modelBuilder.Entity("MiaTicket.Data.Entity.User", b =>
                 {
-                    b.Navigation("Events");
+                    b.Navigation("EventOrganizers");
 
                     b.Navigation("Orders");
 
-                    b.Navigation("VerifyCodes");
+                    b.Navigation("VerificationCodes");
                 });
 #pragma warning restore 612, 618
         }

@@ -63,7 +63,6 @@ namespace MiaTicket.BussinessLogic.Business
             var validation = new UpdateCategoryValidation(request);
             validation.Validate();
 
-
             var category = await _context.CategoryData.GetCategoryById(id);
             if (category == null) return new UpdateCategoryResponse(HttpStatusCode.BadRequest, "Category Has Not Found", false);
 
@@ -86,7 +85,6 @@ namespace MiaTicket.BussinessLogic.Business
             await _context.CategoryData.DeleteCategory(category);
             await _context.Commit();
             return new DeleteCategoryResponse(HttpStatusCode.OK, "Category Delete Successfully", true);
-
         }
 
     }

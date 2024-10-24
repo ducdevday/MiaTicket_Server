@@ -95,13 +95,12 @@ builder.Services.Configure<ZaloPayConfig>(builder.Configuration.GetSection(ZaloP
 builder.Services.AddTransient<IDataAccessFacade, DataAccessFacade>();
 builder.Services.AddTransient<IAccountBusiness, AccountBusiness>();
 builder.Services.AddTransient<ITokenBusiness, TokenBusiness>();
-builder.Services.AddTransient<IVerifyCodeBusiness, VerifyCodeBusiness>();
+builder.Services.AddTransient<IVerificationCodeBusiness, VerificationCodeBusiness>();
 builder.Services.AddTransient<IEventBusiness, EventBusiness>();
 builder.Services.AddTransient<ICategoryBusiness, CategoryBusiness>();
 builder.Services.AddTransient<IBannerBusiness, BannerBusiness>();
 builder.Services.AddTransient<IVnAddressBusiness, VnAddressBusiness>();
-builder.Services.AddTransient<IVNPayInformationBusiness, VNPayInformationBusiness>();
-builder.Services.AddTransient<IZaloPayInformationBusiness, ZaloPayInformationBusiness>();
+builder.Services.AddTransient<IPaymentBusiness, PaymentBusiness>();
 builder.Services.AddTransient<IOrderBusiness, OrderBusiness>();
 builder.Services.AddTransient<IVoucherBusiness, VoucherBusiness>();
 builder.Services.AddTransient<IVNPayService, VNPayService>();
