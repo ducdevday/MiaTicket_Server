@@ -123,6 +123,12 @@ namespace MiaTicket.BussinessLogic.Business
                 }
             }
 
+            var eventCheckIn = new EventCheckIn
+            {
+                Order = order,
+            };
+            order.EventCheckIn = eventCheckIn;
+
             await _context.OrderData.CreateOrder(order);
             await _context.Commit();
 

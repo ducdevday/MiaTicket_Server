@@ -27,6 +27,7 @@ namespace MiaTicket.BussinessLogic.Business
         Task<SearchEventResponse> SearchEvent(SearchEventRequest request);
         Task<GetEventDetailResponse> GetEventDetail(int id);
         Task<GetEventBookingResponse> GetEventBooking(int eventId, int showTimeId, List<int>? ticketIds);
+        Task<GetEventNameResponse> GetEventName(int eventId);
     }
 
     public class EventBusiness : IEventBusiness
@@ -229,6 +230,12 @@ namespace MiaTicket.BussinessLogic.Business
 
             var dataResponse = _mapper.Map<EventBookingDto>(evt);
             return new GetEventBookingResponse(HttpStatusCode.OK, "Get Event Succeed", dataResponse);
+        }
+
+        public async Task<GetEventNameResponse> GetEventName(int eventId)
+        {
+            var evtName = await _context.EventData.GetEventName(eventId) ;
+            return new GetEventNameResponse(HttpStatusCode.OK, "Get Event Check In Success", evtName ?? "");
         }
     }
 }

@@ -18,6 +18,7 @@ namespace MiaTicket.BussinessLogic.Business
         public Task<UpdateEventMemeberResponse> UpdateEventMember(Guid userId, int eventId, Guid memberId, UpdateEventMemberRequest request);
         public Task<DeleteEventMemberResponse> DeleteEventMember(Guid userId, int eventId, Guid memberId);
         public Task<AddEventMemberResponse> AddEventMember(Guid userId, int eventId, AddEventMemberRequest request);
+        public Task<CheckInEventResponse> CheckInEvent(Guid userId, int eventId, CheckInEventRequest request);
     }
 
     public class OrganizerBusiness : IOrganizerBusiness
@@ -134,7 +135,7 @@ namespace MiaTicket.BussinessLogic.Business
         {
             var validation = new AddEventMemberValidation(request);
             validation.Validate();
-            if (validation.IsValid) { 
+            if (!validation.IsValid) { 
                 return new AddEventMemberResponse(HttpStatusCode.BadRequest, validation.Message, false);
             }
             var getCurrentEventMemberTask = _context.EventOrganizerData.GetEventOrganizerById(eventId, userId);
@@ -184,6 +185,46 @@ namespace MiaTicket.BussinessLogic.Business
             return new AddEventMemberResponse(HttpStatusCode.OK, "Add Event Member Success", true);
         }
 
+        public async Task<CheckInEventResponse> CheckInEvent(Guid userId, int eventId, CheckInEventRequest request)
+        {
+            var validation = new CheckInEventValidation(request);
+            validation.Validate();
+            if (!validation.IsValid)
+            {
+                return new CheckInEventResponse(HttpStatusCode.BadRequest, validation.Message, []);
+            }
+
+            var eventOrganizer = await _context.EventOrganizerData.GetEventOrganizerById(eventId, userId);
+            if (eventOrganizer == null) {
+                return new CheckInEventResponse(HttpStatusCode.NotFound, "Event Or User Invalid", []);
+            }
+            var organizerDto = _mapper.Map<MemberDto>(eventOrganizer);
+
+            if (!CheckAbleToCheckIn(organizerDto)) { 
+                return new CheckInEventResponse(HttpStatusCode.Forbidden, "No Permission", []);
+            }
+
+            var eventCheckIn = await _context.EventCheckInData.GetEventCheckIn(request.Code);
+            if (eventCheckIn == null)
+            {
+                return new CheckInEventResponse(HttpStatusCode.NotFound, "Code Is Not Exist", []);
+            }
+            else if (eventCheckIn.IsCheckedIn) { 
+                return new CheckInEventResponse(HttpStatusCode.Conflict, "Code Is Used", []);
+            }
+            eventCheckIn.IsCheckedIn = true;
+            eventCheckIn.CheckedInAt = DateTime.UtcNow;
+            eventCheckIn.OrganizerId = eventOrganizer.OrganizerId;
+            eventCheckIn.Organizer = eventOrganizer.Organizer;
+
+            var tickets =_mapper.Map<List<OrderTicketDetailDto>>(eventCheckIn.Order.OrderTickets);
+
+            await _context.EventCheckInData.UpdateEventCheckIn(eventCheckIn);
+            await _context.Commit();
+
+            return new CheckInEventResponse(HttpStatusCode.OK, "Check In Success", tickets);
+        }
+
         private bool CheckAbleToAddMember(MemberDto currentMemberDto) {
             switch (currentMemberDto.Role) {
                 case OrganizerPosition.Owner:
@@ -228,7 +269,6 @@ namespace MiaTicket.BussinessLogic.Business
         {
             if (currentMemberDto.MemberId == member.MemberId)
                 return false;
-
             if (currentMemberDto.Role == OrganizerPosition.Owner)
                 return true;
             else if (currentMemberDto.Role == OrganizerPosition.Moderator && member.Role == OrganizerPosition.Coordinator)
@@ -237,6 +277,21 @@ namespace MiaTicket.BussinessLogic.Business
                 return false;
 
             return false;
+        }
+
+        private bool CheckAbleToCheckIn(MemberDto currentMemberDto)
+        {
+            switch (currentMemberDto.Role)
+            {
+                case OrganizerPosition.Owner:
+                    return true;
+                case OrganizerPosition.Moderator:
+                    return true;
+                case OrganizerPosition.Coordinator:
+                    return true;
+                default:
+                    return false;
+            }
         }
 
     }

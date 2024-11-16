@@ -1,4 +1,5 @@
-﻿using MiaTicket.BussinessLogic.Business;
+﻿using AutoMapper.Execution;
+using MiaTicket.BussinessLogic.Business;
 using MiaTicket.BussinessLogic.Request;
 using MiaTicket.Data.Enum;
 using MiaTicket.WebAPI.Policy;
@@ -55,6 +56,13 @@ namespace MiaTicket.WebAPI.Controllers
             return new JsonResult(result);
         }
 
-
+        [HttpPatch("events/{eventId}/checkin")]
+        [UserAuthorize(RequireRoles = [Role.Organizer])]
+        public async Task<IActionResult> CheckInEvent([FromRoute] int eventId, [FromBody] CheckInEventRequest request) {
+            _ = Guid.TryParse(User.FindFirst("id")?.Value, out Guid userId);
+            var result = await _context.CheckInEvent(userId, eventId, request);
+            HttpContext.Response.StatusCode = (int)result.StatusCode;
+            return new JsonResult(result);
+        }
     }
 }

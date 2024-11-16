@@ -22,6 +22,7 @@ namespace MiaTicket.DataAccess
         public IUserData UserData { get; }
         public IVerificationCodeData VerificationCodeData { get; }
         public IVoucherData VoucherData { get; }
+        public IEventCheckInData EventCheckInData { get; }
         public Task Commit();
     }
 
@@ -135,6 +136,15 @@ namespace MiaTicket.DataAccess
             get {
                 _eventOrganizerData ??= new EventOrganizerData(_context);
                 return _eventOrganizerData;
+            }
+        }
+
+        private EventCheckInData _eventCheckInData;
+        public IEventCheckInData EventCheckInData
+        {
+            get { 
+                _eventCheckInData ??= new EventCheckInData(_context);
+                return _eventCheckInData;
             }
         }
 

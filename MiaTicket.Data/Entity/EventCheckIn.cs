@@ -19,6 +19,5 @@ namespace MiaTicket.Data.Entity
         public Order Order { get; set; }
         public Guid? OrganizerId { get; set; }
         public User? Organizer { get; set; }
-
     }
 }
