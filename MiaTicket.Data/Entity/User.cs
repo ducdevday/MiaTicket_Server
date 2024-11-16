@@ -19,8 +19,12 @@ namespace MiaTicket.Data.Entity
         public string PhoneNumber { get; set; }
         public UserStatus Status { get; set; }
         public Role Role { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
         public List<VerificationCode>? VerificationCodes { get; set; }
         public List<Order>? Orders { get; set; }
         public List<EventOrganizer>? EventOrganizers { get; set; }
+        public List<EventCheckIn>? EventCheckIns { get; set; }
+
     }
 }

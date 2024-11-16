@@ -13,8 +13,11 @@ namespace MiaTicket.Data.Entity
         public string Code { get; set; }
         public DateTime ExpireAt { get; set; }
         public bool IsUsed { get; set; }
-        public VerificationType Type {  get; set; }  
+        public VerificationType Type {  get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
         public User User { get; set; }
         public Guid UserId { get; set; }
+
     }
 }

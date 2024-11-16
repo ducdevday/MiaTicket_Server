@@ -20,6 +20,8 @@ namespace MiaTicket.Data.Entity
         public int? MaxQuantityPerOrder { get; set; }
         public VoucherType Type { get; set; }
         public double Value { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
         public Event Event { get; set; }
         public int EventId { get; set; }
     }

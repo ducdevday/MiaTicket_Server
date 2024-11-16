@@ -26,6 +26,8 @@ namespace MiaTicket.Data.Configuration
             builder.Property(x => x.PhoneNumber).IsUnicode();
             builder.Property(x => x.Role).IsRequired();
             builder.Property(x => x.Status).HasDefaultValue(UserStatus.UnVerified);
+            builder.Property(x => x.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
+            builder.Property(x => x.UpdatedAt).HasDefaultValueSql("GETUTCDATE()");
         }
     }
 }

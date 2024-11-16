@@ -20,6 +20,8 @@ namespace MiaTicket.Data.Configuration
             builder.Property(x => x.ExpireAt).IsRequired();
             builder.Property(x => x.IsUsed).IsRequired().HasDefaultValue(false);
             builder.Property(x => x.Type).IsRequired();
+            builder.Property(x => x.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
+            builder.Property(x => x.UpdatedAt).HasDefaultValueSql("GETUTCDATE()");
             builder.HasOne(x => x.User).WithMany(x => x.VerificationCodes).HasForeignKey(x => x.UserId);
         }
     }

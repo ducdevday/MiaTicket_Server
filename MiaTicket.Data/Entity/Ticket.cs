@@ -14,10 +14,12 @@ namespace MiaTicket.Data.Entity
         public int Quantity { get; set; }
         public int MinimumPurchase { get; set; }
         public int MaximumPurchase { get; set; }
-
         public string? Description { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
         public ShowTime ShowTime { get; set; }
         public int ShowTimeId { get; set; }
         public List<OrderTicket>? OrderTickets {get;set;}
+
     }
 }

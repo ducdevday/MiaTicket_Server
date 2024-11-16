@@ -14,10 +14,12 @@ namespace MiaTicket.Data.Entity
         public string TransactionCode { get; set; }
         public string PaymentUrl { get; set; }
         public double TotalAmount { get; set; }
-        public PaymentStatus PaymentStatus { get; set; }
         public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+        public PaymentStatus PaymentStatus { get; set; }
         public DateTime ExpireAt { get; set; }
         public Order Order { get; set; }
         public int OrderId { get; set; }
+
     }
 }

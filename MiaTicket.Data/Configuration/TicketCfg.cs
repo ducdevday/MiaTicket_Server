@@ -31,6 +31,8 @@ namespace MiaTicket.Data.Configuration
             builder.Property(x => x.MinimumPurchase).IsRequired();
             builder.Property(x => x.MaximumPurchase).IsRequired();
             builder.Property(x => x.Description).HasMaxLength(255).IsUnicode();
+            builder.Property(x => x.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
+            builder.Property(x => x.UpdatedAt).HasDefaultValueSql("GETUTCDATE()");
             builder.HasOne(x => x.ShowTime).WithMany(x => x.Tickets).HasForeignKey(x => x.ShowTimeId);
         }
     }

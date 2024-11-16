@@ -14,5 +14,7 @@ namespace MiaTicket.Data.Entity
         public Guid OrganizerId { get; set; }
         public User Organizer { get; set; } 
         public OrganizerPosition Position { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 }

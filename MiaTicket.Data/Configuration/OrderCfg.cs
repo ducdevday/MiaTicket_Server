@@ -16,8 +16,9 @@ namespace MiaTicket.Data.Configuration
             builder.Property(x => x.Discount).HasDefaultValue(0);
             builder.Property(x => x.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
             builder.Property(x => x.QrCode).HasMaxLength(8).IsRequired();
-            builder.Property(x => x.IsUsed).HasDefaultValue(false);
             builder.Property(x => x.OrderStatus).HasDefaultValue(OrderStatus.Pending);
+            builder.Property(x => x.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
+            builder.Property(x => x.UpdatedAt).HasDefaultValueSql("GETUTCDATE()");
             builder.HasOne(x => x.Event).WithMany(x => x.Orders).HasForeignKey(x => x.EventId).OnDelete(DeleteBehavior.Restrict);
             builder.HasOne(x => x.ShowTime).WithMany(x => x.Orders).HasForeignKey(x => x.ShowTimeId).OnDelete(DeleteBehavior.Restrict);
             builder.HasOne(x => x.User).WithMany(x => x.Orders).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.NoAction);

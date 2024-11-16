@@ -12,6 +12,8 @@ namespace MiaTicket.Data.Configuration
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.Property(x => x.VideoUrl).IsRequired().HasMaxLength(255);
+            builder.Property(x => x.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
+            builder.Property(x => x.UpdatedAt).HasDefaultValueSql("GETUTCDATE()");
             builder.HasOne(x => x.Event).WithOne(x => x.Banner).HasForeignKey<Banner>(x => x.EventId);
         }
     }

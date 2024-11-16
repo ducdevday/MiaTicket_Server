@@ -29,7 +29,7 @@ namespace MiaTicket.Data
             modelBuilder.ApplyConfiguration(new UserCfg());
             modelBuilder.ApplyConfiguration(new VerificationCodeCfg());
             modelBuilder.ApplyConfiguration(new VoucherCfg());
-
+            modelBuilder.ApplyConfiguration(new EventCfg());
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -37,6 +37,23 @@ namespace MiaTicket.Data
             optionsBuilder.UseSqlServer(_setting.GetConnectionString());
 
         }
+
+        public override int SaveChanges()
+        {
+            var modifiedEntities = ChangeTracker.Entries()
+            .Where(e => e.State == EntityState.Modified);
+
+            foreach (var entity in modifiedEntities)
+            {
+                if (entity.Entity.GetType().GetProperty("UpdatedAt") != null)
+                {
+                    entity.Property("UpdatedAt").CurrentValue = DateTime.UtcNow;
+                }
+            }
+
+            return base.SaveChanges();
+        }
+
         public DbSet<Admin> Admin { get; set; }
         public DbSet<BankAccount> BankAccount { get; set; }
         public DbSet<Banner> Banner { get; set; }
@@ -51,5 +68,6 @@ namespace MiaTicket.Data
         public DbSet<User> User { get; set; }
         public DbSet<VerificationCode> VerificationCode { get; set; }
         public DbSet<Voucher> Voucher { get; set; }
+        public DbSet<EventCheckIn> EventCheckIn { get; set; }
     }
 }

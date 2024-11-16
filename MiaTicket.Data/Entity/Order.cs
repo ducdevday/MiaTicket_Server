@@ -15,9 +15,10 @@ namespace MiaTicket.Data.Entity
         public string ReceiverName { get; set; }
         public string ReceiverEmail { get; set; }
         public string ReceiverPhoneNumber { get; set; }
-        public string CreatedAt { get; set; }
         public string QrCode { get; set; }
-        public bool IsUsed { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
+        public EventCheckIn EventCheckIn { get; set; }
         public Payment Payment { get; set; }
         public Event Event { get; set; }
         public int EventId { get; set; }

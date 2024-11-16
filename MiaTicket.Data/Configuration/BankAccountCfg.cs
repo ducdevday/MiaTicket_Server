@@ -20,6 +20,8 @@ namespace MiaTicket.Data.Configuration
             builder.Property(x => x.BankNumber).IsRequired().HasMaxLength(50); ;
             builder.Property(x => x.BankName).IsRequired().HasMaxLength(50).IsUnicode();
             builder.Property(x => x.BankBranch).IsRequired().HasMaxLength(50).IsUnicode();
+            builder.Property(x => x.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
+            builder.Property(x => x.UpdatedAt).HasDefaultValueSql("GETUTCDATE()");
             builder.HasOne(x => x.Event).WithOne(x => x.BankAccount).HasForeignKey<BankAccount>(x => x.Id);
         }
     }

@@ -24,6 +24,8 @@ namespace MiaTicket.Data.Configuration
             builder.Property(x => x.PaymentStatus).HasDefaultValue(PaymentStatus.UnPaid);
             builder.Property(x => x.CreatedAt).IsRequired();
             builder.Property(x => x.ExpireAt).IsRequired();
+            builder.Property(x => x.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
+            builder.Property(x => x.UpdatedAt).HasDefaultValueSql("GETUTCDATE()");
             builder.HasOne(x => x.Order).WithOne(x => x.Payment).HasForeignKey<Payment>(x => x.OrderId);
         }
     }

@@ -18,8 +18,9 @@ namespace MiaTicket.Data.Entity
         public string OrganizerName { get; set; }
         public string OrganizerInformation { get; set; }
         public string OrganizerLogoUrl { get; set; }
-        public string CreatedAt { get; set; }
         public EventStatus Status { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
         public List<Voucher>? Vouchers { get; set; }
 
         public BankAccount BankAccount { get; set; }

@@ -29,8 +29,9 @@ namespace MiaTicket.Data.Configuration
             builder.Property(x => x.OrganizerName).IsRequired().HasMaxLength(255).IsUnicode();
             builder.Property(x => x.OrganizerInformation).IsRequired().HasMaxLength(255).IsUnicode();
             builder.Property(x => x.OrganizerLogoUrl).IsRequired().HasMaxLength(255);
-            builder.Property(x => x.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
             builder.Property(x => x.Status).IsRequired();
+            builder.Property(x => x.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
+            builder.Property(x => x.UpdatedAt).HasDefaultValueSql("GETUTCDATE()");
             builder.HasOne(x => x.Category).WithMany(x => x.Events).HasForeignKey(x => x.CategoryId).OnDelete(DeleteBehavior.Restrict);
         }
     }

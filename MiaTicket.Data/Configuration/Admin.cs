@@ -18,6 +18,8 @@ namespace MiaTicket.Data.Configuration
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.Property(x => x.Account).HasMaxLength(255).IsRequired();
             builder.HasIndex(x => x.Account).IsUnique();
+            builder.Property(x => x.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
+            builder.Property(x => x.UpdatedAt).HasDefaultValueSql("GETUTCDATE()");
             builder.Property(x => x.Password).HasMaxLength(255).IsRequired();
         }
     }

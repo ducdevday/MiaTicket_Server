@@ -144,7 +144,6 @@ namespace MiaTicket.BussinessLogic.Mapper
                                         .ForMember(dest => dest.IsCanCancel, opt => opt.MapFrom(src => src.OrderStatus == OrderStatus.Pending && (src.Payment == null || src.Payment.PaymentStatus == PaymentStatus.UnPaid)))
                                         .ForMember(dest => dest.IsCanRepayment, opt => opt.MapFrom(src => src.OrderStatus == OrderStatus.Pending && (src.Payment == null || src.Payment.PaymentStatus == PaymentStatus.UnPaid && src.Payment.ExpireAt <= DateTime.UtcNow)))
                                         .ForMember(dest => dest.PaymentUrl, opt => opt.MapFrom(src => src.Payment != null ? src.Payment.PaymentUrl : string.Empty))
-                                        .ForMember(dest => dest.IsUsed, opt => opt.MapFrom(src => src.IsUsed))
                                         .ForMember(dest => dest.PaymentType, opt => opt.MapFrom(src => src.Payment.PaymentType))
                                         .ForMember(dest => dest.OrderStatus, opt => opt.MapFrom(src => src.OrderStatus))
                                         .ForMember(dest => dest.QrCode, opt => opt.MapFrom(src => src.OrderStatus == OrderStatus.Finished ? src.QrCode : null))

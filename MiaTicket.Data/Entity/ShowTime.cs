@@ -13,10 +13,11 @@ namespace MiaTicket.Data.Entity
         public DateTime ShowEndAt { get; set; }
         public DateTime SaleStartAt { get; set; }
         public DateTime SaleEndAt { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
         public Event Event { get; set; }
         public int EventId { get; set; }
         public List<Ticket> Tickets { get; set; }
         public List<Order>? Orders { get; set; }
-
     }
 }
