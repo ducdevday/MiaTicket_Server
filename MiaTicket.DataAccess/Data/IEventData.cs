@@ -8,9 +8,10 @@ namespace MiaTicket.DataAccess.Data
     public interface IEventData
     {
         Task<Event> CreateEvent(Event entity);
+        Task<string?> GetEventName(int eventId);
         Task<Event?> GetEventById(int id);
-        Task<Event?> GetEventById(int eventId, int showTimeId);
-        Task<Event?> GetEventById(int eventId, int showTimeId, List<int> ticketIds);
+        Task<Event?> GetEventBooking(int eventId, int showTimeId);
+        Task<Event?> GetEventBooking(int eventId, int showTimeId, List<int> ticketIds);
         Task<bool> IsExistEvent(int id);
         Task<Event> UpdateEvent(Event entity);
         Task DeleteEvent(Event entity);
@@ -38,8 +39,11 @@ namespace MiaTicket.DataAccess.Data
         {
             _context.Event.Remove(entity);
             return Task.CompletedTask;
+        }
 
-
+        public Task<string?> GetEventName(int eventId) {
+            var evtName = _context.Event.Where(x => x.Id == eventId).Select(x =>x.Name).FirstOrDefault();
+            return Task.FromResult(evtName);
         }
 
         public Task<Event?> GetEventById(int id)
@@ -49,7 +53,7 @@ namespace MiaTicket.DataAccess.Data
             return Task.FromResult(evt);
         }
 
-        public Task<Event?> GetEventById(int eventId, int showTimeId)
+        public Task<Event?> GetEventBooking(int eventId, int showTimeId)
         {
             var evt = _context.Event.Include(e => e.ShowTimes.Where(x =>x.Id == showTimeId))
                                     .ThenInclude(st => st.Tickets)
@@ -57,7 +61,7 @@ namespace MiaTicket.DataAccess.Data
             return Task.FromResult(evt);
         }
 
-        public Task<Event?> GetEventById(int eventId, int showTimeId, List<int> ticketIds)
+        public Task<Event?> GetEventBooking(int eventId, int showTimeId, List<int> ticketIds)
         {
             var evt = _context.Event
                 .Include(e => e.ShowTimes.Where(e => e.Id == showTimeId))             
@@ -75,15 +79,6 @@ namespace MiaTicket.DataAccess.Data
                 .Where(x => x.CategoryId == categoryId)
                 .Take(count)
                 .ToList();
-
-            //var evts1 = (from e in _context.Event
-            //             join sts in _context.ShowTime on e.Id equals sts.EventId
-            //             join ts in _context.Ticket on sts.Id equals ts.ShowTimeId
-            //             where e.CategoryId == categoryId
-            //             select e).Skip(0).Take(10).ToList();
-
-            // Linq: Linq to SQL
-            // Linq: Linq to object
 
             return Task.FromResult(evts);
         }

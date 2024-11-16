@@ -24,6 +24,10 @@ namespace MiaTicket.BussinessLogic.Validation
                 || string.IsNullOrEmpty(_value.Password)
                 || !RegexUtil.isPasswordValid(_value.Password)
                 || !RegexUtil.isStringLengthValid(_value.Password, 255)
+                || string.IsNullOrEmpty(_value.ConfirmPassword)
+                || !RegexUtil.isPasswordValid(_value.ConfirmPassword)
+                || !RegexUtil.isStringLengthValid(_value.ConfirmPassword, 255)
+                || _value.Password != _value.ConfirmPassword
                 || _value.BirthDate > DateTime.UtcNow
                 || !RegexUtil.isPhomeNumberValid(_value.PhoneNumber)
                 ) {

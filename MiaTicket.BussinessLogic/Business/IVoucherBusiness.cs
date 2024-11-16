@@ -37,7 +37,7 @@ namespace MiaTicket.BussinessLogic.Business
             validation.Validate();
             if (!validation.IsValid) return new CreateVoucherResponse(HttpStatusCode.BadRequest, validation.Message, false);
 
-            EventOrganizer? evtOrganizer = await _context.EventOrganizerData.GetEventById(request.EventId, userId);
+            EventOrganizer? evtOrganizer = await _context.EventOrganizerData.GetEventOrganizerById(request.EventId, userId);
             if(evtOrganizer == null) return new CreateVoucherResponse(HttpStatusCode.NotFound, "Not Found", false);
 
             bool isVoucherCodeExist = await _context.VoucherData.IsVoucherCodeExist(request.Code);
@@ -56,7 +56,7 @@ namespace MiaTicket.BussinessLogic.Business
             validation.Validate();
             if (!validation.IsValid) return new UpdateVoucherResponse(HttpStatusCode.BadRequest, validation.Message, false);
 
-            EventOrganizer? evtOrganizer = await _context.EventOrganizerData.GetEventById(request.EventId, userId);
+            EventOrganizer? evtOrganizer = await _context.EventOrganizerData.GetEventOrganizerById(request.EventId, userId);
             if (evtOrganizer == null) return new UpdateVoucherResponse(HttpStatusCode.NotFound, "Not Found", false);
 
             Voucher? voucher = await _context.VoucherData.GetVoucherById(voucherId);
@@ -77,7 +77,7 @@ namespace MiaTicket.BussinessLogic.Business
             Voucher? voucher = await _context.VoucherData.GetVoucherById(voucherId);
             if (voucher == null) return new DeleteVoucherResponse(HttpStatusCode.NotFound, "Voucher Not Found", false);
 
-            EventOrganizer? evtOrganizer = await _context.EventOrganizerData.GetEventById(voucher.Event.Id, userId);
+            EventOrganizer? evtOrganizer = await _context.EventOrganizerData.GetEventOrganizerById(voucher.Event.Id, userId);
             if (evtOrganizer == null) return new DeleteVoucherResponse(HttpStatusCode.NotFound, "Not Found", false);
 
             await _context.VoucherData.DeleteVoucher(voucher);
@@ -87,13 +87,16 @@ namespace MiaTicket.BussinessLogic.Business
 
         public async Task<GetMyVouchersResponse> GetMyVouchers(Guid userId, int eventId, string keyword)
         {
-            EventOrganizer? evtOrganizer = await _context.EventOrganizerData.GetEventById(eventId, userId);
+            EventOrganizer? evtOrganizer = await _context.EventOrganizerData.GetEventOrganizerById(eventId, userId);
             if (evtOrganizer == null) return new GetMyVouchersResponse(HttpStatusCode.NotFound, "Not Found", [], string.Empty);
 
-            List<Voucher> vouchers = await _context.VoucherData.SearchVouchers(eventId, keyword, out string eventName);
-            List<VoucherDto> vouchersDto = _mapper.Map<List<VoucherDto>>(vouchers);
+            var eventName = _context.EventData.GetEventName(eventId);
+            var vouchers = _context.VoucherData.SearchVouchers(eventId, keyword);
 
-            return new GetMyVouchersResponse(HttpStatusCode.OK, "Get Vouchers Success", vouchersDto, eventName);
+            await Task.WhenAll([_context.EventData.GetEventName(eventId), _context.VoucherData.SearchVouchers(eventId, keyword)]);
+            List<VoucherDto> vouchersDto = _mapper.Map<List<VoucherDto>>(vouchers.Result);
+
+            return new GetMyVouchersResponse(HttpStatusCode.OK, "Get Vouchers Success", vouchersDto, eventName.Result);
         }
 
         public async Task<GetVouchersDiscoveryResponse> GetVouchersDiscovery(int eventId)

@@ -11,10 +11,8 @@ namespace MiaTicket.Data.Entity
     {
         public int EventId { get; set; }
         public Event Event { get; set; }
-
         public Guid OrganizerId { get; set; }
         public User Organizer { get; set; } 
-        
         public OrganizerPosition Position { get; set; }
     }
 }

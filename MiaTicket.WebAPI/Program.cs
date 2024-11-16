@@ -103,6 +103,7 @@ builder.Services.AddTransient<IVnAddressBusiness, VnAddressBusiness>();
 builder.Services.AddTransient<IPaymentBusiness, PaymentBusiness>();
 builder.Services.AddTransient<IOrderBusiness, OrderBusiness>();
 builder.Services.AddTransient<IVoucherBusiness, VoucherBusiness>();
+builder.Services.AddTransient<IOrganizerBusiness, OrganizerBusiness>();
 builder.Services.AddTransient<IVNPayService, VNPayService>();
 builder.Services.AddTransient<IZaloPayService, ZaloPayService>();
 builder.Services.AddTransient<IOrderCancellationService, OrderCancellationService>();

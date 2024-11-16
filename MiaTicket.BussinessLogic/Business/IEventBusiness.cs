@@ -219,11 +219,11 @@ namespace MiaTicket.BussinessLogic.Business
             Event? evt = null;
             if (ticketIds == null || ticketIds.Count == 0)
             {
-                evt = await _context.EventData.GetEventById(eventId, showTimeId);
+                evt = await _context.EventData.GetEventBooking(eventId, showTimeId);
             }
             else
             {
-                evt = await _context.EventData.GetEventById(eventId, showTimeId, ticketIds);
+                evt = await _context.EventData.GetEventBooking(eventId, showTimeId, ticketIds);
             }
             if (evt == null) return new GetEventBookingResponse(HttpStatusCode.BadRequest, "Event Not Exist", null);
 

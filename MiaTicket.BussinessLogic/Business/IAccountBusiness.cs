@@ -61,11 +61,6 @@ namespace MiaTicket.BussinessLogic.Business
             {
                 return new CreateAccountResponse(HttpStatusCode.BadRequest, validation.Message, false);
             }
-            bool isGenderValid = await _context.UserData.IsGenderValid(request.Gender);
-            if (!isGenderValid)
-            {
-                return new CreateAccountResponse(HttpStatusCode.BadRequest, "Invalid request", false);
-            }
             bool isEmailExist = await _context.UserData.IsEmailExist(request.Email);
             if (isEmailExist)
             {
@@ -213,12 +208,6 @@ namespace MiaTicket.BussinessLogic.Business
             if (!validation.IsValid)
             {
                 return new UpdateAccountResponse(HttpStatusCode.BadRequest, validation.Message, false);
-            }
-
-            bool isGenderValid = await _context.UserData.IsGenderValid(request.Gender);
-            if (!isGenderValid)
-            {
-                return new UpdateAccountResponse(HttpStatusCode.BadRequest, "Invalid request", false);
             }
 
             var user = await _context.UserData.GetAccountById(id);

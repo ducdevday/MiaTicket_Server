@@ -20,7 +20,7 @@ namespace MiaTicket.WebAPI.Controllers
         }
 
         [HttpPost()]
-        [UserAuthorize(RequireRoles = [Role.Customer])]
+        [UserAuthorize(RequireRoles = [Role.Organizer])]
         public async Task<IActionResult> CreateVoucher([FromBody] CreateVoucherRequest request) {
             _ = Guid.TryParse(User.FindFirst("id")?.Value, out Guid userId);
             var result = await _context.CreateVoucher(userId, request);
@@ -29,7 +29,7 @@ namespace MiaTicket.WebAPI.Controllers
         }
 
         [HttpPut("{voucherId}")]
-        [UserAuthorize(RequireRoles = [Role.Customer])]
+        [UserAuthorize(RequireRoles = [Role.Organizer])]
         public async Task<IActionResult> UpdateVoucher([FromRoute] int voucherId,[FromBody] UpdateVoucherRequest request) {
             _ = Guid.TryParse(User.FindFirst("id")?.Value, out Guid userId);
             var result = await _context.UpdateVoucher(userId, voucherId, request);
@@ -38,7 +38,7 @@ namespace MiaTicket.WebAPI.Controllers
         }
 
         [HttpDelete("{voucherId}")]
-        [UserAuthorize(RequireRoles = [Role.Customer])]
+        [UserAuthorize(RequireRoles = [Role.Organizer])]
         public async Task<IActionResult> DeleteVoucher([FromRoute] int voucherId)
         {
             _ = Guid.TryParse(User.FindFirst("id")?.Value, out Guid userId);
@@ -48,7 +48,7 @@ namespace MiaTicket.WebAPI.Controllers
         }
 
         [HttpGet("my-vouchers/{eventId}")]
-        [UserAuthorize(RequireRoles = [Role.Customer])]
+        [UserAuthorize(RequireRoles = [Role.Organizer])]
         public async Task<IActionResult> GetMyVouchers([FromRoute] int eventId, [FromQuery] string keyword = "")
         {
             _ = Guid.TryParse(User.FindFirst("id")?.Value, out Guid userId);

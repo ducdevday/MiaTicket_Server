@@ -42,7 +42,7 @@ namespace MiaTicket.BussinessLogic.Business
             validation.Validate();
             if (!validation.IsValid) return new CreateOrderResponse(HttpStatusCode.BadRequest, validation.Message, string.Empty);
 
-            var selectedEvent = await _context.EventData.GetEventById(request.EventId, request.ShowTimeId, request.OrderTickets.Select(x => x.TicketId).ToList());
+            var selectedEvent = await _context.EventData.GetEventBooking(request.EventId, request.ShowTimeId, request.OrderTickets.Select(x => x.TicketId).ToList());
             if (selectedEvent == null) return new CreateOrderResponse(HttpStatusCode.Conflict, "Event or ShowTime not found", string.Empty);
 
             var selectedShowTime = selectedEvent.ShowTimes.FirstOrDefault();

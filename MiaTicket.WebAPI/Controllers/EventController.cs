@@ -22,6 +22,7 @@ namespace MiaTicket.WebAPI.Controllers
             _context = context;
         }
         [HttpPost()]
+        [UserAuthorize(RequireRoles = [Role.Organizer])]
         public async Task<IActionResult> CreateEvent([FromForm] CreateEventRequest request)
         {
             var result = await _context.CreateEvent(request);
@@ -30,6 +31,7 @@ namespace MiaTicket.WebAPI.Controllers
         }
 
         [HttpGet("{id}")]
+        [UserAuthorize(RequireRoles = [Role.Organizer])]
         public async Task<IActionResult> GetEventById([FromRoute] int id)
         {
             var result = await _context.GetEventById(id);
@@ -38,6 +40,7 @@ namespace MiaTicket.WebAPI.Controllers
         }
 
         [HttpPut("{id}")]
+        [UserAuthorize(RequireRoles = [Role.Organizer])]
         public async Task<IActionResult> UpdateEvent([FromRoute] int id, [FromForm] UpdateEventRequest request)
         {
             var result = await _context.UpdateEvent(id, request);
@@ -46,6 +49,7 @@ namespace MiaTicket.WebAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [UserAuthorize(RequireRoles = [Role.Organizer])]
         public async Task<IActionResult> DeleteEvent([FromRoute] int id)
         {
             var result = await _context.DeleteEvent(id);
@@ -54,7 +58,7 @@ namespace MiaTicket.WebAPI.Controllers
         }
 
         [HttpGet("my-events")]
-        [UserAuthorize(RequireRoles = [Role.Customer])]
+        [UserAuthorize(RequireRoles = [Role.Organizer])]
         public async Task<IActionResult> GetMyEvents([FromQuery] GetMyEventsRequest request)
         {
             _ = Guid.TryParse(User.FindFirst("id")?.Value, out Guid userId);

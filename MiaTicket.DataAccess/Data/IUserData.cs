@@ -7,7 +7,6 @@ namespace MiaTicket.DataAccess.Data
     public interface IUserData
     {
         public Task<bool> IsEmailExist(string email);
-        public Task<bool> IsGenderValid(int Gender);
         public Task<User> CreateAccount(User user);
         public Task<User?> GetAccountByEmail(string email);
         public Task<User?> GetAccountById(Guid uId);
@@ -30,12 +29,6 @@ namespace MiaTicket.DataAccess.Data
 
             bool isEmailExist = _context.User.Any(x => x.Email == email);
             return Task.FromResult(isEmailExist);
-        }
-
-        public Task<bool> IsGenderValid(int gender)
-        {
-            bool isGenderValid = Enum.IsDefined(typeof(Gender), gender);
-            return Task.FromResult(isGenderValid);
         }
 
         public Task<User> CreateAccount(User user)

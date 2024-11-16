@@ -14,7 +14,7 @@ namespace MiaTicket.DataAccess.Data
     {
         Task<Voucher> CreateVoucher(Voucher voucher);
         Task<List<Voucher>> GetVoucherByEventId(int eventId);
-        Task<List<Voucher>> SearchVouchers(int eventId, string keyword, out string eventName);
+        Task<List<Voucher>> SearchVouchers(int eventId, string keyword);
         Task<Voucher?> GetVoucherById(int voucherId);
         Task<bool> IsVoucherCodeExist(string code);
         Task<Voucher> UpdateVoucher(Voucher voucher);
@@ -52,14 +52,12 @@ namespace MiaTicket.DataAccess.Data
             return Task.FromResult(_context.Voucher.Include(x => x.Event).FirstOrDefault(v => v.Id == voucherId));
         }
 
-        public Task<List<Voucher>> SearchVouchers(int eventId, string keyword, out string eventName)
+        public Task<List<Voucher>> SearchVouchers(int eventId, string keyword)
         {
             var vouchers = _context.Voucher
                        .Include(x => x.Event)
                        .Where(x => x.EventId == eventId && x.Name.Contains(keyword))
                        .ToList();
-
-            eventName = vouchers.FirstOrDefault()?.Event?.Name ?? string.Empty; 
 
             return Task.FromResult(vouchers);
         }

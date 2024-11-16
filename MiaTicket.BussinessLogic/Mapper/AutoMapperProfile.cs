@@ -167,6 +167,13 @@ namespace MiaTicket.BussinessLogic.Mapper
 
             CreateMap<Voucher, SearchVoucherDto>();
 
+            //**********************************************Event Organizer MAPPER**************************************************************
+            CreateMap<EventOrganizer, MemberDto>()
+                                        .ForMember(dest => dest.MemberId, opt => opt.MapFrom(src => src.OrganizerId))
+                                        .ForMember(dest => dest.MemberName, opt => opt.MapFrom(src => src.Organizer.Name))
+                                        .ForMember(dest => dest.MemberEmail, opt => opt.MapFrom(src => src.Organizer.Email))
+                                        .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Position));
+
         }
     }
 }
