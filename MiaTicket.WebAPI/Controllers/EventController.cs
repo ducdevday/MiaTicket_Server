@@ -123,5 +123,14 @@ namespace MiaTicket.WebAPI.Controllers
             HttpContext.Response.StatusCode = (int)result.StatusCode;
             return new JsonResult(result);
         }
+
+        [HttpGet("{id}/showtimes")]
+        [UserAuthorize(RequireRoles = [Role.Organizer])]
+        public async Task<IActionResult> GetEventShowTime([FromRoute] int id)
+        {
+            var result = await _context.GetEventShowTime(id);
+            HttpContext.Response.StatusCode = (int)result.StatusCode;
+            return new JsonResult(result);
+        }
     }
 }

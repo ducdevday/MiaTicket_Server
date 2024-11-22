@@ -1,6 +1,7 @@
 ﻿using Azure.Core;
 using MiaTicket.BussinessLogic.Business;
 using MiaTicket.BussinessLogic.Request;
+using MiaTicket.Data.Entity;
 using MiaTicket.Data.Enum;
 using MiaTicket.WebAPI.Policy;
 using Microsoft.AspNetCore.Http;

@@ -19,6 +19,7 @@ namespace MiaTicket.BussinessLogic.Business
         public Task<DeleteEventMemberResponse> DeleteEventMember(Guid userId, int eventId, Guid memberId);
         public Task<AddEventMemberResponse> AddEventMember(Guid userId, int eventId, AddEventMemberRequest request);
         public Task<CheckInEventResponse> CheckInEvent(Guid userId, int eventId, CheckInEventRequest request);
+        public Task<GetCheckInEventReportResponse> GetCheckInEventReport(Guid userId, int eventId, GetCheckInEventReportRequest request);
     }
 
     public class OrganizerBusiness : IOrganizerBusiness
@@ -225,6 +226,52 @@ namespace MiaTicket.BussinessLogic.Business
             return new CheckInEventResponse(HttpStatusCode.OK, "Check In Success", tickets);
         }
 
+        public async Task<GetCheckInEventReportResponse> GetCheckInEventReport(Guid userId, int eventId, GetCheckInEventReportRequest request)
+        {
+            var eventOrganizer = await _context.EventOrganizerData.GetEventOrganizerById(eventId, userId);
+            if (eventOrganizer == null)
+            {
+                return new GetCheckInEventReportResponse(HttpStatusCode.NotFound, "Event Or User Invalid", null);
+            }
+            var organizerDto = _mapper.Map<MemberDto>(eventOrganizer);
+
+            if (!CheckAbleToCheckIn(organizerDto))
+            {
+                return new GetCheckInEventReportResponse(HttpStatusCode.Forbidden, "No Permission", null);
+            }
+
+            var orders = await _context.EventData.GetCheckInReportByShowTime(eventId, request.ShowTimeId);
+
+            if (orders == null) {
+                return new GetCheckInEventReportResponse(HttpStatusCode.NotFound, "ShowTime Not Exist", null);
+            }
+
+            var totalPaidTickets = orders.Where(x => x.Payment.PaymentStatus == PaymentStatus.Paid).SelectMany(x => x.OrderTickets).Sum(x => x.Quantity);
+            var totalCheckedInTickets = orders.Where(x => x.Payment.PaymentStatus == PaymentStatus.Paid && x.EventCheckIn.IsCheckedIn == true).SelectMany(x => x.OrderTickets).Sum(x => x.Quantity);
+            var checkInPercent = totalPaidTickets > 0 ? (totalCheckedInTickets / totalPaidTickets) * 100 : 0;
+
+            var tickets = orders.Where(x => x.Payment.PaymentStatus == PaymentStatus.Paid).SelectMany(x => x.OrderTickets)
+                                         .GroupBy(x => new {x.TicketId, x.Name, x.Price})
+                                         .Select(g => new TicketCheckInDto()
+                                         {
+                                             Id = g.Key.TicketId,
+                                             Name = g.Key.Name,
+                                             Price = g.Key.Price,
+                                             TotalPaidTicket = g.Sum(x => x.Quantity),
+                                             TotalCheckedInTicket = g.Where(x =>x.Order.EventCheckIn.IsCheckedIn == true).Sum(x => x.Quantity),
+                                             TicketCheckedInPercentage = g.Sum(x => x.Quantity) > 0 ? (g.Where(x => x.Order.EventCheckIn.IsCheckedIn == true).Sum(x => x.Quantity) / g.Sum(x => x.Quantity)) * 100 : 0
+                                         }).ToList();
+
+            var dataResponse = new GetCheckInEventReportDto()
+            {
+                TotalPaidTickets = totalPaidTickets,
+                TotalCheckedInTickets = totalCheckedInTickets,
+                TicketCheckedInPercentage = checkInPercent,
+                Tickets = tickets,
+            };
+
+            return new GetCheckInEventReportResponse(HttpStatusCode.OK, "Get Check In Event Report Success", dataResponse);
+        }
         private bool CheckAbleToAddMember(MemberDto currentMemberDto) {
             switch (currentMemberDto.Role) {
                 case OrganizerPosition.Owner:
@@ -293,7 +340,6 @@ namespace MiaTicket.BussinessLogic.Business
                     return false;
             }
         }
-
     }
 
 }

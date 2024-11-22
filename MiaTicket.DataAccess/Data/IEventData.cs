@@ -9,6 +9,7 @@ namespace MiaTicket.DataAccess.Data
     {
         Task<Event> CreateEvent(Event entity);
         Task<string?> GetEventName(int eventId);
+        Task<List<ShowTime>?> GetEventShowTimes(int eventId);
         Task<Event?> GetEventById(int id);
         Task<Event?> GetEventBooking(int eventId, int showTimeId);
         Task<Event?> GetEventBooking(int eventId, int showTimeId, List<int> ticketIds);
@@ -19,6 +20,7 @@ namespace MiaTicket.DataAccess.Data
         Task<List<Event>> GetEventsByCategory(int categoryId, int count);
         Task<bool> IsEventSortTypeValid(int type);
         Task<List<Event>> SearchEvent(string keyword, int page, int size, string location, List<int> categoriesId, List<double> priceRanges, EventSortType sortBy);
+        Task<List<Order>> GetCheckInReportByShowTime(int eventId, int showTimeId);
     }
 
     public class EventData : IEventData
@@ -44,6 +46,12 @@ namespace MiaTicket.DataAccess.Data
         public Task<string?> GetEventName(int eventId) {
             var evtName = _context.Event.Where(x => x.Id == eventId).Select(x =>x.Name).FirstOrDefault();
             return Task.FromResult(evtName);
+        }
+
+        public Task<List<ShowTime>?> GetEventShowTimes(int eventId)
+        {
+            var showTimes = _context.Event.Include(x => x.ShowTimes).Where(x => x.Id == eventId).Select(x => x.ShowTimes).FirstOrDefault();
+            return Task.FromResult(showTimes);
         }
 
         public Task<Event?> GetEventById(int id)
@@ -141,6 +149,17 @@ namespace MiaTicket.DataAccess.Data
         public Task<Event> UpdateEvent(Event entity)
         {
             return Task.FromResult(_context.Event.Update(entity).Entity);
+        }
+
+        public Task<List<Order>> GetCheckInReportByShowTime(int eventId, int showTimeId)
+        {
+            var orders = _context.Order.Include(o => o.Payment)
+                                          .Include(o => o.EventCheckIn)
+                                          .Include(o => o.OrderTickets)
+                                             .Where(o => o.EventId == eventId && o.ShowTimeId == showTimeId).ToList();
+
+
+            return Task.FromResult(orders);
         }
     }
 }
