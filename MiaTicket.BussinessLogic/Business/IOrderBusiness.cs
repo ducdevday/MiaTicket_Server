@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ClosedXML.Excel;
 using MiaTicket.BussinessLogic.Factory;
 using MiaTicket.BussinessLogic.Model;
 using MiaTicket.BussinessLogic.Request;
@@ -10,6 +11,8 @@ using MiaTicket.DataAccess;
 using MiaTicket.Schedular.Service;
 using Microsoft.AspNetCore.Http;
 using System.Net;
+using System.Data;
+using Microsoft.AspNetCore.Mvc;
 namespace MiaTicket.BussinessLogic.Business
 {
     public interface IOrderBusiness
@@ -19,6 +22,7 @@ namespace MiaTicket.BussinessLogic.Business
         Task<GetOrderDetailResponse> GetOrderDetail(Guid userId, int orderId);
         Task<CancelOrderResponse> CancelOrder(Guid userId, int orderId);
         Task<GetOrderReportResponse> GetOrderReport(Guid userId, int eventId, GetOrderReportRequest request);
+        Task<ExportOrderReportResponse> ExportOrderReport(Guid userId, int eventId, ExportOrderReportRequest request);
     }
 
     public class OrderBusiness : IOrderBusiness
@@ -216,6 +220,63 @@ namespace MiaTicket.BussinessLogic.Business
             var ordersReportDto = _mapper.Map<List<OrderReportDto>>(orders);
             return new GetOrderReportResponse(HttpStatusCode.Accepted, "Get Order Report Success", ordersReportDto, totalPages);
         }
+        public async Task<ExportOrderReportResponse> ExportOrderReport(Guid userId, int eventId, ExportOrderReportRequest request)
+        {
+            var eventOrganizer = await _context.EventOrganizerData.GetEventOrganizerById(eventId, userId);
+            if (eventOrganizer == null)
+            {
+                return new ExportOrderReportResponse(HttpStatusCode.NotFound, "Event Or User Invalid", null);
+            }
+
+            var organizerDto = _mapper.Map<MemberDto>(eventOrganizer);
+            if (!CheckAbleToGetOrderReport(organizerDto))
+            {
+                return new ExportOrderReportResponse(HttpStatusCode.Forbidden, "No Permission", null);
+            }
+
+            List<Order> orders = await _context.OrderData.GetAllOrderReport(eventId, request.ShowTimeId);
+            var ordersReportDto = _mapper.Map<List<OrderReportDto>>(orders);
+            var orderTable = GetOrderDataTable(ordersReportDto);
+
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                var sheet1 = wb.AddWorksheet(orderTable, "Employee Records");
+
+                sheet1.Row(1).Style.Font.FontColor = XLColor.White; 
+                sheet1.Row(1).Style.Font.Bold = true;  
+                
+
+                sheet1.Column(1).Width = 15; 
+                sheet1.Column(2).Width = 20; 
+                sheet1.Column(3).Width = 30; 
+                sheet1.Column(4).Width = 20;
+                sheet1.Column(5).Width = 20;
+                sheet1.Column(6).Width = 15; 
+                sheet1.Column(7).Width = 20; 
+                sheet1.Column(8).Width = 20; 
+
+                sheet1.Column(7).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
+                sheet1.Column(8).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center; 
+
+                sheet1.Column(1).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                sheet1.Column(2).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left;
+                sheet1.Column(3).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Left; 
+                sheet1.Column(4).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center; 
+                sheet1.Column(5).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center; 
+                sheet1.Column(6).Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    wb.SaveAs(ms);
+                    ms.Seek(0, SeekOrigin.Begin);  // Ensure the memory stream is at the start
+
+                    var fileContent = ms.ToArray();
+
+                    return new ExportOrderReportResponse(HttpStatusCode.OK, "Export Order Report Result", fileContent);
+                }
+            }
+        }
+
 
         private bool CheckAbleToGetOrderReport(MemberDto currentMemberDto)
         {
@@ -230,6 +291,36 @@ namespace MiaTicket.BussinessLogic.Business
                 default:
                     return false;
             }
+        }
+
+        private DataTable GetOrderDataTable(List<OrderReportDto> orders)
+        {
+            DataTable dt = new DataTable();
+            dt.TableName = "Order Report";
+            dt.Columns.Add("Order Id", typeof(string));
+            dt.Columns.Add("Name", typeof(string));
+            dt.Columns.Add("Email", typeof(string));
+            dt.Columns.Add("Phone Number", typeof(string));
+            dt.Columns.Add("Payment Method", typeof(string));
+            dt.Columns.Add("Tickets", typeof(string));
+            dt.Columns.Add("Total Price (VND)", typeof(string));
+            dt.Columns.Add("PaymentStatus", typeof(string));
+
+            orders.ForEach(o =>
+            {
+                dt.Rows.Add(o.OrderId.ToString(),
+                            o.ReceiverName, 
+                            o.ReceiverEmail, 
+                            o.ReceiverPhoneNumber, 
+                            Enum.GetName(typeof(PaymentType), o.PaymentMethod), 
+                            GetTicketFormatString(o.Tickets),
+                            o.TotalPrice.ToString() ,
+                            Enum.GetName(typeof(PaymentStatus), o.PaymentStatus));
+            });
+            return dt;
+        }
+        private string GetTicketFormatString(List<TicketReportDto> tickets) {
+            return string.Join(",", tickets.Select(t => $"{t.Quantity} x {t.Name}"));
         }
     }
 }

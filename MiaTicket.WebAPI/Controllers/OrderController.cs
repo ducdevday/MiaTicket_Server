@@ -65,5 +65,20 @@ namespace MiaTicket.WebAPI.Controllers
             HttpContext.Response.StatusCode = (int)result.StatusCode;
             return new JsonResult(result);
         }
+
+        [HttpGet("events/{eventId}/export-report")]
+        [UserAuthorize(RequireRoles = [Role.Organizer])]
+        public async Task<IActionResult> ExportOrderReport([FromRoute] int eventId, [FromQuery] ExportOrderReportRequest request)
+        {
+            _ = Guid.TryParse(User.FindFirst("id")?.Value, out Guid userId);
+            var result = await _context.ExportOrderReport(userId, eventId, request);
+            HttpContext.Response.StatusCode = (int)result.StatusCode;
+            if (result.Data != null) {
+                // Trả về file như một phản hồi HTTP
+                var fileName = $"OrderReport_{eventId}_{DateTime.UtcNow:yyyyMMddHHmmss}.xlsx";
+                return File(result.Data, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+            }
+            return new JsonResult(result);
+        }
     }
 }

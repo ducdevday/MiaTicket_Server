@@ -155,6 +155,7 @@ namespace MiaTicket.BussinessLogic.Mapper
                                          .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                                          .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity));
             CreateMap<Order, OrderReportDto>()
+                                         .ForMember(dest => dest.OrderId, opt => opt.MapFrom(src => src.Id))
                                          .ForMember(dest => dest.ReceiverName, opt => opt.MapFrom(src => src.ReceiverName))
                                          .ForMember(dest => dest.ReceiverEmail, opt => opt.MapFrom(src => src.ReceiverEmail))
                                          .ForMember(dest => dest.ReceiverPhoneNumber, opt => opt.MapFrom(src => src.ReceiverPhoneNumber))

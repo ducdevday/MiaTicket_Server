@@ -9,6 +9,7 @@ namespace MiaTicket.BussinessLogic.Model
 {
     public class OrderReportDto
     {
+        public int OrderId { get; set; }
         public string ReceiverName { get; set; }
         public string ReceiverEmail { get; set; }
         public string ReceiverPhoneNumber { get; set; }

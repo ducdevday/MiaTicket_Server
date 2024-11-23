@@ -20,6 +20,7 @@ namespace MiaTicket.DataAccess.Data
         Task<List<Order>> GetOrders(Guid userId, int pageIndex, int pageSize, string keyword, OrderStatus orderStatus, out int totalPages);
         Task<Order> UpdateOrder(Order order);
         Task<List<Order>> GetOrderReport(int eventId, int showTimeId, int pageIndex, int pageSize, out int totalPages);
+        Task<List<Order>> GetAllOrderReport(int eventId, int showTimeId);
     }
     public class OrderData : IOrderData
     {
@@ -64,7 +65,14 @@ namespace MiaTicket.DataAccess.Data
             var orders = query.Skip(pageIndex - 1).Take(pageSize).ToList();
             return Task.FromResult(orders);
         }
-
+        public Task<List<Order>> GetAllOrderReport(int eventId, int showTimeId)
+        {
+            var orders = _context.Order.Include(x => x.Event)
+                                       .Include(x => x.OrderTickets)
+                                       .Include(x => x.Payment)
+                                       .Where(x => x.EventId == eventId && x.ShowTimeId == showTimeId).ToList();
+            return Task.FromResult(orders);
+        }
         public Task<List<Event>> GetTrendingEvent(int count)
         {
             var evts = _context.Order
@@ -83,5 +91,7 @@ namespace MiaTicket.DataAccess.Data
         {
             return Task.FromResult(_context.Order.Update(order).Entity);
         }
+
+
     }
 }
