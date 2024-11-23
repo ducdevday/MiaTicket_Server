@@ -56,5 +56,14 @@ namespace MiaTicket.WebAPI.Controllers
             HttpContext.Response.StatusCode = (int)result.StatusCode;
             return new JsonResult(result);
         }
+
+        [HttpGet("events/{eventId}/report")]
+        [UserAuthorize(RequireRoles = [Role.Organizer])]
+        public async Task<IActionResult> GetOrderReport([FromRoute] int eventId, [FromQuery] GetOrderReportRequest request) { 
+             _ = Guid.TryParse(User.FindFirst("id")?.Value, out Guid userId);
+            var result = await _context.GetOrderReport(userId, eventId, request);
+            HttpContext.Response.StatusCode = (int)result.StatusCode;
+            return new JsonResult(result);
+        }
     }
 }

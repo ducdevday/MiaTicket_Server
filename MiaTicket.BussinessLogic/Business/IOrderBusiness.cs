@@ -18,6 +18,7 @@ namespace MiaTicket.BussinessLogic.Business
         Task<GetMyOrdersResponse> GetMyOrders(Guid userId, GetMyOrdersRequest request);
         Task<GetOrderDetailResponse> GetOrderDetail(Guid userId, int orderId);
         Task<CancelOrderResponse> CancelOrder(Guid userId, int orderId);
+        Task<GetOrderReportResponse> GetOrderReport(Guid userId, int eventId, GetOrderReportRequest request);
     }
 
     public class OrderBusiness : IOrderBusiness
@@ -187,7 +188,48 @@ namespace MiaTicket.BussinessLogic.Business
 
             order!.OrderStatus = OrderStatus.Canceled;
             var updatedOrder = await _context.OrderData.UpdateOrder(order);
+            await _context.Commit();
             return new CancelOrderResponse(HttpStatusCode.OK, "Cancel Detail Success", true);
+        }
+
+        public async Task<GetOrderReportResponse> GetOrderReport(Guid userId, int eventId, GetOrderReportRequest request)
+        {
+            var validation = new GetOrderReportValidation(request);
+            validation.Validate();
+            if (!validation.IsValid) {
+                return new GetOrderReportResponse(HttpStatusCode.BadRequest, validation.Message, []);
+            }
+
+            var eventOrganizer = await _context.EventOrganizerData.GetEventOrganizerById(eventId, userId);
+            if (eventOrganizer == null)
+            {
+                return new GetOrderReportResponse(HttpStatusCode.NotFound, "Event Or User Invalid", []);
+            }
+
+            var organizerDto = _mapper.Map<MemberDto>(eventOrganizer);
+            if (!CheckAbleToGetOrderReport(organizerDto))
+            {
+                return new GetOrderReportResponse(HttpStatusCode.Forbidden, "No Permission", []);
+            }
+
+            List<Order> orders = await _context.OrderData.GetOrderReport(eventId, request.ShowTimeId, request.PageIndex, request.PageSize, out int totalPages);
+            var ordersReportDto = _mapper.Map<List<OrderReportDto>>(orders);
+            return new GetOrderReportResponse(HttpStatusCode.Accepted, "Get Order Report Success", ordersReportDto, totalPages);
+        }
+
+        private bool CheckAbleToGetOrderReport(MemberDto currentMemberDto)
+        {
+            switch (currentMemberDto.Role)
+            {
+                case OrganizerPosition.Owner:
+                    return true;
+                case OrganizerPosition.Moderator:
+                    return true;
+                case OrganizerPosition.Coordinator:
+                    return false;
+                default:
+                    return false;
+            }
         }
     }
 }

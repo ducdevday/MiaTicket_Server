@@ -19,6 +19,7 @@ namespace MiaTicket.DataAccess.Data
         Task<Order?> GetOrderById(int orderId);
         Task<List<Order>> GetOrders(Guid userId, int pageIndex, int pageSize, string keyword, OrderStatus orderStatus, out int totalPages);
         Task<Order> UpdateOrder(Order order);
+        Task<List<Order>> GetOrderReport(int eventId, int showTimeId, int pageIndex, int pageSize, out int totalPages);
     }
     public class OrderData : IOrderData
     {
@@ -49,6 +50,17 @@ namespace MiaTicket.DataAccess.Data
             var query = _context.Order.Include(x => x.Event).Include(x => x.OrderTickets).Include(x =>x.Payment).Where(x => x.Event.Name.Contains(keyword) && x.OrderStatus == orderStatus && x.UserId == userId).OrderByDescending(x => x.CreatedAt);
             totalPages = query.Count();
 
+            var orders = query.Skip(pageIndex - 1).Take(pageSize).ToList();
+            return Task.FromResult(orders);
+        }
+
+        public Task<List<Order>> GetOrderReport(int eventId, int showTimeId, int pageIndex, int pageSize, out int totalPages)
+        {
+            var query = _context.Order.Include(x => x.Event)
+                                      .Include(x => x.OrderTickets)
+                                      .Include(x => x.Payment)
+                                      .Where(x => x.EventId == eventId && x.ShowTimeId == showTimeId);
+            totalPages = query.Count();
             var orders = query.Skip(pageIndex - 1).Take(pageSize).ToList();
             return Task.FromResult(orders);
         }

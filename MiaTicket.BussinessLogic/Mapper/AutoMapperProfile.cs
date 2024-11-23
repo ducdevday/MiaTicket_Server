@@ -151,6 +151,17 @@ namespace MiaTicket.BussinessLogic.Mapper
                                         .ForMember(dest => dest.ReceiverEmail, opt => opt.MapFrom(src => src.OrderStatus == OrderStatus.Finished ? src.ReceiverEmail : null))
                                         .ForMember(dest => dest.ReceiverPhoneNumber, opt => opt.MapFrom(src => src.OrderStatus == OrderStatus.Finished ? src.ReceiverPhoneNumber : null));
 
+            CreateMap<OrderTicket, TicketReportDto>()
+                                         .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                                         .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity));
+            CreateMap<Order, OrderReportDto>()
+                                         .ForMember(dest => dest.ReceiverName, opt => opt.MapFrom(src => src.ReceiverName))
+                                         .ForMember(dest => dest.ReceiverEmail, opt => opt.MapFrom(src => src.ReceiverEmail))
+                                         .ForMember(dest => dest.ReceiverPhoneNumber, opt => opt.MapFrom(src => src.ReceiverPhoneNumber))
+                                         .ForMember(dest => dest.PaymentMethod, opt => opt.MapFrom(src => src.Payment.PaymentType))
+                                         .ForMember(dest => dest.PaymentStatus, opt => opt.MapFrom(src => src.Payment.PaymentStatus))
+                                         .ForMember(dest => dest.Tickets, opt => opt.MapFrom(src => src.OrderTickets))
+                                         .ForMember(dest => dest.TotalPrice, opt => opt.MapFrom(src => src.OrderTickets.Sum(x => x.Price * x.Quantity)));
             //**********************************************Voucher MAPPER**************************************************************
             CreateMap<CreateVoucherRequest, Voucher>()
                                         .ForMember(dest => dest.InitQuantity, opt => opt.MapFrom(src => src.Quantity))
