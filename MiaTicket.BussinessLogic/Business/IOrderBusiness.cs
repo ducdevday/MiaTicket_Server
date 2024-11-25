@@ -23,6 +23,8 @@ namespace MiaTicket.BussinessLogic.Business
         Task<CancelOrderResponse> CancelOrder(Guid userId, int orderId);
         Task<GetOrderReportResponse> GetOrderReport(Guid userId, int eventId, GetOrderReportRequest request);
         Task<ExportOrderReportResponse> ExportOrderReport(Guid userId, int eventId, ExportOrderReportRequest request);
+        Task<GetOrderSummaryRevenueResponse> GetOrderSummaryRevenue(Guid userId, int eventId, GetOrderSummaryRevenueRequest request);
+        Task<GetOrderSummaryFigureResponse> GetOrderSummaryFigure(Guid userId, int eventId, GetOrderSummaryFigureRequest request);
     }
 
     public class OrderBusiness : IOrderBusiness
@@ -209,9 +211,8 @@ namespace MiaTicket.BussinessLogic.Business
             {
                 return new GetOrderReportResponse(HttpStatusCode.NotFound, "Event Or User Invalid", []);
             }
-
-            var organizerDto = _mapper.Map<MemberDto>(eventOrganizer);
-            if (!CheckAbleToGetOrderReport(organizerDto))
+            var isHavePerrmission = OrganizerPermissionFactory.GetOrganizerPermissionStragegy(OrganizerPermissionType.OrderReport).IsHavePermission(eventOrganizer.Position);
+            if (!isHavePerrmission)
             {
                 return new GetOrderReportResponse(HttpStatusCode.Forbidden, "No Permission", []);
             }
@@ -228,8 +229,8 @@ namespace MiaTicket.BussinessLogic.Business
                 return new ExportOrderReportResponse(HttpStatusCode.NotFound, "Event Or User Invalid", null);
             }
 
-            var organizerDto = _mapper.Map<MemberDto>(eventOrganizer);
-            if (!CheckAbleToGetOrderReport(organizerDto))
+            var isHavePerrmission = OrganizerPermissionFactory.GetOrganizerPermissionStragegy(OrganizerPermissionType.OrderReport).IsHavePermission(eventOrganizer.Position);
+            if (!isHavePerrmission)
             {
                 return new ExportOrderReportResponse(HttpStatusCode.Forbidden, "No Permission", null);
             }
@@ -277,20 +278,15 @@ namespace MiaTicket.BussinessLogic.Business
             }
         }
 
-
-        private bool CheckAbleToGetOrderReport(MemberDto currentMemberDto)
+        public Task<GetOrderSummaryRevenueResponse> GetOrderSummaryRevenue(Guid userId, int eventId, GetOrderSummaryRevenueRequest request)
         {
-            switch (currentMemberDto.Role)
-            {
-                case OrganizerPosition.Owner:
-                    return true;
-                case OrganizerPosition.Moderator:
-                    return true;
-                case OrganizerPosition.Coordinator:
-                    return false;
-                default:
-                    return false;
-            }
+            
+        }
+
+
+        public Task<GetOrderSummaryFigureResponse> GetOrderSummaryFigure(Guid userId, int eventId, GetOrderSummaryFigureRequest request)
+        {
+            throw new NotImplementedException();
         }
 
         private DataTable GetOrderDataTable(List<OrderReportDto> orders)
@@ -322,5 +318,6 @@ namespace MiaTicket.BussinessLogic.Business
         private string GetTicketFormatString(List<TicketReportDto> tickets) {
             return string.Join(",", tickets.Select(t => $"{t.Quantity} x {t.Name}"));
         }
+
     }
 }

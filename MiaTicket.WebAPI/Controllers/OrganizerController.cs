@@ -75,6 +75,5 @@ namespace MiaTicket.WebAPI.Controllers
             return new JsonResult(result);
         }
 
-
     }
 }

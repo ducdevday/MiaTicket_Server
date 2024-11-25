@@ -9,6 +9,7 @@ using System.Net;
 using MiaTicket.Data.Enum;
 using MiaTicket.Data.Entity;
 using Azure.Core;
+using MiaTicket.BussinessLogic.Factory;
 
 namespace MiaTicket.BussinessLogic.Business
 {
@@ -55,18 +56,21 @@ namespace MiaTicket.BussinessLogic.Business
             }
 
             List<MemberDto> memberDtos = new List<MemberDto>();
-            var currentMemberDto = _mapper.Map<MemberDto>(currentMember);
+
             foreach (var member in members) { 
                 var m = _mapper.Map<MemberDto>(member);
-                m.IsAbleToEdit = CheckAbleToEdit(currentMemberDto, m);
-                m.IsAbleToDelete = CheckAbleToDelete(currentMemberDto, m);
+                var isHaveEditPerrmission = OrganizerPermissionFactory.GetOrganizerPermissionStragegy(OrganizerPermissionType.EditMember).IsHavePermission(currentMember.Position, m.Role, userId, m.MemberId);
+                var isHaveDeletePerrmission = OrganizerPermissionFactory.GetOrganizerPermissionStragegy(OrganizerPermissionType.DeleteMember).IsHavePermission(currentMember.Position, m.Role,  userId, m.MemberId);
+                m.IsAbleToEdit = isHaveEditPerrmission;
+                m.IsAbleToDelete = isHaveDeletePerrmission;
                 memberDtos.Add(m);
             }
+            var isHaveAddPerrmission = OrganizerPermissionFactory.GetOrganizerPermissionStragegy(OrganizerPermissionType.AddMember).IsHavePermission(currentMember.Position);
 
             var getEventMemberDto = new GetEventMembersDto() {
                 EventName = eventName,
-                CanAddNewMembers = CheckAbleToAddMember(currentMemberDto),
-                AddAbleRoles = CheckListAddAbleRole(currentMemberDto),
+                CanAddNewMembers = isHaveAddPerrmission,
+                AddAbleRoles = CheckListAddAbleRole(currentMember.Position),
                 Members = memberDtos
             };
             return new GetEventMembersResponse(HttpStatusCode.OK, "Get Event Members Success", getEventMemberDto, totalRecords);
@@ -86,11 +90,8 @@ namespace MiaTicket.BussinessLogic.Business
             {
                 return new UpdateEventMemeberResponse(HttpStatusCode.NotFound, "Not Fount Event Member", false);
             }
-
-            MemberDto currentMemberDto = _mapper.Map<MemberDto>(getCurrentEventMemberTask.Result);
-            MemberDto choosenMemberDto = _mapper.Map<MemberDto>(getChoosenEventMemberTask.Result);
-
-            if (!CheckAbleToEdit(currentMemberDto, choosenMemberDto)) { 
+            var isHavePermission = OrganizerPermissionFactory.GetOrganizerPermissionStragegy(OrganizerPermissionType.EditMember).IsHavePermission(currentMember.Position, choosenMember.Position, userId, memberId);
+            if (!isHavePermission) { 
                 return new UpdateEventMemeberResponse(HttpStatusCode.Forbidden, "No Permission", false);
             }
 
@@ -104,7 +105,6 @@ namespace MiaTicket.BussinessLogic.Business
 
         public async Task<DeleteEventMemberResponse> DeleteEventMember(Guid userId, int eventId, Guid memberId)
         {
-
             var getCurrentEventMemberTask = _context.EventOrganizerData.GetEventOrganizerById(eventId, userId);
             var getChoosenEventMemberTask = _context.EventOrganizerData.GetEventOrganizerById(eventId, memberId);
             await Task.WhenAll(getCurrentEventMemberTask, getChoosenEventMemberTask);
@@ -117,10 +117,9 @@ namespace MiaTicket.BussinessLogic.Business
                 return new DeleteEventMemberResponse(HttpStatusCode.NotFound, "Not Fount Event Member", false);
             }
 
-            MemberDto currentMemberDto = _mapper.Map<MemberDto>(getCurrentEventMemberTask.Result);
-            MemberDto choosenMemberDto = _mapper.Map<MemberDto>(getChoosenEventMemberTask.Result);
 
-            if (!CheckAbleToDelete(currentMemberDto, choosenMemberDto))
+            var isHavePermission = OrganizerPermissionFactory.GetOrganizerPermissionStragegy(OrganizerPermissionType.DeleteMember).IsHavePermission(currentMember.Position, choosenMember.Position, userId, memberId);
+            if (!isHavePermission)
             {
                 return new DeleteEventMemberResponse(HttpStatusCode.Forbidden, "No Permission", false);
             }
@@ -161,8 +160,8 @@ namespace MiaTicket.BussinessLogic.Business
                 return new AddEventMemberResponse(HttpStatusCode.Conflict, "Only Organizer Can Be Added", false);
             }
 
-            MemberDto currentMemberDto = _mapper.Map<MemberDto>(currentMember);
-            if (!CheckAbleToAddMember(currentMemberDto)) {
+            var isHavePermission = OrganizerPermissionFactory.GetOrganizerPermissionStragegy(OrganizerPermissionType.AddMember).IsHavePermission(currentMember.Position);
+            if (isHavePermission) {
                 return new AddEventMemberResponse(HttpStatusCode.Forbidden, "No Permission", false);
             }
 
@@ -199,9 +198,9 @@ namespace MiaTicket.BussinessLogic.Business
             if (eventOrganizer == null) {
                 return new CheckInEventResponse(HttpStatusCode.NotFound, "Event Or User Invalid", []);
             }
-            var organizerDto = _mapper.Map<MemberDto>(eventOrganizer);
 
-            if (!CheckAbleToCheckIn(organizerDto)) { 
+            var isHavePermission = OrganizerPermissionFactory.GetOrganizerPermissionStragegy(OrganizerPermissionType.CheckIn).IsHavePermission(eventOrganizer.Position);
+            if (!isHavePermission) { 
                 return new CheckInEventResponse(HttpStatusCode.Forbidden, "No Permission", []);
             }
 
@@ -233,9 +232,9 @@ namespace MiaTicket.BussinessLogic.Business
             {
                 return new GetCheckInEventReportResponse(HttpStatusCode.NotFound, "Event Or User Invalid", null);
             }
-            var organizerDto = _mapper.Map<MemberDto>(eventOrganizer);
+            var isHavePermission = OrganizerPermissionFactory.GetOrganizerPermissionStragegy(OrganizerPermissionType.CheckIn).IsHavePermission(eventOrganizer.Position);
 
-            if (!CheckAbleToCheckIn(organizerDto))
+            if (!isHavePermission)
             {
                 return new GetCheckInEventReportResponse(HttpStatusCode.Forbidden, "No Permission", null);
             }
@@ -272,21 +271,9 @@ namespace MiaTicket.BussinessLogic.Business
 
             return new GetCheckInEventReportResponse(HttpStatusCode.OK, "Get Check In Event Report Success", dataResponse);
         }
-        private bool CheckAbleToAddMember(MemberDto currentMemberDto) {
-            switch (currentMemberDto.Role) {
-                case OrganizerPosition.Owner:
-                    return true;
-                case OrganizerPosition.Moderator:
-                    return true;
-                case OrganizerPosition.Coordinator:
-                    return false;
-                default:
-                    return false;
-            }
-        }
 
-        private List<OrganizerPosition> CheckListAddAbleRole(MemberDto currentMemberDto) {
-            switch (currentMemberDto.Role)
+        private List<OrganizerPosition> CheckListAddAbleRole(OrganizerPosition position) {
+            switch (position)
             {
                 case OrganizerPosition.Owner:
                     return [OrganizerPosition.Moderator, OrganizerPosition.Coordinator];
@@ -296,48 +283,6 @@ namespace MiaTicket.BussinessLogic.Business
                     return [];
                 default:
                     return [];
-            }
-        }
-        
-        private bool CheckAbleToEdit(MemberDto currentMemberDto, MemberDto member) {
-            if(currentMemberDto.MemberId == member.MemberId)
-                return false;
-            if (currentMemberDto.Role == OrganizerPosition.Owner)
-                return true;
-            else if (currentMemberDto.Role == OrganizerPosition.Moderator && member.Role == OrganizerPosition.Coordinator)
-                return true;
-            else if (currentMemberDto.Role == OrganizerPosition.Coordinator)
-                return false;
-
-            return false;
-        }
-
-        private bool CheckAbleToDelete(MemberDto currentMemberDto, MemberDto member)
-        {
-            if (currentMemberDto.MemberId == member.MemberId)
-                return false;
-            if (currentMemberDto.Role == OrganizerPosition.Owner)
-                return true;
-            else if (currentMemberDto.Role == OrganizerPosition.Moderator && member.Role == OrganizerPosition.Coordinator)
-                return true;
-            else if (currentMemberDto.Role == OrganizerPosition.Coordinator)
-                return false;
-
-            return false;
-        }
-
-        private bool CheckAbleToCheckIn(MemberDto currentMemberDto)
-        {
-            switch (currentMemberDto.Role)
-            {
-                case OrganizerPosition.Owner:
-                    return true;
-                case OrganizerPosition.Moderator:
-                    return true;
-                case OrganizerPosition.Coordinator:
-                    return true;
-                default:
-                    return false;
             }
         }
     }
