@@ -58,6 +58,11 @@ namespace MiaTicket.BussinessLogic.Util
             return utcDateTime.ToLocalTime();
         }
 
+        public static DateTime ConvertISOStringToUTCDate(string s) {
+            DateTime utcDateTime = DateTime.Parse(s, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AssumeUniversal);
+            return utcDateTime;
+        }
+
         public static string FormatDateTimeRange(DateTime date1, DateTime date2)
         {
             string FormatTime(DateTime date)
@@ -107,6 +112,9 @@ namespace MiaTicket.BussinessLogic.Util
         public static string FormatAddress(string addressNo, string addressWard, string addressDistrict, string addressProvince)
         {
             return $"{addressNo}, {addressWard}, {addressDistrict}, {addressProvince}";
+        }
+        public static double FormatPercentage(double number) {
+            return Math.Round(number, 2);
         }
     }
 }

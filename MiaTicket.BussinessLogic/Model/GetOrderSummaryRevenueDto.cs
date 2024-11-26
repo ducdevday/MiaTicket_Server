@@ -11,9 +11,9 @@ namespace MiaTicket.BussinessLogic.Model
         public double TicketSoldPercentage { get; set; }
         public int TotalSoldTickets { get; set; }
         public int TotalCapacityTickets { get; set; }
-        public double GrossSaleInPercentage { get; set; }
-        public int CurrentGrossSale { get; set; }
-        public int CapacityGrossSale { get; set; }
+        public double GrossSalePercentage { get; set; }
+        public double TotalCurrentGrossSale { get; set; }
+        public double TotalCapacityGrossSale { get; set; }
         public List<TicketSummaryRevenueDto> Tickets { get; set; }
     }
 }

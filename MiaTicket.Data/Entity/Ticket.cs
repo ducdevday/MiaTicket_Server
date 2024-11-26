@@ -12,6 +12,7 @@ namespace MiaTicket.Data.Entity
         public string Name { get; set; }
         public double Price { get; set; }
         public int Quantity { get; set; }
+        public int InitQuantity { get; set; }
         public int MinimumPurchase { get; set; }
         public int MaximumPurchase { get; set; }
         public string? Description { get; set; }

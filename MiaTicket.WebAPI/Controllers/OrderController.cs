@@ -98,5 +98,6 @@ namespace MiaTicket.WebAPI.Controllers
             HttpContext.Response.StatusCode= (int)result.StatusCode;
             return new JsonResult(result);
         }
+        
     }
 }

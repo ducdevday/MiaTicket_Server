@@ -10,6 +10,7 @@ using MiaTicket.Data.Enum;
 using MiaTicket.Data.Entity;
 using Azure.Core;
 using MiaTicket.BussinessLogic.Factory;
+using MiaTicket.BussinessLogic.Util;
 
 namespace MiaTicket.BussinessLogic.Business
 {
@@ -239,7 +240,7 @@ namespace MiaTicket.BussinessLogic.Business
                 return new GetCheckInEventReportResponse(HttpStatusCode.Forbidden, "No Permission", null);
             }
 
-            var orders = await _context.EventData.GetCheckInReportByShowTime(eventId, request.ShowTimeId);
+            var orders = await _context.OrderData.GetCheckInReportByShowTime(eventId, request.ShowTimeId);
 
             if (orders == null) {
                 return new GetCheckInEventReportResponse(HttpStatusCode.NotFound, "ShowTime Not Exist", null);
@@ -247,7 +248,7 @@ namespace MiaTicket.BussinessLogic.Business
 
             var totalPaidTickets = orders.Where(x => x.Payment.PaymentStatus == PaymentStatus.Paid).SelectMany(x => x.OrderTickets).Sum(x => x.Quantity);
             var totalCheckedInTickets = orders.Where(x => x.Payment.PaymentStatus == PaymentStatus.Paid && x.EventCheckIn.IsCheckedIn == true).SelectMany(x => x.OrderTickets).Sum(x => x.Quantity);
-            var checkInPercent = totalPaidTickets > 0 ? (totalCheckedInTickets / totalPaidTickets) * 100 : 0;
+            var checkInPercent = totalPaidTickets > 0 ? ((double)totalCheckedInTickets / totalPaidTickets) * 100 : 0;
 
             var tickets = orders.Where(x => x.Payment.PaymentStatus == PaymentStatus.Paid).SelectMany(x => x.OrderTickets)
                                          .GroupBy(x => new {x.TicketId, x.Name, x.Price})
@@ -258,14 +259,14 @@ namespace MiaTicket.BussinessLogic.Business
                                              Price = g.Key.Price,
                                              TotalPaidTicket = g.Sum(x => x.Quantity),
                                              TotalCheckedInTicket = g.Where(x =>x.Order.EventCheckIn.IsCheckedIn == true).Sum(x => x.Quantity),
-                                             TicketCheckedInPercentage = g.Sum(x => x.Quantity) > 0 ? (g.Where(x => x.Order.EventCheckIn.IsCheckedIn == true).Sum(x => x.Quantity) / g.Sum(x => x.Quantity)) * 100 : 0
+                                             TicketCheckedInPercentage = g.Sum(x => x.Quantity) > 0 ? ((double)g.Where(x => x.Order.EventCheckIn.IsCheckedIn == true).Sum(x => x.Quantity) / g.Sum(x => x.Quantity)) * 100 : 0
                                          }).ToList();
 
             var dataResponse = new GetCheckInEventReportDto()
             {
                 TotalPaidTickets = totalPaidTickets,
                 TotalCheckedInTickets = totalCheckedInTickets,
-                TicketCheckedInPercentage = checkInPercent,
+                TicketCheckedInPercentage = FormaterUtil.FormatPercentage(checkInPercent),
                 Tickets = tickets,
             };
 

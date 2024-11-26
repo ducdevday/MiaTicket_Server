@@ -4,15 +4,15 @@ using MiaTicket.BussinessLogic.Factory;
 using MiaTicket.BussinessLogic.Model;
 using MiaTicket.BussinessLogic.Request;
 using MiaTicket.BussinessLogic.Response;
+using MiaTicket.BussinessLogic.Util;
 using MiaTicket.BussinessLogic.Validation;
 using MiaTicket.Data.Entity;
 using MiaTicket.Data.Enum;
 using MiaTicket.DataAccess;
 using MiaTicket.Schedular.Service;
 using Microsoft.AspNetCore.Http;
-using System.Net;
 using System.Data;
-using Microsoft.AspNetCore.Mvc;
+using System.Net;
 namespace MiaTicket.BussinessLogic.Business
 {
     public interface IOrderBusiness
@@ -278,15 +278,86 @@ namespace MiaTicket.BussinessLogic.Business
             }
         }
 
-        public Task<GetOrderSummaryRevenueResponse> GetOrderSummaryRevenue(Guid userId, int eventId, GetOrderSummaryRevenueRequest request)
+        public async Task<GetOrderSummaryRevenueResponse> GetOrderSummaryRevenue(Guid userId, int eventId, GetOrderSummaryRevenueRequest request)
         {
-            
+            var eventOrganizer = await _context.EventOrganizerData.GetEventOrganizerById(eventId, userId);
+            if (eventOrganizer == null)
+            {
+                return new GetOrderSummaryRevenueResponse(HttpStatusCode.NotFound, "Event Or User Invalid", null);
+            }
+
+            var isHavePerrmission = OrganizerPermissionFactory.GetOrganizerPermissionStragegy(OrganizerPermissionType.OrderSummary).IsHavePermission(eventOrganizer.Position);
+            if (!isHavePerrmission)
+            {
+                return new GetOrderSummaryRevenueResponse(HttpStatusCode.Forbidden, "No Permission", null);
+            }
+
+            var showTime = await _context.OrderData.GetOrderSummaryRevenue(eventId, request.ShowTimeId);
+
+            if (showTime == null) { 
+                return new GetOrderSummaryRevenueResponse(HttpStatusCode.NotFound, "Not Found", null);
+            }
+
+            var totalCapacityTickets = showTime.Tickets.Sum(t => t.InitQuantity);
+            var totalSoldTickets = showTime.Orders.Sum(o => o.OrderTickets.Sum(x => x.Quantity));
+            var ticketSoldPercentage = totalCapacityTickets > 0 ? ((double)totalSoldTickets / totalCapacityTickets) * 100 : 0;
+            var currentGrossSale = showTime.Orders.Where(x => x.Payment.PaymentStatus == PaymentStatus.Paid).Sum(x => x.TotalPrice);
+            var capacityGrossSale = showTime.Tickets.Sum(t => t.Price * t.InitQuantity);
+            var grossSalePercentage = capacityGrossSale > 0 ? ((double)currentGrossSale / capacityGrossSale) * 100 : 0;
+            var tickets = showTime.Tickets.Select(t => {
+                var tst = showTime.Orders.SelectMany(o => o.OrderTickets).Where(ot => ot.TicketId == t.Id).Sum(ot => ot.Quantity);
+                return new TicketSummaryRevenueDto()
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    Price = t.Price,
+                    TotalSoldTicket = tst,
+                    CapacityTicket = t.InitQuantity,
+                    TicketSoldPercentage = FormaterUtil.FormatPercentage(t.Quantity > 0 ? ((double)tst / t.InitQuantity) * 100 : 0),
+                };
+            }).ToList();
+
+            var dataResponse = new GetOrderSummaryRevenueDto()
+            {
+                TicketSoldPercentage =FormaterUtil.FormatPercentage( ticketSoldPercentage),
+                TotalSoldTickets = totalSoldTickets,
+                TotalCapacityTickets = totalCapacityTickets,
+                GrossSalePercentage =FormaterUtil.FormatPercentage(grossSalePercentage),
+                TotalCurrentGrossSale = currentGrossSale,
+                TotalCapacityGrossSale = capacityGrossSale,
+                Tickets = tickets.ToList()
+            };
+            return new GetOrderSummaryRevenueResponse(HttpStatusCode.OK, "Get Order Summary Success", dataResponse);
         }
 
 
-        public Task<GetOrderSummaryFigureResponse> GetOrderSummaryFigure(Guid userId, int eventId, GetOrderSummaryFigureRequest request)
+        public async Task<GetOrderSummaryFigureResponse> GetOrderSummaryFigure(Guid userId, int eventId, GetOrderSummaryFigureRequest request)
         {
-            throw new NotImplementedException();
+            var eventOrganizer = await _context.EventOrganizerData.GetEventOrganizerById(eventId, userId);
+            if (eventOrganizer == null)
+            {
+                return new GetOrderSummaryFigureResponse(HttpStatusCode.NotFound, "Event Or User Invalid", null);
+            }
+
+            var isHavePerrmission = OrganizerPermissionFactory.GetOrganizerPermissionStragegy(OrganizerPermissionType.OrderSummary).IsHavePermission(eventOrganizer.Position);
+            if (!isHavePerrmission) { 
+                return new GetOrderSummaryFigureResponse(HttpStatusCode.Forbidden, "No Permission", null);
+            }
+
+            var orders = await _context.OrderData.GetOrderSummaryFigure(eventId, request.ShowTimeId, FormaterUtil.ConvertISOStringToUTCDate(request.StartDate), FormaterUtil.ConvertISOStringToUTCDate(request.EndDate));
+            var dataResponse = orders.GroupBy(order => new
+            {
+                Year = order.CreatedAt.Year,
+                Month = order.CreatedAt.Month,
+                Day = order.CreatedAt.Day // Group by Day, or customize this to Month/Year
+            }).Select(g => new OrderSummaryFigureDto()
+            {
+                TotalAmount = g.Where(o => o.Payment.PaymentStatus == PaymentStatus.Paid).Sum(o => o.TotalPrice),
+                TotalTicketSold = g.Sum(o => o.OrderTickets.Sum(ot => ot.Quantity)),
+                Time = new DateTime(g.Key.Year, g.Key.Month, g.Key.Day)
+            }).OrderBy(dto => dto.Time).ToList();
+
+            return new GetOrderSummaryFigureResponse(HttpStatusCode.OK, "Get Order Summary Revenue Success", dataResponse);
         }
 
         private DataTable GetOrderDataTable(List<OrderReportDto> orders)

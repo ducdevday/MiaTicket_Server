@@ -19,8 +19,11 @@ namespace MiaTicket.DataAccess.Data
         Task<Order?> GetOrderById(int orderId);
         Task<List<Order>> GetOrders(Guid userId, int pageIndex, int pageSize, string keyword, OrderStatus orderStatus, out int totalPages);
         Task<Order> UpdateOrder(Order order);
+        Task<List<Order>> GetCheckInReportByShowTime(int eventId, int showTimeId);
         Task<List<Order>> GetOrderReport(int eventId, int showTimeId, int pageIndex, int pageSize, out int totalPages);
         Task<List<Order>> GetAllOrderReport(int eventId, int showTimeId);
+        Task<ShowTime?> GetOrderSummaryRevenue(int eventId, int showTimeId);
+        Task<List<Order>> GetOrderSummaryFigure(int eventId, int showTimeId, DateTime startTime, DateTime endTime);
     }
     public class OrderData : IOrderData
     {
@@ -92,6 +95,32 @@ namespace MiaTicket.DataAccess.Data
             return Task.FromResult(_context.Order.Update(order).Entity);
         }
 
+        public Task<List<Order>> GetCheckInReportByShowTime(int eventId, int showTimeId)
+        {
+            var orders = _context.Order.Include(o => o.Payment)
+                                          .Include(o => o.EventCheckIn)
+                                          .Include(o => o.OrderTickets)
+                                             .Where(o => o.EventId == eventId && o.ShowTimeId == showTimeId).ToList();
 
+
+            return Task.FromResult(orders);
+        }
+
+        public Task<ShowTime?> GetOrderSummaryRevenue(int eventId, int showTimeId)
+        {
+            var showTime = _context.ShowTime
+                                        .Include(st => st.Event)
+                                        .Include(st => st.Tickets)
+                                        .Include(st => st.Orders).ThenInclude(o => o.Payment)
+                                        .Include(st => st.Orders).ThenInclude(o => o.OrderTickets)
+                                        .FirstOrDefault(o => o.Id == showTimeId && o.EventId == eventId);
+            return Task.FromResult(showTime);
+        }
+
+        public Task<List<Order>> GetOrderSummaryFigure(int eventId, int showTimeId, DateTime startTime, DateTime endTime)
+        {
+            var orders = _context.Order.Include(o => o.Payment).Include(o => o.OrderTickets).Where(o => o.EventId == eventId && o.ShowTimeId == showTimeId && o.CreatedAt >= startTime && o.CreatedAt <= endTime).ToList();
+            return Task.FromResult(orders);
+        }
     }
 }

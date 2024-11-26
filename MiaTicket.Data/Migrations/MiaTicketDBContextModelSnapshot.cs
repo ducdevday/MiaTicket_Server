@@ -559,6 +559,9 @@ namespace MiaTicket.Data.Migrations
                         .IsUnicode(true)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<int>("InitQuantity")
+                        .HasColumnType("int");
+
                     b.Property<int>("MaximumPurchase")
                         .HasColumnType("int");
 

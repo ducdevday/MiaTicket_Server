@@ -20,7 +20,6 @@ namespace MiaTicket.DataAccess.Data
         Task<List<Event>> GetEventsByCategory(int categoryId, int count);
         Task<bool> IsEventSortTypeValid(int type);
         Task<List<Event>> SearchEvent(string keyword, int page, int size, string location, List<int> categoriesId, List<double> priceRanges, EventSortType sortBy);
-        Task<List<Order>> GetCheckInReportByShowTime(int eventId, int showTimeId);
     }
 
     public class EventData : IEventData
@@ -149,17 +148,6 @@ namespace MiaTicket.DataAccess.Data
         public Task<Event> UpdateEvent(Event entity)
         {
             return Task.FromResult(_context.Event.Update(entity).Entity);
-        }
-
-        public Task<List<Order>> GetCheckInReportByShowTime(int eventId, int showTimeId)
-        {
-            var orders = _context.Order.Include(o => o.Payment)
-                                          .Include(o => o.EventCheckIn)
-                                          .Include(o => o.OrderTickets)
-                                             .Where(o => o.EventId == eventId && o.ShowTimeId == showTimeId).ToList();
-
-
-            return Task.FromResult(orders);
         }
     }
 }

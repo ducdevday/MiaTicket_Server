@@ -28,6 +28,7 @@ namespace MiaTicket.Data.Configuration
             builder.Property(x => x.Name).IsRequired().HasMaxLength(50).IsUnicode();
             builder.Property(x => x.Price).IsRequired();
             builder.Property(x => x.Quantity).IsRequired();
+            builder.Property(x => x.InitQuantity).IsRequired();
             builder.Property(x => x.MinimumPurchase).IsRequired();
             builder.Property(x => x.MaximumPurchase).IsRequired();
             builder.Property(x => x.Description).HasMaxLength(255).IsUnicode();

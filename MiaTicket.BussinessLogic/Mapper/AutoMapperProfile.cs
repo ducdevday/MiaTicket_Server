@@ -42,7 +42,10 @@ namespace MiaTicket.BussinessLogic.Mapper
                                                     }));
             CreateMap<UpdateEventRequest, Event>();
             CreateMap<ShowTimeDto, ShowTime>();
-            CreateMap<TicketDto, Ticket>();
+            CreateMap<TicketDto, Ticket>()
+                                          .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity))
+                                          .ForMember(dest => dest.InitQuantity, opt => opt.MapFrom(src => src.Quantity));
+
 
             CreateMap<Event, GetEventDataResponse>()
                                         .ForMember(dest => dest.PaymentNumber, opt => opt.MapFrom(src => src.BankAccount.BankNumber))
@@ -51,7 +54,8 @@ namespace MiaTicket.BussinessLogic.Mapper
                                         .ForMember(dest => dest.PaymentBankBranch, opt => opt.MapFrom(src => src.BankAccount.BankBranch));
 
             CreateMap<ShowTime, ShowTimeDto>();
-            CreateMap<Ticket, TicketDto>();
+            CreateMap<Ticket, TicketDto>()
+                                          .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.InitQuantity));
 
             CreateMap<Event, MyEventDto>()
                         .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
