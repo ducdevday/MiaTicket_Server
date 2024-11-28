@@ -1,6 +1,5 @@
 ﻿using Azure.Core;
 using MiaTicket.BussinessLogic.Business;
-using MiaTicket.BussinessLogic.Model;
 using MiaTicket.BussinessLogic.Request;
 using MiaTicket.Data.Entity;
 using MiaTicket.Data.Enum;

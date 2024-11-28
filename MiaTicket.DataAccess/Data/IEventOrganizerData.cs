@@ -14,6 +14,10 @@ namespace MiaTicket.DataAccess.Data
         Task DeleteEventMember(EventOrganizer eventOrganizer);
         Task AddEventMember(EventOrganizer eventOrganizer);
         Task<bool> IsMemberExist(int eventId, string organizerEmail);
+        Task<List<EventOrganizer>> GetEventOrganizerByOrganizerId(Guid userId);
+        Task<List<EventOrganizer>> GetDirectoryOrganizer(Guid userId);
+        Task<List<EventOrganizer>> GetEventParticipationTimeline(Guid userId, DateTime startDate, DateTime endDate);
+
     }
 
     public class EventOrganizerData : IEventOrganizerData
@@ -76,6 +80,25 @@ namespace MiaTicket.DataAccess.Data
         {
             var isMemberExist = _context.EventOrganizer.Include(x => x.Organizer).Any(x => x.EventId == eventId && x.Organizer.Email == organizerEmail);
             return Task.FromResult(isMemberExist);
+        }
+
+        public Task<List<EventOrganizer>> GetEventOrganizerByOrganizerId(Guid userId)
+        {
+            var eventOrganizers = _context.EventOrganizer.Include(eo => eo.Event).ThenInclude(e => e.Category).Where(eo => eo.OrganizerId == userId).ToList();
+            return Task.FromResult(eventOrganizers);
+        }
+
+        public Task<List<EventOrganizer>> GetDirectoryOrganizer(Guid userId)
+        {
+            var events = _context.EventOrganizer.Where(eo => eo.OrganizerId == userId).Select(eo => eo.Event.Id).ToList();
+            var eventOrganizers = _context.EventOrganizer.Include(eo => eo.Organizer).Where(eo => events.Contains(eo.EventId)).ToList();
+            return Task.FromResult(eventOrganizers);
+        }
+
+        public Task<List<EventOrganizer>> GetEventParticipationTimeline(Guid userId, DateTime startDate, DateTime endDate)
+        {
+            var eventOrganizers = _context.EventOrganizer.Include(eo => eo.Event).Where(eo => eo.OrganizerId == userId && eo.CreatedAt >= startDate && eo.CreatedAt <= endDate).ToList();
+            return Task.FromResult(eventOrganizers);
         }
     }
 }
