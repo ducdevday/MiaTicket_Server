@@ -13,5 +13,6 @@ namespace MiaTicket.Data.Entity
         public byte[] Password { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public bool IsPasswordTemporary { get; set; }
     }
 }

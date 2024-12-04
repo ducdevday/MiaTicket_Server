@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace MiaTicket.BussinessLogic.Response
 {
-    public class LoginResponse : BaseApiResponse<LoginDataResponse?>
+    public class LoginResponse : BaseApiResponse<LoginDataDto?>
     {
-        public LoginResponse(HttpStatusCode statusCode, string message, LoginDataResponse? data) : base(statusCode, message, data)
+        public LoginResponse(HttpStatusCode statusCode, string message, LoginDataDto? data) : base(statusCode, message, data)
         {
         }
     }

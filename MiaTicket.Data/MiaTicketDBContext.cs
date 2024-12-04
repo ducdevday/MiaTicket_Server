@@ -1,5 +1,6 @@
 ﻿using MiaTicket.Data.Configuration;
 using MiaTicket.Data.Entity;
+using MiaTicket.Data.Extentions;
 using MiaTicket.Setting;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,6 +31,9 @@ namespace MiaTicket.Data
             modelBuilder.ApplyConfiguration(new VerificationCodeCfg());
             modelBuilder.ApplyConfiguration(new VoucherCfg());
             modelBuilder.ApplyConfiguration(new EventCfg());
+
+            // Seeding Data
+            modelBuilder.Seed();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -53,6 +57,8 @@ namespace MiaTicket.Data
 
             return base.SaveChanges();
         }
+
+
 
         public DbSet<Admin> Admin { get; set; }
         public DbSet<BankAccount> BankAccount { get; set; }

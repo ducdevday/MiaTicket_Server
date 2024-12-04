@@ -10,5 +10,6 @@ namespace MiaTicket.Data.Enum
     {
         Customer,
         Organizer,
+        Admin
     }
 }

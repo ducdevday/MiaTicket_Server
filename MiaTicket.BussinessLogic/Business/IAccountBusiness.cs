@@ -104,13 +104,13 @@ namespace MiaTicket.BussinessLogic.Business
             bool isEmailExist = await _context.UserData.IsEmailExist(request.Email);
             if (!isEmailExist)
             {
-                return new LoginResponse(HttpStatusCode.Conflict, "Email hasn't existed", null);
+                return new LoginResponse(HttpStatusCode.NotFound, "Email hasn't existed", null);
             }
 
             var user = await _context.UserData.GetAccountByEmail(request.Email);
             if (user == null)
             {
-                return new LoginResponse(HttpStatusCode.Conflict, "Email hasn't existed", null);
+                return new LoginResponse(HttpStatusCode.NotFound, "Email hasn't existed", null);
             }
 
             if (!PasswordUtil.ValidatePassword(request.Password, user.Password))
@@ -129,7 +129,15 @@ namespace MiaTicket.BussinessLogic.Business
             _tokenBusiness.SetUserToken(user.Id.ToString(), refreshToken, false);
 
             _httpContextAccessor.HttpContext.Items["refreshToken"] = refreshToken;
-            return new LoginResponse(HttpStatusCode.OK, "Login Successfully", new LoginDataResponse(user.Id, accessToken));
+
+            var loginDataDto = new LoginDataDto()
+            {
+                UserId = user.Id,
+                AccessToken = accessToken,
+                Role = user.Role
+            };
+
+            return new LoginResponse(HttpStatusCode.OK, "Login Successfully", loginDataDto);
         }
 
 

@@ -93,6 +93,7 @@ builder.Services.AddHangfireServer();
 builder.Services.Configure<VNPayConfig>(builder.Configuration.GetSection(VNPayConfig.ConfigName));
 builder.Services.Configure<ZaloPayConfig>(builder.Configuration.GetSection(ZaloPayConfig.ConfigName));
 builder.Services.AddTransient<IDataAccessFacade, DataAccessFacade>();
+builder.Services.AddTransient<IAdminBusiness, AdminBusiness>();
 builder.Services.AddTransient<IAccountBusiness, AccountBusiness>();
 builder.Services.AddTransient<ITokenBusiness, TokenBusiness>();
 builder.Services.AddTransient<IVerificationCodeBusiness, VerificationCodeBusiness>();

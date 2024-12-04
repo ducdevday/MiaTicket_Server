@@ -38,6 +38,11 @@ namespace MiaTicket.Data.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETUTCDATE()");
 
+                    b.Property<bool>("IsPasswordTemporary")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
                     b.Property<byte[]>("Password")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -54,6 +59,17 @@ namespace MiaTicket.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Admin", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("1fe519fd-f9d8-4e95-a4fa-a1a2615df2c0"),
+                            Account = "admin",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            IsPasswordTemporary = false,
+                            Password = new byte[] { 36, 50, 97, 36, 49, 49, 36, 66, 80, 111, 57, 87, 66, 121, 73, 113, 112, 67, 111, 68, 50, 77, 88, 101, 79, 79, 120, 53, 101, 90, 46, 74, 120, 104, 98, 115, 100, 77, 56, 116, 112, 108, 76, 101, 51, 89, 80, 76, 70, 49, 78, 76, 120, 57, 90, 84, 100, 76, 104, 54 },
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("MiaTicket.Data.Entity.BankAccount", b =>
@@ -162,6 +178,11 @@ namespace MiaTicket.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .HasDatabaseName("IX_Category_Name");
+
+                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("Name"), false);
+
                     b.ToTable("Category", (string)null);
                 });
 
@@ -264,6 +285,11 @@ namespace MiaTicket.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("Name")
+                        .HasDatabaseName("IX_Event_Name");
+
+                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("Name"), false);
 
                     b.ToTable("Event", (string)null);
                 });
@@ -590,6 +616,11 @@ namespace MiaTicket.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .HasDatabaseName("IX_Ticket_Name");
+
+                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("Name"), false);
+
                     b.HasIndex("ShowTimeId");
 
                     b.ToTable("Ticket", null, t =>
@@ -663,6 +694,11 @@ namespace MiaTicket.Data.Migrations
 
                     b.HasIndex("Email")
                         .IsUnique();
+
+                    b.HasIndex("Name")
+                        .HasDatabaseName("IX_User_Name");
+
+                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("Name"), false);
 
                     b.ToTable("User", (string)null);
                 });
@@ -773,6 +809,11 @@ namespace MiaTicket.Data.Migrations
                         .IsUnique();
 
                     b.HasIndex("EventId");
+
+                    b.HasIndex("Name")
+                        .HasDatabaseName("IX_Voucher_Name");
+
+                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("Name"), false);
 
                     b.ToTable("Voucher", (string)null);
                 });

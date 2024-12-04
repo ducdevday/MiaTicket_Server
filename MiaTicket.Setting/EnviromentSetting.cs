@@ -26,6 +26,7 @@ namespace MiaTicket.Setting
         private const string ZALOPAY_KEY1 = "ZaloPay_Key1";
         private const string ZALOPAY_KEY2 = "ZaloPay_Key2";
         private const string HANGFIRE_CONNECTION_STRING_KEY = "MiaTickHangFireConnectionString";
+        private const string ADMIN_DEFAULT_PASSWORD_KEY = "AdminDefaultPassword";
 
         private static string _connectionString = string.Empty;
         private static string _issuer = string.Empty;
@@ -44,7 +45,8 @@ namespace MiaTicket.Setting
         private static string _rabbitMQConnectionString = string.Empty;
         private static string _rabbitMQUserName = string.Empty;
         private static string _rabbitMQPassword = string.Empty;
-        private static string _hangfireConnectionStriong = string.Empty;
+        private static string _hangfireConnectionString = string.Empty;
+        private static string _adminDefaultPassword = string.Empty;
 
         private EnviromentSetting() { }
 
@@ -75,7 +77,8 @@ namespace MiaTicket.Setting
                         _rabbitMQConnectionString = Environment.GetEnvironmentVariable(RABBITMQ_CONNECTION_STRING_KEY);
                         _rabbitMQUserName = Environment.GetEnvironmentVariable(RABBITMQ_USERNAME_KEY);
                         _rabbitMQPassword = Environment.GetEnvironmentVariable(RABBITMQ_PASSWORD_KEY);
-                        _hangfireConnectionStriong = Environment.GetEnvironmentVariable(HANGFIRE_CONNECTION_STRING_KEY);
+                        _hangfireConnectionString = Environment.GetEnvironmentVariable(HANGFIRE_CONNECTION_STRING_KEY);
+                        _adminDefaultPassword = Environment.GetEnvironmentVariable(ADMIN_DEFAULT_PASSWORD_KEY);
                     }
                 }
             }
@@ -99,6 +102,7 @@ namespace MiaTicket.Setting
         public string GetRabbitMQConnectionString() => _rabbitMQConnectionString;
         public string GetRabbitMQUserName() => _rabbitMQUserName;
         public string GetRabbitMQPassword() => _rabbitMQPassword;
-        public string GetHangFireConnectionString() => _hangfireConnectionStriong;
+        public string GetHangFireConnectionString() => _hangfireConnectionString;
+        public string GetAdminDefaultPassword() => _adminDefaultPassword;
     }
 }

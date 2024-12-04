@@ -58,7 +58,6 @@ namespace MiaTicket.BussinessLogic.Business
             var dataResponse = _mapper.Map<List<BannerDiscoveryDto>>(banners);
             await _context.Commit();
             return new GetBannersDiscoveryResponse(HttpStatusCode.OK, "Get Banners Discovery Succeed", dataResponse);
-
         }
     }
 }

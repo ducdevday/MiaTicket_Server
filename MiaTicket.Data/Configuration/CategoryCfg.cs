@@ -19,6 +19,7 @@ namespace MiaTicket.Data.Configuration
             builder.Property(x => x.CreatedAt).HasDefaultValueSql("GETUTCDATE()");
             builder.Property(x => x.UpdatedAt).HasDefaultValueSql("GETUTCDATE()");
             builder.Property(x => x.Name).HasMaxLength(255).IsRequired().IsUnicode();
+            builder.HasIndex(x => x.Name).HasDatabaseName("IX_Category_Name").IsClustered(false);
         }
     }
 }
