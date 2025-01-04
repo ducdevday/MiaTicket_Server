@@ -7,7 +7,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MiaTicket.WebAPI.Middleware
 {
-    public class ExceptionMiddleware
+    public class ExceptionMiddleware 
     {
         private readonly RequestDelegate _next;
         private readonly ILogger _logger;
@@ -35,7 +35,7 @@ namespace MiaTicket.WebAPI.Middleware
                         response.StatusCode = (int)HttpStatusCode.BadRequest;
                         break;
                     case KeyNotFoundException e:
-                        // not found error
+                        // not found errorz
                         response.StatusCode = (int)HttpStatusCode.NotFound;
                         break;
                     default:
